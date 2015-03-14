@@ -49,7 +49,7 @@ define(function (require) {
 			var img = $('<img src="img/'+item+'"" class="item" />');
 			$('#container').append(img);
 		});
-		// drawLayout();
+		drawLayout();
 	}
 
 	var drawLayout = function(){
@@ -60,8 +60,8 @@ define(function (require) {
 		});
 	}
 
-	// loadImages();
-	drawLayout();
+	loadImages();
+	// drawLayout();
 });
 
 // var app = {};
