@@ -4,6 +4,115 @@ define(function (require) {
 	
 	console.log('Loaded admin.js');
 
+	var login = function(){
+        // Ajax call
+        $.post('/login', {
+            login: $('#login').val(),
+            password: $('#password').val()
+        }, function(response) {
+            console.log(response);
+            if(response.error != undefined){
+            	console.log(response.error);
+            }else{
+            	console.log('Loading projects.');
+            	appendProjects(response.results);
+            }
+        });		
+	}
+
+
+	/*------------------- PARSE -------------------*/
+
+	var updateProjectsOrderAndPublishParse = function(){
+		console.log('Updating projects.');
+		var projects = [];
+		var lis = $('.project-li');
+		$.each(lis, function(index, value){
+			console.log(value);
+			var project = {
+				id: $(value).attr('id'),
+				publish: $(value).children('.publish-input').prop('checked'),
+				order: $(value).children('.order-input').val()
+			};
+			/*----- IMPORTANT! -----*/
+			// You can't send JSON objects through AJAX calls!
+			// Gotta stringify first, toherwise they'll get on the server
+			// like a string [object Object]
+			projects.push(JSON.stringify(project));
+		});
+		console.log(projects);
+
+        // Ajax call
+        $.post('/update-all', {
+        	'projects[]': projects
+        }, function(response) {
+            console.log(response);
+        });			
+	}
+
+	var loadProjectsParse = function(){
+        $.post('/load-projects', {}, function(response) {
+            console.log(response);
+            appendProjects(response.results);
+        });	
+	}	
+
+	var createOrUpdateParse = function(parent, create){
+		// console.log(parent);
+		if(!create) var id = $(parent).attr('id');
+		var title = $(parent).children('.title-input').val();
+		var content = $(parent).children('.content-textarea').val();
+		var imagesList = $(parent).find('.images-li');
+		// console.log(imagesList);
+		var images = [];
+		$.each(imagesList, function(index, item){
+			console.log(item);
+			var image = {
+				url: $(item).children('input.url-input').val(),
+				homepage: $(item).children('input.homepage-input').prop('checked')
+			}
+			images.push(image);
+		});
+		console.log(images);
+		var obj = {
+			title: title,
+			content: content,
+			images: images
+		}
+		if(!create) obj.id = id;
+		console.log(obj);
+		obj = JSON.stringify(obj);
+
+        // Ajax call
+        var route = (create) ? ('/create-project') : ('/update-project');
+        $.post(route, {
+        	data: obj
+        }, function(response) {
+            console.log(response);
+            // remove this container
+            $(parent).remove();
+            // update project list at the top of the page
+            loadProjectsParse();
+        });	
+	}
+
+	var deleteProjectParse = function(projectId){
+		console.log(projectId);
+
+        // Ajax call
+        $.post('/delete-project', {
+        	id: projectId
+        }, function(response) {
+        	console.log(response);
+        	$('#projects-list').find('li#'+projectId).remove();
+			updateProjectsOrder($('#projects-list').children('ul'));
+        	updateProjectsOrderAndPublishParse();
+		});
+	}
+	/*---------------------------------------------*/
+
+
+	/*-------------------- DOM --------------------*/
 	var appendProjects = function(results){
 		console.log(results);
 		
@@ -14,8 +123,9 @@ define(function (require) {
 		var divTitle = $('<h1>Projects</h1>');
 
 		var ui = $('<ul class="sortable"></ul>');
-		$(ui).sortable({ update: function(event, ui){
-				updateProjectsOrder(ui);
+		$(ui).sortable({ update: function(event, ui){				
+				var parent = $(ui.item).parent();
+				updateProjectsOrder(parent);
 			}
 		});
     	$(ui).disableSelection();
@@ -55,56 +165,12 @@ define(function (require) {
 		attachEvents();
 	}
 
-	var updateProjectsOrder = function(ui){
-		var parent = $(ui.item).parent();
+	var updateProjectsOrder = function(parent){
 		var list = $(parent).children();
 		$.each(list, function(index, value){
 			// console.log(index);
 			$(value).children('.order-input').val(index);
 		});
-	}
-
-	var login = function(){
-        // Ajax call
-        $.post('/login', {
-            login: $('#login').val(),
-            password: $('#password').val()
-        }, function(response) {
-            console.log(response);
-            if(response.error != undefined){
-            	console.log(response.error);
-            }else{
-            	console.log('Loading projects.');
-            	appendProjects(response.results);
-            }
-        });		
-	}
-
-	var updateAllProjects = function(){
-		console.log('Updating projects.');
-		var projects = [];
-		var lis = $('.project-li');
-		$.each(lis, function(index, value){
-			console.log(value);
-			var project = {
-				id: $(value).attr('id'),
-				publish: $(value).children('.publish-input').prop('checked'),
-				order: $(value).children('.order-input').val()
-			};
-			/*----- IMPORTANT! -----*/
-			// You can't send JSON objects through AJAX calls!
-			// Gotta stringify first, toherwise they'll get on the server
-			// like a string [object Object]
-			projects.push(JSON.stringify(project));
-		});
-		console.log(projects);
-
-        // Ajax call
-        $.post('/update-all', {
-        	'projects[]': projects
-        }, function(response) {
-            console.log(response);
-        });			
 	}
 
 	var expandProject = function(projectId){
@@ -142,13 +208,6 @@ define(function (require) {
 
             attachEvents();
         });
-	}
-
-	var loadProjects = function(){
-        $.post('/load-projects', {}, function(response) {
-            console.log(response);
-            appendProjects(response.results);
-        });	
 	}
 
 	var createProject = function(){
@@ -192,59 +251,10 @@ define(function (require) {
         return li;		
 	}
 
-	var createOrUpdateParse = function(parent, create){
-		// console.log(parent);
-		if(!create) var id = $(parent).attr('id');
-		var title = $(parent).children('.title-input').val();
-		var content = $(parent).children('.content-textarea').val();
-		var imagesList = $(parent).find('.images-li');
-		// console.log(imagesList);
-		var images = [];
-		$.each(imagesList, function(index, item){
-			console.log(item);
-			var image = {
-				url: $(item).children('input.url-input').val(),
-				homepage: $(item).children('input.homepage-input').prop('checked')
-			}
-			images.push(image);
-		});
-		console.log(images);
-		var obj = {
-			title: title,
-			content: content,
-			images: images
-		}
-		if(!create) obj.id = id;
-		console.log(obj);
-		obj = JSON.stringify(obj);
-
-        // Ajax call
-        var route = (create) ? ('/create-project') : ('/update-project');
-        $.post(route, {
-        	data: obj
-        }, function(response) {
-            console.log(response);
-            // remove this container
-            $(parent).remove();
-            // update project list at the top of the page
-            loadProjects();
-        });	
-	}
-
 	var collapseProject = function(parent){
 		$(parent.remove());
 	}
-
-	var deleteProject = function(projectId){
-		console.log(projectId);
-        // Ajax call
-        $.post('/delete-project', {
-        	id: projectId
-        }, function(response) {
-        	console.log(response);
-        	loadProjects();
-		});
-	}
+	/*---------------------------------------------*/
 
 	var attachEvents = function() {
 	    console.log('Attaching Events');
@@ -255,13 +265,17 @@ define(function (require) {
 	    });
 
 	    /*----- PROJECTS LIST -----*/
-	    $('#projects-list .edit-bt').off('click').on('click', function() {
-	    	// console.log($(this).parent());
-	    	expandProject($(this).parent().attr('id'));
+	    $('#projects-list .update-bt').off('click').on('click', function() {
+	    	updateProjectsOrderAndPublishParse();
 	    });
 
 	    $('#projects-list .del-bt').off('click').on('click', function() {
-	    	deleteProject($(this).parent().attr('id'));
+	    	deleteProjectParse($(this).parent().attr('id'));
+	    });
+
+	    $('#projects-list .edit-bt').off('click').on('click', function() {
+	    	// console.log($(this).parent());
+	    	expandProject($(this).parent().attr('id'));
 	    });
 
 	    $('#projects-list .add-project-bt').off('click').on('click', function() {
