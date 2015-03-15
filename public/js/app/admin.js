@@ -40,7 +40,7 @@ define(function (require) {
 			$(ui).append(li);
 		});
 
-		var update = $('<button id="update-all-bt">Update</button>');
+		var update = $('<button class="update-bt">Update</button>');
 
 		$(projectsList).append(divTitle)
 				  	   .append(ui)
@@ -110,18 +110,36 @@ define(function (require) {
         	id: projectId
         }, function(response) {
             console.log(response);
-            var projectContainer = $('<div id="'+response.objectId+'" class="container"></div>');
+            var projectContainer = $('<div id="'+response.objectId+'" class="container project"></div>');
             
             var title = $('<input type="text" class="title-input">');
             $(title).val(response.title);
             var desc = $('<textarea rows="20" cols="50" class="content-textarea">'+response.content+'</textarea>');
-			var cancel = $('<button id="cancel-bt">Cancel</button>');
-			var update = $('<button id="update-bt">Update</button>');
+            var imagesUl = $('<ul></ul>');
+
+            response.images.forEach(function(item, index, array){
+            	var li = $('<li class="images-li"></li>');
+            	var checkbox = $('<input type="checkbox" class="homepage-input">');
+            	console.log(item.homepage);
+            	$(checkbox).prop('checked', item.homepage);
+            	var span = $('<span>'+item.url+'</span>');
+            	
+            	$(li).append(checkbox)
+            			   .append(span);
+
+            	$(imagesUl).append(li);
+            });
+			// var add = $('<button id="add-images-bt">Add Images</button>');
+			var cancel = $('<button class="cancel-bt">Cancel</button>');
+			var update = $('<button class="update-bt">Update</button>');
 
             $(projectContainer).append(title)
             				   .append('<br>')
             				   .append(desc)
             				   .append('<br>')
+            				   .append(imagesUl)
+            				   // .append(addImages)
+            				   // .append('<br>')
             				   .append(cancel)
             				   .append(update);
 
@@ -136,16 +154,31 @@ define(function (require) {
 		var id = $(parent).attr('id');
 		var title = $(parent).children('.title-input').val();
 		var content = $(parent).children('.content-textarea').val();
+		var imagesList = $(parent).find('.images-li');
+		// console.log(imagesList);
+		var images = [];
+		$.each(imagesList, function(index, item){
+			console.log(item);
+			var image = {
+				url: $(item).children('span').html(),
+				homepage: $(item).children('input.homepage-input').prop('checked')
+			}
+			images.push(image);
+		});
+		console.log(images);
 		var obj = {
 			id: id,
 			title: title,
-			content: content
+			content: content,
+			images: images
 		}
 		console.log(obj);
-		// obj = JSON.stringify(obj);
+		obj = JSON.stringify(obj);
 
         // Ajax call
-        $.post('/update-project', obj, function(response) {
+        $.post('/update-project', {
+        	data: obj
+        }, function(response) {
             console.log(response);
             // remove this container
             $(parent).remove();
@@ -167,22 +200,22 @@ define(function (require) {
 	    });
 
 	    /*----- PROJECTS LIST -----*/
-	    $('#update-all-bt').off('click').on('click', function() {
+	    $('#projects-list .update-bt').off('click').on('click', function() {
 	    	updateAllProjects();
 	    });
-	    $('.edit-bt').off('click').on('click', function() {
+	    $('#projects-list .edit-bt').off('click').on('click', function() {
 	    	// console.log($(this).parent());
 	    	expandProject($(this).parent().attr('id'));
 	    });
-	    $('.del-bt').off('click').on('click', function() {
+	    $('#projects-list .del-bt').off('click').on('click', function() {
 	    });
 
 	    /*----- PROJECTS DETAIL -----*/
-	    $('#update-bt').off('click').on('click', function() {
+	    $('.project .update-bt').off('click').on('click', function() {
 	    	// console.log($(this).parent().attr('id'));
 	    	updateProject($(this).parent());
 	    });	    
-	    $('#cancel-bt').off('click').on('click', function() {
+	    $('.project .cancel-bt').off('click').on('click', function() {
 	    	collapseProject($(this).parent());
 	    });		    
 	};	

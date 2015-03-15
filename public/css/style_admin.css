@@ -37,7 +37,7 @@ button{
 	width: 50px;
 }
 
-#projects-list ul{
+ul{
 	list-style-type: none;
 	padding: 0;
 }
@@ -46,7 +46,7 @@ button{
 	width: 30px;
 }
 
-#projects-list span{
+li span{
 	font-size: 13px;
 	display: inline-block;
 	height: 20px;

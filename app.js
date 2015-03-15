@@ -126,11 +126,13 @@ app.post('/expand-project', function(req, res) {
 app.post('/update-project', function(req, res) {
     console.log('request:');
     console.log(req.body);
-    console.log(req.body.id);
+    var project = JSON.parse(req.body.data);
+    console.log(project);
 
-    parse.update('projects', req.body.id, {
-        title: req.body.title,
-        content: req.body.content
+    parse.update('projects', project.id, {
+        title: project.title,
+        content: project.content,
+        images: project.images
     }, function (err, response) {
         console.log(response);
         res.json(response);
