@@ -42,6 +42,8 @@ app.use('/', express.static(__dirname + '/public'));
 
 
 /*------------------- ROUTERS -------------------*/
+
+/*----- PUBLIC -----*/
 app.post('/start', function(req, res) {
 
 	var images = fs.readdirSync('public/img');
@@ -52,6 +54,8 @@ app.post('/start', function(req, res) {
 	});
 });
 
+
+/*----- ADMIN -----*/
 var logged;
 
 // Log in
@@ -67,17 +71,7 @@ app.post('/login', function(req, res) {
         console.log('Logged in.');
         logged = true;
 
-        var projects;
-        parse.find('projects', {}, function (err, response) {
-            console.log(response);
-            
-            // Sorting the projects
-            response.results = _.sortBy(response.results, function(obj){
-                return obj.order;
-            });
-            console.log(response);
-            res.json(response);
-        }); 
+        loadProjects(res);
 
       // }else{
       //   var msg = 'User/login not found.';
@@ -87,6 +81,24 @@ app.post('/login', function(req, res) {
       //   });
       // }
     });    
+});
+
+var loadProjects = function(res){
+    var projects;
+    parse.find('projects', {}, function (err, response) {
+        console.log(response);
+        
+        // Sorting the projects
+        response.results = _.sortBy(response.results, function(obj){
+            return obj.order;
+        });
+        console.log(response);
+        res.json(response);
+    }); 
+}
+
+app.post('/load-projects', function(req, res) {
+    loadProjects(res);
 });
 
 app.post('/update-all', function(req, res) {
@@ -123,6 +135,30 @@ app.post('/expand-project', function(req, res) {
     }); 
 });
 
+app.post('/create-project', function(req, res) {
+
+    console.log('request:');
+    console.log(req.body);
+    var project = JSON.parse(req.body.data);
+    console.log(project);
+
+    var lastIndex = '';
+    parse.findMany('projects', '', function (err, response) {
+
+        lastIndex = response.results.length;
+
+        parse.insert('projects', {
+            title: project.title,
+            content: project.content,
+            images: project.images,
+            order: lastIndex
+        }, function (err, response) {
+            console.log(response);
+            res.json(response);
+        });         
+    });
+});
+
 app.post('/update-project', function(req, res) {
     console.log('request:');
     console.log(req.body);
@@ -134,6 +170,17 @@ app.post('/update-project', function(req, res) {
         content: project.content,
         images: project.images
     }, function (err, response) {
+        console.log(response);
+        res.json(response);
+    }); 
+});
+
+app.post('/delete-project', function(req, res) {
+    console.log('request:');
+    console.log(req.body);
+    console.log(req.body.id);
+
+    parse.delete('projects', req.body.id, function (err, response) {
         console.log(response);
         res.json(response);
     }); 

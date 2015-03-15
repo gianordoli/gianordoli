@@ -4,8 +4,10 @@ define(function (require) {
 	
 	console.log('Loaded admin.js');
 
-	var loadProjects = function(results){
+	var appendProjects = function(results){
 		console.log(results);
+		
+		$('#projects-list').remove();
 
 		var projectsList = $('<div id="projects-list" class="container"></div>');
 		
@@ -40,10 +42,12 @@ define(function (require) {
 			$(ui).append(li);
 		});
 
+		var addProject = $('<button class="add-project-bt">Add</button>');
 		var update = $('<button class="update-bt">Update</button>');
 
 		$(projectsList).append(divTitle)
 				  	   .append(ui)
+				  	   .append(addProject)
 				  	   .append(update);
 
 		$('body').append(projectsList);
@@ -71,7 +75,7 @@ define(function (require) {
             	console.log(response.error);
             }else{
             	console.log('Loading projects.');
-            	loadProjects(response.results);
+            	appendProjects(response.results);
             }
         });		
 	}
@@ -140,6 +144,38 @@ define(function (require) {
         });
 	}
 
+	var loadProjects = function(){
+        $.post('/load-projects', {}, function(response) {
+            console.log(response);
+            appendProjects(response.results);
+        });	
+	}
+
+	var createProject = function(){
+
+		var projectContainer = $('<div class="container project"></div>');
+            
+        var title = $('<input type="text" class="title-input">');
+        var desc = $('<textarea rows="20" cols="50" class="content-textarea"></textarea>');
+        var imagesUl = $('<ul></ul>');
+		var addImage = $('<button class="add-image-bt">Add Images</button>');
+		var cancel = $('<button class="cancel-bt">Cancel</button>');
+		var create = $('<button class="create-bt">Create</button>');
+
+        $(projectContainer).append(title)
+        				   .append('<br>')
+        				   .append(desc)
+        				   .append('<br>')
+        				   .append(imagesUl)
+        				   .append(addImage)
+        				   .append(cancel)
+        				   .append(create);
+
+        $('body').append(projectContainer);
+
+        attachEvents();
+	}
+
 	var createImageInput = function(item){
 		var li = $('<li class="images-li"></li>');
 
@@ -156,9 +192,9 @@ define(function (require) {
         return li;		
 	}
 
-	var updateProject = function(parent){
+	var createOrUpdateParse = function(parent, create){
 		// console.log(parent);
-		var id = $(parent).attr('id');
+		if(!create) var id = $(parent).attr('id');
 		var title = $(parent).children('.title-input').val();
 		var content = $(parent).children('.content-textarea').val();
 		var imagesList = $(parent).find('.images-li');
@@ -174,30 +210,42 @@ define(function (require) {
 		});
 		console.log(images);
 		var obj = {
-			id: id,
 			title: title,
 			content: content,
 			images: images
 		}
+		if(!create) obj.id = id;
 		console.log(obj);
 		obj = JSON.stringify(obj);
 
         // Ajax call
-        $.post('/update-project', {
+        var route = (create) ? ('/create-project') : ('/update-project');
+        $.post(route, {
         	data: obj
         }, function(response) {
             console.log(response);
             // remove this container
             $(parent).remove();
             // update project list at the top of the page
-            $('#projects-list').find('li#'+id).children('span').html(title);
+            loadProjects();
         });	
 	}
 
 	var collapseProject = function(parent){
 		$(parent.remove());
-	}	
-	
+	}
+
+	var deleteProject = function(projectId){
+		console.log(projectId);
+        // Ajax call
+        $.post('/delete-project', {
+        	id: projectId
+        }, function(response) {
+        	console.log(response);
+        	loadProjects();
+		});
+	}
+
 	var attachEvents = function() {
 	    console.log('Attaching Events');
 
@@ -207,29 +255,41 @@ define(function (require) {
 	    });
 
 	    /*----- PROJECTS LIST -----*/
-	    $('#projects-list .update-bt').off('click').on('click', function() {
-	    	updateAllProjects();
-	    });
 	    $('#projects-list .edit-bt').off('click').on('click', function() {
 	    	// console.log($(this).parent());
 	    	expandProject($(this).parent().attr('id'));
 	    });
+
 	    $('#projects-list .del-bt').off('click').on('click', function() {
+	    	deleteProject($(this).parent().attr('id'));
+	    });
+
+	    $('#projects-list .add-project-bt').off('click').on('click', function() {
+	    	// console.log('add project');
+	    	createProject();
 	    });
 
 	    /*----- PROJECTS DETAIL -----*/
 	    $('.project .update-bt').off('click').on('click', function() {
 	    	// console.log($(this).parent().attr('id'));
-	    	updateProject($(this).parent());
+	    	createOrUpdateParse($(this).parent(), false);
 	    });	    
+	    
 	    $('.project .cancel-bt').off('click').on('click', function() {
 	    	collapseProject($(this).parent());
 	    });
+	    
+	    $('.project .create-bt').off('click').on('click', function() {
+	    	// console.log($(this).parent().attr('id'));
+	    	createOrUpdateParse($(this).parent(), true);
+	    });	
+
 	    $('.project .add-image-bt').off('click').on('click', function() {
 	    	// console.log($(this).parent().children('ul'));
 	    	var li = createImageInput({url: '', homepage: false});
 	    	$(this).parent().children('ul').append(li);
 	    });	    
+
 	    // Images
 	    $('.project li .del-bt').off('click').on('click', function() {
 	    	$(this).parent().remove();
