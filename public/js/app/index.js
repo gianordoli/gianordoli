@@ -4,31 +4,10 @@ define(function (require) {
 	
 	console.log('Loaded index.js');
 	
+	/*------- VARS --------*/
 	var $container;
 
-	// $('#container').masonry({
-	// 	// options
-	// 	itemSelector : '.item',
-	// 	columnWidth : 240
-	// });
-
-	// var $container = $('#container');
-	// $container.imagesLoaded(function(){
-	//   $container.masonry({
-	//     itemSelector : '.item',
-	//     columnWidth : 240
-	//   });
-	// });	
-
-	// var $container = $('#container');
-	// $container.imagesLoaded(function(){
-	//   $container.masonry({
-	//     itemSelector : '.item',
-	//     columnWidth : 240
-	//   });
-	// });  
-
-
+	/*----- FUNCTIONS -----*/
 	var loadImages = function(){
 		console.log('Loading images...');
 		$.post('/start', {}, function(response) {
@@ -61,18 +40,4 @@ define(function (require) {
 	}
 
 	loadImages();
-	// drawLayout();
 });
-
-// var app = {};
-
-// app.init = function() {
-// 	console.log('Loading main1.js');
-// 	var _ = require('underscore');
-	
-	
-
-
-// };
-
-// app.init();

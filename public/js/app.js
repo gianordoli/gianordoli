@@ -1,3 +1,5 @@
+// This page manages the js modules that each html page will load
+
 //Load common code that includes config
 require(['config'], function () {
 
@@ -8,13 +10,14 @@ require(['config'], function () {
 		
 		console.log('Loaded jquery.');
 
-		// Current page?
+		// Current page is...?
 		var url = window.location.pathname;
 		var filename = url.substring(url.lastIndexOf('/')+1, url.lastIndexOf('.'));
 		if(filename == '/') filename = 'index';
 		
 		console.log('Loading dependencies for '+filename);
 		
+		// index
 		if(filename == 'index'){
 
 			require(['Masonry'], function(Masonry) {
@@ -33,6 +36,7 @@ require(['config'], function () {
 			    });
 			});
 
+		// all
 		}else{
 			loadMainScript(filename);
 		}

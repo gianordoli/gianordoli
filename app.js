@@ -2,7 +2,17 @@
 var		express = require('express'),
 	 bodyParser = require('body-parser')
 	 		 fs = require('fs');
+          Parse = require('node-parse-api').Parse;
 
+var readData = fs.readFileSync('keys.txt');
+readData = readData.toString(); // convert to string
+keys = readData.split(',');
+
+var options = {
+    app_id: keys[0],
+    api_key: keys[1] // master_key:'...' could be used too
+};
+var parse = new Parse(options);
 var app = express();
 
 
@@ -31,15 +41,73 @@ app.use('/', express.static(__dirname + '/public'));
 
 
 /*------------------- ROUTERS -------------------*/
-app.post('/start', function(request, response) {
+app.post('/start', function(req, res) {
 
 	var images = fs.readdirSync('public/img');
 	console.log(images);
 	
-	response.json({
+	res.json({
 		images: images
 	});
 });
+
+var logged;
+
+// Log in
+app.post('/login', function(req, res) {
+    console.log('request:');
+    console.log(req.body);
+    
+    parse.find('users', {login: req.body.login}, function (err, response) {
+      console.log('Database response:');
+      console.log(response.results);
+      if(response.results.length > 0 && response.results[0].password == req.body.password){
+        console.log('Logged in.');
+        logged = true;
+        loadProjects(res);
+      }else{
+        var msg = 'User/login not found.';
+        console.log(msg);
+        res.json({
+            error: msg
+        });
+      }
+    });    
+});
+
+function loadProjects(res){
+    parse.find('projects', {}, function (err, response) {
+        console.log(response);
+        res.json(response);
+    });   
+}
+
+// // Create a project
+// app.post('/project', function(req, res) {
+//     console.log(req.body);
+//     // First we have to read a user's file and parse it in a proper array format
+//     fs.readFile(PATH_TO_JSON_FILE + '/' + req.body.user, 'utf8', function(err, data) {
+//         data = JSON.parse(data);
+//         // Prepend a new json object into `data` array using `.unshift`
+//         data.unshift({
+//             id: new Date().getTime(),
+//             title: req.body.p_title,
+//             deadline: req.body.p_deadline,
+//             done: false
+//         });
+//         // Re-write the file
+//         fs.writeFile(PATH_TO_JSON_FILE + '/' + req.body.user, JSON.stringify(data), function(err) {
+//             if (err) {
+//                 console.log(err);
+//             } else {
+//                 console.log("The file was saved!");
+//                 res.json({
+//                     status: 'OK'
+//                 });
+//             }
+//         });
+//     });
+// });
 
 
 /*----------------- INIT SERVER -----------------*/
