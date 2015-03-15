@@ -19,6 +19,7 @@
   "dependencies": {
     "body-parser": "^1.12.0",
     "express": "^4.12.2",
-    "node-parse-api": "^0.3.5"
+    "node-parse-api": "^0.3.5",
+    "underscore": "^1.8.2"
   }
 }

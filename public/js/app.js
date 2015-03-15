@@ -36,6 +36,10 @@ require(['config'], function () {
 			    });
 			});
 
+		}else if(filename == 'admin'){
+			require(['jquery-ui']);
+			loadMainScript(filename);
+			
 		// all
 		}else{
 			loadMainScript(filename);

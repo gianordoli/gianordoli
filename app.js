@@ -2,7 +2,8 @@
 var		express = require('express'),
 	 bodyParser = require('body-parser')
 	 		 fs = require('fs');
-          Parse = require('node-parse-api').Parse;
+          Parse = require('node-parse-api').Parse,
+              _ = require('underscore');
 
 var readData = fs.readFileSync('keys.txt');
 readData = readData.toString(); // convert to string
@@ -61,22 +62,53 @@ app.post('/login', function(req, res) {
     parse.find('users', {login: req.body.login}, function (err, response) {
       console.log('Database response:');
       console.log(response.results);
-      if(response.results.length > 0 && response.results[0].password == req.body.password){
+      
+      // if(response.results.length > 0 && response.results[0].password == req.body.password){
         console.log('Logged in.');
         logged = true;
         loadProjects(res);
-      }else{
-        var msg = 'User/login not found.';
-        console.log(msg);
-        res.json({
-            error: msg
-        });
-      }
+      // }else{
+      //   var msg = 'User/login not found.';
+      //   console.log(msg);
+      //   res.json({
+      //       error: msg
+      //   });
+      // }
     });    
 });
 
+app.post('/updateall', function(req, res) {
+    console.log('request:');
+    console.log(req.body);
+    var projects = req.body['projects[]'];
+    console.log(projects);
+    console.log(projects.length);
+
+    var error = false;
+
+    projects.forEach(function(item, index, array){
+        // console.log(item);
+        item = JSON.parse(item);
+        console.log(item.id + ',' + item.order + ', ' + item.publish);
+        // console.log(typeof item.public);
+        parse.update('projects', item.id, {
+            order: parseInt(item.order),
+            publish: item.publish
+        }, function (err, response) {
+            console.log(response);
+        }); 
+    });
+});
+
 function loadProjects(res){
+    var projects;
     parse.find('projects', {}, function (err, response) {
+        console.log(response);
+        
+        // Sorting the projects
+        response.results = _.sortBy(response.results, function(obj){
+            return obj.order;
+        });
         console.log(response);
         res.json(response);
     });   

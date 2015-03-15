@@ -1,0 +1,33 @@
+/* your style begins here */
+
+body{
+	padding: 10px;
+}
+
+#projects-list ul{
+	list-style-type: none;
+	padding: 0;
+}
+
+#projects-list button,
+#projects-list input,
+#projects-list span{
+	margin: 0 5px;
+}
+
+#projects-list input[type=text]{
+	width: 30px;
+}
+
+#projects-list button{
+	font-size: 11px;
+	height: 20px;
+	width: 50px;
+}
+
+#projects-list span{
+	font-size: 13px;
+	display: inline-block;
+	height: 20px;
+	width: 200px;
+}
