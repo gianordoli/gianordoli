@@ -118,18 +118,10 @@ define(function (require) {
             var imagesUl = $('<ul></ul>');
 
             response.images.forEach(function(item, index, array){
-            	var li = $('<li class="images-li"></li>');
-            	var checkbox = $('<input type="checkbox" class="homepage-input">');
-            	console.log(item.homepage);
-            	$(checkbox).prop('checked', item.homepage);
-            	var span = $('<span>'+item.url+'</span>');
-            	
-            	$(li).append(checkbox)
-            			   .append(span);
-
+            	var li = createImageInput(item);
             	$(imagesUl).append(li);
             });
-			// var add = $('<button id="add-images-bt">Add Images</button>');
+			var addImage = $('<button class="add-image-bt">Add Images</button>');
 			var cancel = $('<button class="cancel-bt">Cancel</button>');
 			var update = $('<button class="update-bt">Update</button>');
 
@@ -138,8 +130,7 @@ define(function (require) {
             				   .append(desc)
             				   .append('<br>')
             				   .append(imagesUl)
-            				   // .append(addImages)
-            				   // .append('<br>')
+            				   .append(addImage)
             				   .append(cancel)
             				   .append(update);
 
@@ -147,6 +138,22 @@ define(function (require) {
 
             attachEvents();
         });
+	}
+
+	var createImageInput = function(item){
+		var li = $('<li class="images-li"></li>');
+
+        	var checkbox = $('<input type="checkbox" class="homepage-input">');
+        	console.log(item.homepage);
+        	$(checkbox).prop('checked', item.homepage);
+        	var url = $('<input type="text" class="url-input">').val(item.url);
+        	var del = $('<button class="del-bt">Delete</button>');
+
+        	$(li).append(checkbox)
+        	     .append(url)
+        	     .append(del);
+
+        return li;		
 	}
 
 	var updateProject = function(parent){
@@ -160,7 +167,7 @@ define(function (require) {
 		$.each(imagesList, function(index, item){
 			console.log(item);
 			var image = {
-				url: $(item).children('span').html(),
+				url: $(item).children('input.url-input').val(),
 				homepage: $(item).children('input.homepage-input').prop('checked')
 			}
 			images.push(image);
@@ -217,7 +224,16 @@ define(function (require) {
 	    });	    
 	    $('.project .cancel-bt').off('click').on('click', function() {
 	    	collapseProject($(this).parent());
-	    });		    
+	    });
+	    $('.project .add-image-bt').off('click').on('click', function() {
+	    	// console.log($(this).parent().children('ul'));
+	    	var li = createImageInput({url: '', homepage: false});
+	    	$(this).parent().children('ul').append(li);
+	    });	    
+	    // Images
+	    $('.project li .del-bt').off('click').on('click', function() {
+	    	$(this).parent().remove();
+	    });	    
 	};	
 
 	attachEvents();
