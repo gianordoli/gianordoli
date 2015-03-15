@@ -7,6 +7,10 @@ define(function (require) {
 	var loadProjects = function(results){
 		console.log(results);
 
+		var projectsList = $('<div id="projects-list" class="container"></div>');
+		
+		var divTitle = $('<h1>Projects</h1>');
+
 		var ui = $('<ul class="sortable"></ul>');
 		$(ui).sortable({ update: function(event, ui){
 				updateProjectsOrder(ui);
@@ -36,10 +40,13 @@ define(function (require) {
 			$(ui).append(li);
 		});
 
-		var update = $('<button id="update-bt">Update</button>');
+		var update = $('<button id="update-all-bt">Update</button>');
 
-		$('#projects-list').append(ui)
-						   .append(update);
+		$(projectsList).append(divTitle)
+				  	   .append(ui)
+				  	   .append(update);
+
+		$('body').append(projectsList);
 
 		attachEvents();
 	}
@@ -89,18 +96,67 @@ define(function (require) {
 		console.log(projects);
 
         // Ajax call
-        $.post('/updateall', {
+        $.post('/update-all', {
         	'projects[]': projects
         }, function(response) {
-            console.log(response.error);
-            // if(response.error != undefined){
-            // 	console.log(response.error);
-            // }else{
-            // 	console.log('Loading projects.');
-            // 	loadProjects(response.results);
-            // }
+            console.log(response);
         });			
 	}
+
+	var expandProject = function(projectId){
+		console.log(projectId);
+        // Ajax call
+        $.post('/expand-project', {
+        	id: projectId
+        }, function(response) {
+            console.log(response);
+            var projectContainer = $('<div id="'+response.objectId+'" class="container"></div>');
+            
+            var title = $('<input type="text" class="title-input">');
+            $(title).val(response.title);
+            var desc = $('<textarea rows="20" cols="50" class="content-textarea">'+response.content+'</textarea>');
+			var cancel = $('<button id="cancel-bt">Cancel</button>');
+			var update = $('<button id="update-bt">Update</button>');
+
+            $(projectContainer).append(title)
+            				   .append('<br>')
+            				   .append(desc)
+            				   .append('<br>')
+            				   .append(cancel)
+            				   .append(update);
+
+            $('body').append(projectContainer);
+
+            attachEvents();
+        });
+	}
+
+	var updateProject = function(parent){
+		// console.log(parent);
+		var id = $(parent).attr('id');
+		var title = $(parent).children('.title-input').val();
+		var content = $(parent).children('.content-textarea').val();
+		var obj = {
+			id: id,
+			title: title,
+			content: content
+		}
+		console.log(obj);
+		// obj = JSON.stringify(obj);
+
+        // Ajax call
+        $.post('/update-project', obj, function(response) {
+            console.log(response);
+            // remove this container
+            $(parent).remove();
+            // update project list at the top of the page
+            $('#projects-list').find('li#'+id).children('span').html(title);
+        });	
+	}
+
+	var collapseProject = function(parent){
+		$(parent.remove());
+	}	
 	
 	var attachEvents = function() {
 	    console.log('Attaching Events');
@@ -110,14 +166,25 @@ define(function (require) {
 	    	login();
 	    });
 
-	    /*----- PROJECTS -----*/
-	    $('#update-bt').off('click').on('click', function() {
+	    /*----- PROJECTS LIST -----*/
+	    $('#update-all-bt').off('click').on('click', function() {
 	    	updateAllProjects();
 	    });
 	    $('.edit-bt').off('click').on('click', function() {
+	    	// console.log($(this).parent());
+	    	expandProject($(this).parent().attr('id'));
 	    });
 	    $('.del-bt').off('click').on('click', function() {
 	    });
+
+	    /*----- PROJECTS DETAIL -----*/
+	    $('#update-bt').off('click').on('click', function() {
+	    	// console.log($(this).parent().attr('id'));
+	    	updateProject($(this).parent());
+	    });	    
+	    $('#cancel-bt').off('click').on('click', function() {
+	    	collapseProject($(this).parent());
+	    });		    
 	};	
 
 	attachEvents();

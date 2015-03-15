@@ -4,25 +4,46 @@ body{
 	padding: 10px;
 }
 
+div.container{
+	/*border: 1px solid black;*/
+	border-color: black;
+	border-style: solid;
+	border-width: 1px 0;
+	margin: 10px 0;
+	padding: 10px 0;
+}
+
+h1{
+	font-size: 21px;
+	font-weight: normal;
+}
+
+button,
+input,
+textarea,
+span{
+	margin: 2px 5px;
+}
+
+input[type=text],
+input[type=password],
+textarea{
+	font-size: 13px;
+}
+
+button{
+	font-size: 11px;
+	height: 20px;
+	width: 50px;
+}
+
 #projects-list ul{
 	list-style-type: none;
 	padding: 0;
 }
 
-#projects-list button,
-#projects-list input,
-#projects-list span{
-	margin: 0 5px;
-}
-
 #projects-list input[type=text]{
 	width: 30px;
-}
-
-#projects-list button{
-	font-size: 11px;
-	height: 20px;
-	width: 50px;
 }
 
 #projects-list span{

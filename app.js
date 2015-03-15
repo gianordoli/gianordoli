@@ -66,7 +66,19 @@ app.post('/login', function(req, res) {
       // if(response.results.length > 0 && response.results[0].password == req.body.password){
         console.log('Logged in.');
         logged = true;
-        loadProjects(res);
+
+        var projects;
+        parse.find('projects', {}, function (err, response) {
+            console.log(response);
+            
+            // Sorting the projects
+            response.results = _.sortBy(response.results, function(obj){
+                return obj.order;
+            });
+            console.log(response);
+            res.json(response);
+        }); 
+
       // }else{
       //   var msg = 'User/login not found.';
       //   console.log(msg);
@@ -77,7 +89,7 @@ app.post('/login', function(req, res) {
     });    
 });
 
-app.post('/updateall', function(req, res) {
+app.post('/update-all', function(req, res) {
     console.log('request:');
     console.log(req.body);
     var projects = req.body['projects[]'];
@@ -100,19 +112,30 @@ app.post('/updateall', function(req, res) {
     });
 });
 
-function loadProjects(res){
-    var projects;
-    parse.find('projects', {}, function (err, response) {
-        console.log(response);
-        
-        // Sorting the projects
-        response.results = _.sortBy(response.results, function(obj){
-            return obj.order;
-        });
+app.post('/expand-project', function(req, res) {
+    console.log('request:');
+    console.log(req.body);
+    console.log(req.body.id);
+
+    parse.find('projects', req.body.id, function (err, response) {
         console.log(response);
         res.json(response);
-    });   
-}
+    }); 
+});
+
+app.post('/update-project', function(req, res) {
+    console.log('request:');
+    console.log(req.body);
+    console.log(req.body.id);
+
+    parse.update('projects', req.body.id, {
+        title: req.body.title,
+        content: req.body.content
+    }, function (err, response) {
+        console.log(response);
+        res.json(response);
+    }); 
+});
 
 // // Create a project
 // app.post('/project', function(req, res) {
