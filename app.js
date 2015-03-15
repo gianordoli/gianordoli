@@ -46,12 +46,46 @@ app.use('/', express.static(__dirname + '/public'));
 /*----- PUBLIC -----*/
 app.post('/start', function(req, res) {
 
-	var images = fs.readdirSync('public/img');
-	console.log(images);
+	// var images = fs.readdirSync('public/img');
+	// console.log(images);
 	
-	res.json({
-		images: images
-	});
+	// res.json({
+	// 	images: images
+	// });
+    
+    parse.findMany('projects', '', function (err, response) {
+        var projects = [];
+        var images = [];
+
+        response.results.forEach(function(item, index, array){
+
+            var project = {
+                title: item.title,
+                projectId: item.objectId
+            }
+            projects.push(project);
+            
+            item.images.forEach(function(obj, i){
+                if(obj.homepage){
+                    var image = {
+                        url: obj.url,
+                        projectId: item.objectId
+                    }
+                    images.push(image);
+                }
+            });
+        });
+        console.log(projects);
+        console.log(projects.length);        
+        console.log(images);
+        console.log(images.length);
+        projects = JSON.stringify(projects);
+        images = JSON.stringify(images);
+        res.json({
+            projects: projects,
+            images: images
+        });
+    });
 });
 
 

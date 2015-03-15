@@ -1,11 +1,63 @@
 /* your style begins here */
 
 #sidebar{
-	
+	position: fixed;
+	left: 0;
+	top: 40px;
+	padding: 10px;
+	width: 200px;
+	height: 100%;
+	text-align: left;
+	/*overflow: hidden;*/
+
+	font-family: Arial;
+	font-weight: normal;	
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 16px;
+	background-color: rgba(255, 255, 255, 0.85);
 }
 
-.item {
-  width: 220px;
+#container{
+	left: 200px;
+	width: calc(100% - 200px);
+}
+
+#container .item {
+  width: 360px;
   margin: 10px;
   float: left;
+}
+
+@media screen and (max-width: 800px) {
+
+	* {
+	-webkit-overflow-scrolling: touch;
+	    -moz-overflow-scrolling: touch;
+	      -ms-overflow-scrolling: touch;
+	         -o-overflow-scrolling: touch;
+	               overflow-scrolling: touch;
+	}
+
+	#sidebar{
+		width: 100%,
+		height: auto;
+		position: static;
+	}
+
+	#sidebar ul{
+		display: none;
+	}
+
+	#container{
+		width: 100%;
+		left: 0;
+	}
+
+	#container .item {
+	width: calc(100% - 20px);
+	margin: 10px;
+	float: left;
+	}
+
 }
