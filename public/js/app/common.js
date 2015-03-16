@@ -17,6 +17,7 @@ define(function (require) {
 	            }
 	        });		
 		},
+
 		appendSidebar: function(projects){
 			console.log('Appending projects...');
 			var title = $('<h1><a href="index.html">Gabriel Gianordoli</a></h1>');
@@ -45,6 +46,15 @@ define(function (require) {
 			$('#sidebar').append(title)
 						 .append(projectsNavBar)
 						 .append(infoNavBar);
+		},
+
+		addImagesPath: function(){
+			var path = 'img/';
+			var images = $('img');
+			$.each(images, function(index, item){
+				var originalSrc = $(this).attr('src');
+				$(this).attr('src', path + originalSrc);
+			});
 		}
 	} 
 });

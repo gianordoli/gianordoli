@@ -32,6 +32,7 @@ define(['./common'], function (common) {
 		var projectContainer = $('<div class="project-container"></div>')
 		$(projectContainer).html(project.content);
 		$('#container').append(projectContainer);
+		common.addImagesPath();
 	}
 
 	common.init(function(data){

@@ -13,9 +13,10 @@ define(['./common'], function (common) {
 		console.log('Appending images...');
 		images.forEach(function(item, index, array){
 			console.log(item);
-			var img = $('<div class="item"><a href="projects.html#'+item.projectId+'"><img src="img/'+item.url+'" /></a></div>');
+			var img = $('<div class="item"><a href="projects.html#'+item.projectId+'"><img src="'+item.url+'" /></a></div>');
 			$('#container').append(img);
 		});
+		common.addImagesPath();
 		drawLayout();
 	}
 
