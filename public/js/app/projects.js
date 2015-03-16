@@ -12,8 +12,14 @@ define(['./common'], function (common) {
 	    });
 	};
 
+	var linkMarker = function(projectId){
+		$('#sidebar').find('a').css('color', '#333');
+        $('[name="'+projectId+'"]').css('color', '#F2663F');
+	}
+
 	var loadProject = function(){
 		var projectId = location.hash.substring(1, location.hash.length);
+		linkMarker(projectId);
 		// console.log(projectId);
 		$.post('/public-load-project', {
 			projectId: projectId
@@ -29,9 +35,12 @@ define(['./common'], function (common) {
 	}
 
 	var appendProject = function(project){
+
 		var projectContainer = $('<div class="project-container"></div>')
 		$(projectContainer).html(project.content);
-		$('#container').append(projectContainer);
+		$('#container').html('')
+					   .append(projectContainer);
+		$('body').scrollTop(0);
 		common.addImagesPath();
 	}
 
