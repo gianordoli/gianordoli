@@ -13,7 +13,7 @@ define(['./common'], function (common) {
 	};
 
 	var linkMarker = function(projectId){
-		$('#sidebar').find('a').css('color', '#333');
+		$('#sidebar ul').find('a').css('color', '#333');
         $('[name="'+projectId+'"]').css('color', '#F2663F');
 	}
 

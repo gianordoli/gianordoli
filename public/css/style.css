@@ -94,12 +94,12 @@ html { -webkit-font-smoothing: antialiased; }
 }
 
 #container *{
-	max-width: 665px;
+	max-width: 620px;
 	margin-left: 0;
 }
 
 #container p img{
-	max-width: 940px;
+	max-width: 930px;
 }
 
 @media screen and (max-width: 1200px) {
