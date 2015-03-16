@@ -44,7 +44,7 @@ app.use('/', express.static(__dirname + '/public'));
 /*------------------- ROUTERS -------------------*/
 
 /*----- PUBLIC -----*/
-app.post('/start', function(req, res) {
+app.post('/public-start', function(req, res) {
 
 	// var images = fs.readdirSync('public/img');
 	// console.log(images);
@@ -93,7 +93,7 @@ app.post('/start', function(req, res) {
 var logged;
 
 // Log in
-app.post('/login', function(req, res) {
+app.post('/admin-login', function(req, res) {
     console.log('request:');
     console.log(req.body);
     
@@ -131,11 +131,11 @@ var loadProjects = function(res){
     }); 
 }
 
-app.post('/load-projects', function(req, res) {
+app.post('/admin-load-projects', function(req, res) {
     loadProjects(res);
 });
 
-app.post('/update-all', function(req, res) {
+app.post('/admin-update-all', function(req, res) {
     console.log('request:');
     console.log(req.body);
     var projects = req.body['projects[]'];
@@ -158,7 +158,7 @@ app.post('/update-all', function(req, res) {
     });
 });
 
-app.post('/expand-project', function(req, res) {
+app.post('/admin-expand-project', function(req, res) {
     console.log('request:');
     console.log(req.body);
     console.log(req.body.id);
@@ -169,7 +169,7 @@ app.post('/expand-project', function(req, res) {
     }); 
 });
 
-app.post('/create-project', function(req, res) {
+app.post('/admin-create-project', function(req, res) {
 
     console.log('request:');
     console.log(req.body);
@@ -193,7 +193,7 @@ app.post('/create-project', function(req, res) {
     });
 });
 
-app.post('/update-project', function(req, res) {
+app.post('/admin-update-project', function(req, res) {
     console.log('request:');
     console.log(req.body);
     var project = JSON.parse(req.body.data);
@@ -209,7 +209,7 @@ app.post('/update-project', function(req, res) {
     }); 
 });
 
-app.post('/delete-project', function(req, res) {
+app.post('/admin-delete-project', function(req, res) {
     console.log('request:');
     console.log(req.body);
     console.log(req.body.id);
@@ -219,33 +219,6 @@ app.post('/delete-project', function(req, res) {
         res.json(response);
     }); 
 });
-
-// // Create a project
-// app.post('/project', function(req, res) {
-//     console.log(req.body);
-//     // First we have to read a user's file and parse it in a proper array format
-//     fs.readFile(PATH_TO_JSON_FILE + '/' + req.body.user, 'utf8', function(err, data) {
-//         data = JSON.parse(data);
-//         // Prepend a new json object into `data` array using `.unshift`
-//         data.unshift({
-//             id: new Date().getTime(),
-//             title: req.body.p_title,
-//             deadline: req.body.p_deadline,
-//             done: false
-//         });
-//         // Re-write the file
-//         fs.writeFile(PATH_TO_JSON_FILE + '/' + req.body.user, JSON.stringify(data), function(err) {
-//             if (err) {
-//                 console.log(err);
-//             } else {
-//                 console.log("The file was saved!");
-//                 res.json({
-//                     status: 'OK'
-//                 });
-//             }
-//         });
-//     });
-// });
 
 
 /*----------------- INIT SERVER -----------------*/

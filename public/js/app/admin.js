@@ -6,7 +6,7 @@ define(function (require) {
 
 	var login = function(){
         // Ajax call
-        $.post('/login', {
+        $.post('/admin-login', {
             login: $('#login').val(),
             password: $('#password').val()
         }, function(response) {
@@ -43,7 +43,7 @@ define(function (require) {
 		console.log(projects);
 
         // Ajax call
-        $.post('/update-all', {
+        $.post('/admin-update-all', {
         	'projects[]': projects
         }, function(response) {
             console.log(response);
@@ -51,7 +51,7 @@ define(function (require) {
 	}
 
 	var loadProjectsParse = function(){
-        $.post('/load-projects', {}, function(response) {
+        $.post('/admin-load-projects', {}, function(response) {
             console.log(response);
             appendProjects(response.results);
         });	
@@ -84,7 +84,7 @@ define(function (require) {
 		obj = JSON.stringify(obj);
 
         // Ajax call
-        var route = (create) ? ('/create-project') : ('/update-project');
+        var route = (create) ? ('/admin-create-project') : ('/admin-update-project');
         $.post(route, {
         	data: obj
         }, function(response) {
@@ -100,7 +100,7 @@ define(function (require) {
 		console.log(projectId);
 
         // Ajax call
-        $.post('/delete-project', {
+        $.post('/admin-delete-project', {
         	id: projectId
         }, function(response) {
         	console.log(response);
@@ -176,7 +176,7 @@ define(function (require) {
 	var expandProject = function(projectId){
 		console.log(projectId);
         // Ajax call
-        $.post('/expand-project', {
+        $.post('/admin-expand-project', {
         	id: projectId
         }, function(response) {
             console.log(response);

@@ -17,32 +17,38 @@ require(['config'], function () {
 		
 		console.log('Loading dependencies for '+filename);
 		
-		// index
-		if(filename == 'index'){
-
-			require(['Masonry'], function(Masonry) {
-				console.log('Loaded Masonry.');
-			    // require jquery-bridget, it's included in masonry.pkgd.js
-			    require(['jquery-bridget/jquery.bridget'], function() {
-			    	console.log('Loaded jquery.bridget.');
-					// make Masonry a jQuery plugin
-					$.bridget( 'masonry', Masonry );
-					// now you can use $().masonry()
-					// Require imagesLoaded
-					require(['imagesloaded']);
-					console.log('Loaded imagesLoaded.');
-
-					loadMainScript(filename);
-			    });
-			});
-
-		}else if(filename == 'admin'){
+		// ADMIN
+		if(filename == 'admin'){
 			require(['jquery-ui']);
 			loadMainScript(filename);
-			
-		// all
+		
+		// PUBLIC
 		}else{
-			loadMainScript(filename);
+
+			// INDEX
+			if(filename == 'index'){
+
+				// masonry
+				require(['Masonry'], function(Masonry) {
+					console.log('Loaded Masonry.');
+				    // require jquery-bridget, it's included in masonry.pkgd.js
+				    require(['jquery-bridget/jquery.bridget'], function() {
+				    	console.log('Loaded jquery.bridget.');
+						// make Masonry a jQuery plugin
+						$.bridget( 'masonry', Masonry );
+						// now you can use $().masonry()
+						// Require imagesLoaded
+						require(['imagesloaded']);
+						console.log('Loaded imagesLoaded.');
+
+						loadMainScript(filename);
+				    });
+				});
+				
+			// ALL
+			}else{
+				loadMainScript(filename);
+			}
 		}
 	});
 
