@@ -3,7 +3,8 @@ var		express = require('express'),
 	 bodyParser = require('body-parser')
 	 		 fs = require('fs');
           Parse = require('node-parse-api').Parse,
-              _ = require('underscore');
+              _ = require('underscore'),
+       markdown = require('markdown').markdown;
 
 var readData = fs.readFileSync('keys.txt');
 readData = readData.toString(); // convert to string
@@ -58,13 +59,17 @@ app.post('/public-start', function(req, res) {
         var images = [];
 
         response.results.forEach(function(item, index, array){
-
-            var project = {
-                title: item.title,
-                projectId: item.objectId
-            }
-            projects.push(project);
             
+            // Filter by published projects
+            if(item.publish){
+                var project = {
+                    title: item.title,
+                    projectId: item.objectId
+                }
+                projects.push(project);
+            }
+
+            // Filter by images with homepage == true
             item.images.forEach(function(obj, i){
                 if(obj.homepage){
                     var image = {
@@ -92,9 +97,12 @@ app.post('/public-load-project', function(req, res) {
     console.log(req.body.projectId);
     parse.find('projects', req.body.projectId, function (err, response) {
         console.log(response);
+
         res.json({
-            project: response
-            // html: html
+            project: {
+                title: response.title,
+                content: markdown.toHTML(response.content)
+            }
         });
     });
 });

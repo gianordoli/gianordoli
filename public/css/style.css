@@ -1,35 +1,85 @@
-/* your style begins here */
+/*---------- GLOBAL ----------*/
+* {
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */;
+}
+
+/* www.aestheticallyloyal.com/public/optimize-legibility/ */ 
+h1,h2,h3,h4,h5,h6 {
+	text-rendering: optimizeLegibility;
+	font-weight: normal;
+}
+
+/* #444 looks better than black: twitter.com/H_FJ/statuses/11800719859 */ 
+body, select, input, textarea {	color: #333 }
+
+/* maxvoltar.com/archive/-webkit-font-smoothing */
+html { -webkit-font-smoothing: antialiased; }
+
+/*---------- COMMON ----------*/
 
 #sidebar{
 	position: fixed;
 	left: 0;
-	top: 40px;
-	padding: 10px;
+	padding: 0 10px;
 	width: 200px;
 	height: 100%;
 	text-align: left;
 	/*overflow: hidden;*/
+}
 
-	font-family: Arial;
-	font-weight: normal;	
+#sidebar h1 { font-size: 32px; }
+#sidebar h2 {
 	font-size: 13px;
-	font-weight: normal;
-	line-height: 16px;
-	background-color: rgba(255, 255, 255, 0.85);
+	border-bottom: 1px solid #333;
+	padding: 5px 0;
+	margin: 5px 0;
+}
+#sidebar p, ul{
+	list-style-type: none;	
+	font-size: 13px;
+	line-height: 18px;
+	margin: 0;
+	padding: 0;	
 }
 
 #container{
+	position: absolute;
 	left: 200px;
 	width: calc(100% - 200px);
 }
 
+#container h1 { font-size: 23px; line-height: 1; }
+#container h2 { font-size: 20px; }
+#container h3 { font-size: 15px; line-height: 20px; padding-bottom: 5px; }
+#container h4 { font-size: 11px; line-height: 18px;  }
+#container h5 { font-size: 10px; }
+#container h6 { font-size: 9px; line-height: 14px; }
+#container p, ul  { font-size: 13px; line-height: 18px; }
+#container hr  { border-width: 0; height: 1px; background-color: #333 }
+
+/*---------- INDEX ----------*/
 #container .item {
-  width: 360px;
+  width: calc((100% - 60px)/3);	
+  max-width: 360px;
   margin: 10px;
   float: left;
 }
 
-@media screen and (max-width: 800px) {
+#container .item img{
+	width: 100%;
+}
+
+/*-------- PROJECTS ---------*/
+#container .project-container{
+	width: 665px;
+	margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+}
+
+@media screen and (max-width: 885px) {
 
 	* {
 	-webkit-overflow-scrolling: touch;
@@ -45,19 +95,39 @@
 		position: static;
 	}
 
-	#sidebar ul{
-		display: none;
-	}
-
 	#container{
+		position: static;		
 		width: 100%;
 		left: 0;
 	}
 
+	#container .project-container{
+		max-width: 100%;
+		margin-left: 0;
+	}	
+
 	#container .item {
-	width: calc(100% - 20px);
-	margin: 10px;
-	float: left;
+		width: calc(50% - 20px);
+	}		
+}
+
+@media screen and (max-width: 660px) {
+
+	#sidebar #projects-nav-bar{
+		display: none;
 	}
 
+	#container .item {
+		width: calc(100% - 20px);
+		max-width: none;
+		margin: 5px 0;
+	}	
+
+	#container{
+		padding: 10px;
+	}
+
+	#container .project-container{
+		padding: 0;
+	}		
 }

@@ -23,14 +23,15 @@ define(['./common'], function (common) {
             	throw response.error	
             }else{
 				console.log(response);
-				appendProject(response);
+				appendProject(response.project);
             }
         });			
 	}
 
-	var appendProject = function(response){
-		console.log(response.project);
-		// $('#container').html();
+	var appendProject = function(project){
+		var projectContainer = $('<div class="project-container"></div>')
+		$(projectContainer).html(project.content);
+		$('#container').append(projectContainer);
 	}
 
 	common.init(function(data){
