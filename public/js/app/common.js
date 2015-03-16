@@ -22,7 +22,7 @@ define(function (require) {
 			var ul = $('<ul></ul>');
 			projects.forEach(function(item, index, array){
 				// console.log(item);
-				var li = $('<li id="'+item.projectId+'">'+item.title+'</li>');
+				var li = $('<li id="'+item.projectId+'"><a href="projects.html#'+item.projectId+'">'+item.title+'</li>');
 				$(ul).append(li);
 			});
 			$('#sidebar').append(ul);

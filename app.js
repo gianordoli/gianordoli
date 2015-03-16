@@ -88,6 +88,17 @@ app.post('/public-start', function(req, res) {
     });
 });
 
+app.post('/public-load-project', function(req, res) {   
+    console.log(req.body.projectId);
+    parse.find('projects', req.body.projectId, function (err, response) {
+        console.log(response);
+        res.json({
+            project: response
+            // html: html
+        });
+    });
+});
+
 
 /*----- ADMIN -----*/
 var logged;
