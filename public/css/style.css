@@ -119,9 +119,15 @@ html { -webkit-font-smoothing: antialiased; }
 	}
 
 	#sidebar{
-		width: 100%,
+		width: 100%;
 		height: auto;
 		position: static;
+		/*text-align: center;*/
+	}
+
+	#sidebar li{
+		display: inline-block;
+		margin-right: 10px;
 	}
 
 	#container{
@@ -142,9 +148,9 @@ html { -webkit-font-smoothing: antialiased; }
 
 @media screen and (max-width: 660px) {
 
-	#sidebar #projects-nav-bar{
+/*	#sidebar #projects-nav-bar{
 		display: none;
-	}
+	}*/
 
 	#container{
 		padding: 10px;
