@@ -29,7 +29,7 @@ require(['config'], function () {
 			if(filename == 'index'){
 
 				// masonry
-				require(['Masonry'], function(Masonry) {
+				require(['masonry'], function(Masonry) {
 					console.log('Loaded Masonry.');
 				    // require jquery-bridget, it's included in masonry.pkgd.js
 				    require(['jquery-bridget/jquery.bridget'], function() {
