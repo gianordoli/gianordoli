@@ -90,6 +90,8 @@ app.post('/public-load-project', function(req, res) {
     console.log(req.body.projectId);
     parse.find('projects', req.body.projectId, function (err, response) {
         console.log(response);
+        
+        console.log(markdown.toHTML(response.content));
 
         res.json({
             project: {
@@ -99,7 +101,6 @@ app.post('/public-load-project', function(req, res) {
         });
     });
 });
-
 
 /*----- ADMIN -----*/
 // Log in

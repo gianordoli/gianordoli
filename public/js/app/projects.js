@@ -35,6 +35,8 @@ define(['./common'], function (common) {
 	}
 
 	var appendProject = function(project){
+		// Parse the iFrame html (for Youtube and Vimeo videos)
+		project.content = parseIframe(project.content);
 
 		var projectContainer = $('<div class="project-container"></div>')
 		$(projectContainer).html(project.content);
@@ -42,6 +44,14 @@ define(['./common'], function (common) {
 					   .append(projectContainer);
 		$('body').scrollTop(0);
 		common.addImagesPath();
+	}
+
+	var parseIframe = function(content){
+		var init = content.indexOf('&lt;iframe')
+		var end = content.indexOf('iframe&gt;') + 10;
+		var stringIframe = content.substring(init, end);
+		var parsedIframe = $('<p></p>').html(stringIframe).text();
+		return content.replace(stringIframe, parsedIframe);		
 	}
 
 	common.init(function(data){
