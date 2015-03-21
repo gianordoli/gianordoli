@@ -46,13 +46,6 @@ app.use('/', express.static(__dirname + '/public'));
 
 /*----- PUBLIC -----*/
 app.post('/public-start', function(req, res) {
-
-	// var images = fs.readdirSync('public/img');
-	// console.log(images);
-	
-	// res.json({
-	// 	images: images
-	// });
     
     parse.findMany('projects', '', function (err, response) {
         var projects = [];
@@ -109,10 +102,14 @@ app.post('/public-load-project', function(req, res) {
 
 
 /*----- ADMIN -----*/
-var logged;
-
 // Log in
-app.post('/admin-login', function(req, res) {
+app.post('/admin-start', function(req, res) {
+    login(req, res, function(req, res){
+        loadProjects(res);
+    });
+});
+
+var login = function(req, res, callback){
     console.log('request:');
     console.log(req.body);
     
@@ -120,21 +117,19 @@ app.post('/admin-login', function(req, res) {
       console.log('Database response:');
       console.log(response.results);
       
-      // if(response.results.length > 0 && response.results[0].password == req.body.password){
+      if(response.results.length > 0 && response.results[0].password == req.body.password){
         console.log('Logged in.');
-        logged = true;
+        callback(req, res);
 
-        loadProjects(res);
-
-      // }else{
-      //   var msg = 'User/login not found.';
-      //   console.log(msg);
-      //   res.json({
-      //       error: msg
-      //   });
-      // }
-    });    
-});
+      }else{
+        var msg = 'User/login not found.';
+        console.log(msg);
+        res.json({
+            error: msg
+        });
+      }
+    });  
+}
 
 var loadProjects = function(res){
     var projects;
@@ -151,92 +146,103 @@ var loadProjects = function(res){
 }
 
 app.post('/admin-load-projects', function(req, res) {
-    loadProjects(res);
+    login(req, res, function(req, res){
+        loadProjects(res);
+    });
 });
 
 app.post('/admin-update-all', function(req, res) {
-    console.log('request:');
-    console.log(req.body);
-    var projects = req.body['projects[]'];
-    console.log(projects);
-    console.log(projects.length);
+    login(req, res, function(req, res){
+        console.log('request:');
+        console.log(req.body);
+        var projects = req.body['projects[]'];
+        console.log(projects);
+        console.log(projects.length);
 
-    var error = false;
+        var error = false;
 
-    projects.forEach(function(item, index, array){
-        // console.log(item);
-        item = JSON.parse(item);
-        console.log(item.id + ',' + item.order + ', ' + item.publish);
-        // console.log(typeof item.public);
-        parse.update('projects', item.id, {
-            order: parseInt(item.order),
-            publish: item.publish
-        }, function (err, response) {
-            console.log(response);
-        }); 
+        projects.forEach(function(item, index, array){
+            // console.log(item);
+            item = JSON.parse(item);
+            console.log(item.id + ',' + item.order + ', ' + item.publish);
+            // console.log(typeof item.public);
+            parse.update('projects', item.id, {
+                order: parseInt(item.order),
+                publish: item.publish
+            }, function (err, response) {
+                console.log(response);
+            }); 
+        });
     });
 });
 
 app.post('/admin-expand-project', function(req, res) {
-    console.log('request:');
-    console.log(req.body);
-    console.log(req.body.id);
+    login(req, res, function(req, res){
+        console.log('request:');
+        console.log(req.body);
+        console.log(req.body.id);
 
-    parse.find('projects', req.body.id, function (err, response) {
-        console.log(response);
-        res.json(response);
-    }); 
+        parse.find('projects', req.body.id, function (err, response) {
+            console.log(response);
+            res.json(response);
+        }); 
+    });
 });
 
 app.post('/admin-create-project', function(req, res) {
+    login(req, res, function(req, res){
+        console.log('request:');
+        console.log(req.body);
+        var project = JSON.parse(req.body.data);
+        console.log(project);
 
-    console.log('request:');
-    console.log(req.body);
-    var project = JSON.parse(req.body.data);
-    console.log(project);
+        var lastIndex = '';
+        parse.findMany('projects', '', function (err, response) {
 
-    var lastIndex = '';
-    parse.findMany('projects', '', function (err, response) {
+            lastIndex = response.results.length;
 
-        lastIndex = response.results.length;
-
-        parse.insert('projects', {
-            title: project.title,
-            content: project.content,
-            images: project.images,
-            order: lastIndex
-        }, function (err, response) {
-            console.log(response);
-            res.json(response);
-        });         
+            parse.insert('projects', {
+                title: project.title,
+                content: project.content,
+                images: project.images,
+                order: lastIndex
+            }, function (err, response) {
+                console.log(response);
+                res.json(response);
+            });         
+        });
     });
 });
 
 app.post('/admin-update-project', function(req, res) {
-    console.log('request:');
-    console.log(req.body);
-    var project = JSON.parse(req.body.data);
-    console.log(project);
+    login(req, res, function(req, res){    
+        console.log('request:');
+        console.log(req.body);
+        var project = JSON.parse(req.body.data);
+        console.log(project);
 
-    parse.update('projects', project.id, {
-        title: project.title,
-        content: project.content,
-        images: project.images
-    }, function (err, response) {
-        console.log(response);
-        res.json(response);
-    }); 
+        parse.update('projects', project.id, {
+            title: project.title,
+            content: project.content,
+            images: project.images
+        }, function (err, response) {
+            console.log(response);
+            res.json(response);
+        });
+    });
 });
 
 app.post('/admin-delete-project', function(req, res) {
-    console.log('request:');
-    console.log(req.body);
-    console.log(req.body.id);
+    login(req, res, function(req, res){
+        console.log('request:');
+        console.log(req.body);
+        console.log(req.body.id);
 
-    parse.delete('projects', req.body.id, function (err, response) {
-        console.log(response);
-        res.json(response);
-    }); 
+        parse.delete('projects', req.body.id, function (err, response) {
+            console.log(response);
+            res.json(response);
+        }); 
+    });
 });
 
 

@@ -5,10 +5,14 @@ define(function (require) {
 	console.log('Loaded admin.js');
 
 	var login = function(){
+    	
+    	localStorage['usr'] = $('#login-input').val();
+    	localStorage['pwd'] = $('#password-input').val();
+
         // Ajax call
-        $.post('/admin-login', {
-            login: $('#login').val(),
-            password: $('#password').val()
+        $.post('/admin-start', {
+            login: localStorage['usr'],
+            password: localStorage['pwd']
         }, function(response) {
             console.log(response);
             if(response.error != undefined){
@@ -32,7 +36,7 @@ define(function (require) {
 			var project = {
 				id: $(value).attr('id'),
 				publish: $(value).children('.publish-input').prop('checked'),
-				order: $(value).children('.order-input').val()
+				order: $(value).children('.order-input').val()				
 			};
 			/*----- IMPORTANT! -----*/
 			// You can't send JSON objects through AJAX calls!
@@ -44,14 +48,19 @@ define(function (require) {
 
         // Ajax call
         $.post('/admin-update-all', {
-        	'projects[]': projects
+        	'projects[]': projects,
+            login: localStorage['usr'],
+            password: localStorage['pwd']        	
         }, function(response) {
             console.log(response);
         });			
 	}
 
 	var loadProjectsParse = function(){
-        $.post('/admin-load-projects', {}, function(response) {
+        $.post('/admin-load-projects', {
+            login: localStorage['usr'],
+            password: localStorage['pwd']        	
+        }, function(response) {
             console.log(response);
             appendProjects(response.results);
         });	
@@ -86,7 +95,9 @@ define(function (require) {
         // Ajax call
         var route = (create) ? ('/admin-create-project') : ('/admin-update-project');
         $.post(route, {
-        	data: obj
+        	data: obj,
+            login: localStorage['usr'],
+            password: localStorage['pwd']        	
         }, function(response) {
             console.log(response);
             // remove this container
@@ -101,7 +112,9 @@ define(function (require) {
 
         // Ajax call
         $.post('/admin-delete-project', {
-        	id: projectId
+        	id: projectId,
+            login: localStorage['usr'],
+            password: localStorage['pwd']        	
         }, function(response) {
         	console.log(response);
         	$('#projects-list').find('li#'+projectId).remove();
@@ -109,6 +122,19 @@ define(function (require) {
         	updateProjectsOrderAndPublishParse();
 		});
 	}
+
+	var expandProjectParse = function(projectId){
+		console.log(projectId);
+        // Ajax call
+        $.post('/admin-expand-project', {
+        	id: projectId,
+            login: localStorage['usr'],
+            password: localStorage['pwd']           	
+        }, function(response) {
+            console.log(response);
+            expandProject(response);
+        });
+	}	
 	/*---------------------------------------------*/
 
 
@@ -173,41 +199,34 @@ define(function (require) {
 		});
 	}
 
-	var expandProject = function(projectId){
-		console.log(projectId);
-        // Ajax call
-        $.post('/admin-expand-project', {
-        	id: projectId
-        }, function(response) {
-            console.log(response);
-            var projectContainer = $('<div id="'+response.objectId+'" class="container project"></div>');
-            
-            var title = $('<input type="text" class="title-input">');
-            $(title).val(response.title);
-            var desc = $('<textarea rows="20" cols="50" class="content-textarea">'+response.content+'</textarea>');
-            var imagesUl = $('<ul></ul>');
+	var expandProject = function(response){
+        var projectContainer = $('<div id="'+response.objectId+'" class="container project"></div>');
+        
+        var title = $('<input type="text" class="title-input">');
+        $(title).val(response.title);
+        var desc = $('<textarea rows="20" cols="50" class="content-textarea">'+response.content+'</textarea>');
+        var imagesUl = $('<ul></ul>');
 
-            response.images.forEach(function(item, index, array){
-            	var li = createImageInput(item);
-            	$(imagesUl).append(li);
-            });
-			var addImage = $('<button class="add-image-bt">Add Images</button>');
-			var cancel = $('<button class="cancel-bt">Cancel</button>');
-			var update = $('<button class="update-bt">Update</button>');
-
-            $(projectContainer).append(title)
-            				   .append('<br>')
-            				   .append(desc)
-            				   .append('<br>')
-            				   .append(imagesUl)
-            				   .append(addImage)
-            				   .append(cancel)
-            				   .append(update);
-
-            $('body').append(projectContainer);
-
-            attachEvents();
+        response.images.forEach(function(item, index, array){
+        	var li = createImageInput(item);
+        	$(imagesUl).append(li);
         });
+		var addImage = $('<button class="add-image-bt">Add Images</button>');
+		var cancel = $('<button class="cancel-bt">Cancel</button>');
+		var update = $('<button class="update-bt">Update</button>');
+
+        $(projectContainer).append(title)
+        				   .append('<br>')
+        				   .append(desc)
+        				   .append('<br>')
+        				   .append(imagesUl)
+        				   .append(addImage)
+        				   .append(cancel)
+        				   .append(update);
+
+        $('body').append(projectContainer);
+
+        attachEvents();
 	}
 
 	var createProject = function(){
@@ -259,6 +278,14 @@ define(function (require) {
 	var attachEvents = function() {
 	    console.log('Attaching Events');
 
+	    // Log off
+		window.onbeforeunload = function() {
+			// Clean up login and password
+			localStorage.removeItem('usr');
+			localStorage.removeItem('pwd');
+			return '';
+		};	    
+
 	    // register page
 	    $('#btn-login').off('click').on('click', function() {
 	    	login();
@@ -275,7 +302,7 @@ define(function (require) {
 
 	    $('#projects-list .edit-bt').off('click').on('click', function() {
 	    	// console.log($(this).parent());
-	    	expandProject($(this).parent().attr('id'));
+	    	expandProjectParse($(this).parent().attr('id'));
 	    });
 
 	    $('#projects-list .add-project-bt').off('click').on('click', function() {

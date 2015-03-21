@@ -7,6 +7,8 @@ define(function (require) {
 	return {
 		init: function(callback){
 			console.log('Initializing...');
+
+			// Load projects
 			$.post('/public-start', {}, function(response) {
 	            // console.log(response);
 	            if(response.error){

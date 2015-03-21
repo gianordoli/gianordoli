@@ -17,6 +17,8 @@ body, select, input, textarea {	color: #333 }
 /* maxvoltar.com/archive/-webkit-font-smoothing */
 html { -webkit-font-smoothing: antialiased; }
 
+a:link, a:visited, a:active, a:hover{ outline: 0; }
+
 /*---------- COMMON ----------*/
 
 #sidebar{
