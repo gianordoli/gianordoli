@@ -47,11 +47,16 @@ define(['./common'], function (common) {
 	}
 
 	var parseIframe = function(content){
-		var init = content.indexOf('&lt;iframe')
-		var end = content.indexOf('iframe&gt;') + 10;
-		var stringIframe = content.substring(init, end);
-		var parsedIframe = $('<p></p>').html(stringIframe).text();
-		return content.replace(stringIframe, parsedIframe);		
+		var init = content.indexOf('&lt;iframe');
+		if(init > -1){
+			var end = content.indexOf('iframe&gt;') + 10;
+			var stringIframe = content.substring(init, end);
+			var parsedIframe = $('<p></p>').html(stringIframe).text();
+			var newHtml = '<div class="js-video vimeo widescreen">' + parsedIframe + '</div>';
+			return content.replace(stringIframe, newHtml);			
+		}else{
+			return content;
+		}
 	}
 
 	common.init(function(data){

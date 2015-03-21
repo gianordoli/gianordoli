@@ -53,6 +53,17 @@ define(function (require) {
 		addImagesPath: function(){
 			var path = 'img/';
 			var images = $('img');
+
+			// Current page is...?
+			var url = window.location.pathname;
+			var filename = url.substring(url.lastIndexOf('/')+1, url.lastIndexOf('.'));
+			if(filename == '/') filename = 'index';
+			if(filename == 'index'){
+				path += 'small/';
+			}else{
+				path += 'large/';
+			}
+			console.log(path);
 			$.each(images, function(index, item){
 				var originalSrc = $(this).attr('src');
 				$(this).attr('src', path + originalSrc);

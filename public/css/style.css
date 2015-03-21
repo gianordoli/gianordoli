@@ -95,18 +95,26 @@ a:link, a:visited, a:active, a:hover{ outline: 0; }
     padding: 10px;
 }
 
-#container *{
+#container .project-container p,
+#container .project-container h1,
+#container .project-container h2,
+#container .project-container h3,
+#container .project-container h4,
+#container .project-container h5,
+#container .project-container h6,
+#container .project-container ul,
+#container .project-container hr{
 	max-width: 620px;
 	margin-left: 0;
 }
 
-#container p img{
-	max-width: 930px;
+#container .project-container p img{
+	max-width: 940px;
 }
 
 /* Responsive video container:
 https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/ */
-#container .js-video {
+#container .project-container .js-video {
   height: 0;
   padding-top: 25px;
   padding-bottom: 67.5%;
@@ -115,7 +123,7 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
   overflow: hidden;
 }
  
-#container .js-video.widescreen {
+#container .project-container .js-video.widescreen {
   padding-bottom: 56.34%;
 }
  
@@ -123,7 +131,10 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
   padding-top: 0;
 }
 
-.js-video embed, .js-video iframe, .js-video object, .js-video video {
+#container .project-container .js-video embed,
+#container .project-container .js-video iframe,
+#container .project-container .js-video object,
+#container .project-container .js-video video {
   top: 0;
   left: 0;
   width: 100%;

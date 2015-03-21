@@ -57,7 +57,8 @@ app.post('/public-start', function(req, res) {
             if(item.publish){
                 var project = {
                     title: item.title,
-                    projectId: item.objectId
+                    projectId: item.objectId,
+                    order: item.order
                 }
                 projects.push(project);
             }
@@ -67,7 +68,8 @@ app.post('/public-start', function(req, res) {
                 if(obj.homepage){
                     var image = {
                         url: obj.url,
-                        projectId: item.objectId
+                        projectId: item.objectId,
+                        order: item.order
                     }
                     images.push(image);
                 }
@@ -77,6 +79,15 @@ app.post('/public-start', function(req, res) {
         console.log(projects.length);        
         console.log(images);
         console.log(images.length);
+
+        projects = _.sortBy(projects, function(obj){
+            return obj.order;
+        });
+
+        images = _.sortBy(images, function(obj){
+            return obj.order;
+        });
+
         projects = JSON.stringify(projects);
         images = JSON.stringify(images);
         res.json({
