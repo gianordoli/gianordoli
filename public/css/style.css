@@ -59,7 +59,7 @@ a:link, a:visited, a:active, a:hover{ outline: 0; }
 	width: calc(100% - 200px);
 }
 
-#container h1 { font-size: 23px; line-height: 1; }
+#container h1 { font-size: 23px; line-height: 1; text-transform: }
 #container h2 { font-size: 20px; }
 #container h3 { font-size: 15px; line-height: 20px; padding-bottom: 5px; }
 #container h4 { font-size: 11px; line-height: 18px;  }
@@ -111,6 +111,7 @@ a:link, a:visited, a:active, a:hover{ outline: 0; }
 
 #container .project-container img{
 	width: 100%;
+	margin-bottom: 20px;
 }
 
 /* Responsive video container:
@@ -159,6 +160,7 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 		height: auto;
 		position: static;
 		text-align: center;
+		padding: 10px;
 	}
 
 	#sidebar li{
