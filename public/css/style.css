@@ -108,8 +108,8 @@ a:link, a:visited, a:active, a:hover{ outline: 0; }
 	margin-left: 0;
 }
 
-#container .project-container p img{
-	max-width: 920px;
+#container .project-container img{
+	width: 100%;
 }
 
 /* Responsive video container:
@@ -143,7 +143,7 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 }
 
 @media screen and (max-width: 1200px) {
-	#container p img{
+	#container .project-container p img{
 		max-width: 100%;
 	}
 }

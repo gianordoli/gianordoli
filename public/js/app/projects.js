@@ -40,24 +40,58 @@ define(['./common'], function (common) {
 
 		var projectContainer = $('<div class="project-container"></div>')
 		$(projectContainer).html(project.content);
+		
+		// Releasing the images form inside the paragraphs
+		var imgP = $(projectContainer).children('p').has('img');
+		$(imgP).replaceWith($(imgP).children());
+
 		$('#container').html('')
 					   .append(projectContainer);
 		$('body').scrollTop(0);
 		common.addImagesPath();
 	}
 
+	// The markdown parser is parsing HTML tags into HTML entities.
+	// This is breaking the iframes used to embed videos.
+	// This function parse the HTML entities back to HTML
 	var parseIframe = function(content){
 		var init = content.indexOf('&lt;iframe');
-		if(init > -1){
-			var end = content.indexOf('iframe&gt;') + 10;
+		var end = content.indexOf('iframe&gt;') + 10;
+		
+		if(init > -1 && end > -1){
+			// Extracting the iFrame
 			var stringIframe = content.substring(init, end);
-			var parsedIframe = $('<p></p>').html(stringIframe).text();
-			var newHtml = '<div class="js-video vimeo widescreen">' + parsedIframe + '</div>';
-			return content.replace(stringIframe, newHtml);			
+
+			// Adding the responsive class
+			var divClass = 'js-video';
+			if(stringIframe.indexOf('vimeo') > -1){
+				divClass += ' vimeo widescreen';
+			}
+
+			// Parsing the iFrame
+			var parsedIframe = '<div class="'+divClass+'">' + decodeEntities(stringIframe) + '</div>';
+			return content.replace(stringIframe, parsedIframe);
 		}else{
 			return content;
 		}
 	}
+
+	var decodeEntities = (function() {
+	  // this prevents any overhead from creating the object each time
+	  var element = document.createElement('div');
+	  function decodeHTMLEntities (str) {
+	    if(str && typeof str === 'string') {
+	      // strip script/html tags
+	      str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
+	      str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+	      element.innerHTML = str;
+	      str = element.textContent;
+	      element.textContent = '';
+	    }
+	    return str;
+	  }
+	  return decodeHTMLEntities;
+	})();
 
 	common.init(function(data){
 		console.log(JSON.parse(data.projects));

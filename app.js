@@ -75,10 +75,10 @@ app.post('/public-start', function(req, res) {
                 }
             });
         });
-        console.log(projects);
-        console.log(projects.length);        
-        console.log(images);
-        console.log(images.length);
+        // console.log(projects);
+        // console.log(projects.length);        
+        // console.log(images);
+        // console.log(images.length);
 
         projects = _.sortBy(projects, function(obj){
             return obj.order;
@@ -98,11 +98,9 @@ app.post('/public-start', function(req, res) {
 });
 
 app.post('/public-load-project', function(req, res) {   
-    console.log(req.body.projectId);
+    // console.log(req.body.projectId);
     parse.find('projects', req.body.projectId, function (err, response) {
-        console.log(response);
-        
-        console.log(markdown.toHTML(response.content));
+        // console.log(response);
 
         res.json({
             project: {
