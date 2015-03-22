@@ -61,19 +61,19 @@ app.post('/public-start', function(req, res) {
                     order: item.order
                 }
                 projects.push(project);
-            }
 
-            // Filter by images with homepage == true
-            item.images.forEach(function(obj, i){
-                if(obj.homepage){
-                    var image = {
-                        url: obj.url,
-                        projectId: item.objectId,
-                        order: item.order
+                // Filter by images with homepage == true
+                item.images.forEach(function(obj, i){
+                    if(obj.homepage){
+                        var image = {
+                            url: obj.url,
+                            projectId: item.objectId,
+                            order: item.order
+                        }
+                        images.push(image);
                     }
-                    images.push(image);
-                }
-            });
+                });                
+            }
         });
         // console.log(projects);
         // console.log(projects.length);        
