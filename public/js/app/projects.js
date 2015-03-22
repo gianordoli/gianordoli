@@ -43,7 +43,9 @@ define(['./common'], function (common) {
 		
 		// Releasing the images form inside the paragraphs
 		var imgP = $(projectContainer).children('p').has('img');
-		$(imgP).replaceWith($(imgP).children());
+		$.each(imgP, function(index, item){
+			$(item).replaceWith($(item).children());
+		});
 
 		$('#container').html('')
 					   .append(projectContainer);

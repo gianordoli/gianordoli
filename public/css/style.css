@@ -24,7 +24,7 @@ a:link, a:visited, a:active, a:hover{ outline: 0; }
 #sidebar{
 	position: fixed;
 	left: 0;
-	padding: 0 10px;
+	padding: 0 10px 0 20px;
 	width: 200px;
 	height: 100%;
 	text-align: left;
@@ -55,6 +55,7 @@ a:link, a:visited, a:active, a:hover{ outline: 0; }
 #container{
 	position: absolute;
 	left: 200px;
+	top: 10px;
 	width: calc(100% - 200px);
 }
 
@@ -92,7 +93,7 @@ a:link, a:visited, a:active, a:hover{ outline: 0; }
 	max-width: 940px;
 /*	margin-left: auto;
     margin-right: auto;*/
-    padding: 10px;
+    padding: 0 10px 20px 10px;
 }
 
 #container .project-container p,
@@ -142,12 +143,7 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
   position: absolute;
 }
 
-@media screen and (max-width: 1200px) {
-	#container .project-container p img{
-		max-width: 100%;
-	}
-}
-
+/* For tablets or smaller, place the nav bar on the top */
 @media screen and (max-width: 885px) {
 
 	* {
@@ -162,7 +158,7 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 		width: 100%;
 		height: auto;
 		position: static;
-		/*text-align: center;*/
+		text-align: center;
 	}
 
 	#sidebar li{
@@ -176,23 +172,17 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 		left: 0;
 	}
 
-	#container .item {
-		width: calc(50% - 20px);
-	}		
 
-/*	#container .project-container{
-		max-width: 100%;
-		margin-left: 0;
-	}*/
 }
 
-@media screen and (max-width: 660px) {
+/* For mobile, change to a 2-column grid */
+@media screen and (max-width: 760px) {
 
-/*	#sidebar #projects-nav-bar{
-		display: none;
-	}*/
+	#container .item {
+		width: calc(50% - 20px);
+	}
 
-	#container{
+/*	#container{
 		padding: 10px;
 	}
 
@@ -204,5 +194,5 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 
 	#container .project-container{
 		padding: 0;
-	}		
+	}		*/
 }
