@@ -72,7 +72,7 @@ define(['./common'], function (common) {
 
 			// Parsing the iFrame
 			var parsedIframe = '<div class="'+divClass+'">' + decodeEntities(stringIframe) + '</div>';
-			return content.replace(stringIframe, parsedIframe);
+			return content.replace('<p>'+stringIframe+'</p>', parsedIframe);
 		}else{
 			return content;
 		}
