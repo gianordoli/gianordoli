@@ -24,7 +24,7 @@ a:link, a:visited, a:active, a:hover{ outline: 0; }
 #sidebar{
 	position: fixed;
 	left: calc((100% - 1225px)/2);
-	padding: 10px;
+	padding: 0 10px;
 	width: 175px;
 	height: 100%;
 	text-align: left;
@@ -105,7 +105,7 @@ a:link, a:visited, a:active, a:hover{ outline: 0; }
 #container .project-container h6,
 #container .project-container ul,
 #container .project-container hr{
-	max-width: 620px;
+	max-width: 525px;
 	margin-left: 0;
 }
 
@@ -146,38 +146,18 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 
 @media screen and (max-width: 1225px) {
 
-	* {
-	-webkit-overflow-scrolling: touch;
-	    -moz-overflow-scrolling: touch;
-	      -ms-overflow-scrolling: touch;
-	         -o-overflow-scrolling: touch;
-	               overflow-scrolling: touch;
-	}
-
 	#sidebar{
-		width: 100%;
-		height: auto;
-		position: static;
-		text-align: center;
-		/*padding: 10px;*/
-	}
-
-	#sidebar li{
-		display: inline-block;
-		margin-right: 10px;
-	}
-
-	#container{
-		position: static;		
-		width: 100%;
 		left: 0;
 	}
 
-
+	#container{	
+		width: calc(100% - 175px);
+		left: 175px;
+	}
 }
 
 /* For tablets or smaller, place the nav bar on the top */
-@media screen and (max-width: 1225px) {
+@media screen and (max-width: 885px) {
 
 	* {
 	-webkit-overflow-scrolling: touch;
