@@ -12,7 +12,7 @@ require(['config'], function () {
 
 		// Current page is...?
 		var url = window.location.pathname;
-		var filename = url.substring(url.lastIndexOf('/')+1, url.lastIndexOf('.'));
+		var filename = url.substring(url.lastIndexOf('/')+1, url.lastIndexOf('.html'));
 		if(filename == '/') filename = 'index';
 		
 		console.log('Loading dependencies for '+filename);

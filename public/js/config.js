@@ -6,14 +6,18 @@
 //except for 'app' ones, which are in a sibling
 //directory.
 requirejs.config({
-    baseUrl: 'js/lib',
+    baseUrl: '/js/lib',
     paths: {
-        app: '../app',	// Go up 1 level, because lib is the base
+        app: '/js/app',
         /*
-        All files named something.js will be made available
-        either on js/lib or ../app.
+        Files inside lib will be made available by
+        require('filename') — without the js extension.
+
+        Files inside app will be made availble through:
+        require('app/filename')  — without the js extension.
+
         If you have minified files,
-        you should either rename them, or load them using:
+        you should either rename them, or add them here using:
         
         jquery: 'jquery.min',
         Masonry: 'masonry.pkgd.min'
