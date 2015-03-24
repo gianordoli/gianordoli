@@ -35,27 +35,16 @@ define(['./common'], function (common) {
 	}
 
 	var appendProject = function(project){
-		// Parse the iFrame html (for Youtube and Vimeo videos)
-		// project.content = parseIframe(project.content);
 
+		// Insert content into project-container's html
 		var projectContainer = $('<div class="project-container"></div>')
 		$(projectContainer).html(project.content);
 		
-		var iframe = $(projectContainer).children('iframe');
-		var iframeSrc = $(iframe).attr('src');
-		var videoDiv = $('<div></div>');
-		var divClass = 'js-video';
-		if(iframeSrc.indexOf('vimeo') > -1){
-			divClass += ' vimeo widescreen';
-		}
-		$(videoDiv).attr('class', divClass)
-	    $(iframe).wrap(videoDiv);
+		// Add video div to iframe
+		projectContainer = addVideoDiv(projectContainer);
 
 		// Releasing the images form inside the paragraphs
-		var imgP = $(projectContainer).children('p').has('img');
-		$.each(imgP, function(index, item){
-			$(item).replaceWith($(item).children());
-		});
+		projectContainer = releaseImages(projectContainer);
 
 		$('#container').html('')
 					   .append(projectContainer);
@@ -63,47 +52,33 @@ define(['./common'], function (common) {
 		common.addImagesPath();
 	}
 
-	// The markdown parser is parsing HTML tags into HTML entities.
-	// This is breaking the iframes used to embed videos.
-	// This function parse the HTML entities back to HTML
-	var parseIframe = function(content){
-		var init = content.indexOf('&lt;iframe');
-		var end = content.indexOf('iframe&gt;') + 10;
-		
-		if(init > -1 && end > -1){
-			// Extracting the iFrame
-			var stringIframe = content.substring(init, end);
-
-			// Adding the responsive class
-			var divClass = 'js-video';
-			if(stringIframe.indexOf('vimeo') > -1){
-				divClass += ' vimeo widescreen';
-			}
-
-			// Parsing the iFrame
-			var parsedIframe = '<div class="'+divClass+'">' + decodeEntities(stringIframe) + '</div>';
-			return content.replace('<p>'+stringIframe+'</p>', parsedIframe);
-		}else{
-			return content;
+	// Adding the div video tag and class to the iframes
+	var addVideoDiv = function(content){
+		var iframes = $(content).children('iframe');
+		if(iframes.length > 0){
+			$.each(iframes, function(index, item){
+				var itemSrc = $(item).attr('src');
+				var videoDiv = $('<div></div>');
+				var divClass = 'js-video';
+				if(itemSrc.indexOf('vimeo') > -1){
+					divClass += ' vimeo widescreen';
+				}
+				$(videoDiv).attr('class', divClass)
+			    $(item).wrap(videoDiv);
+			});
 		}
+	    return content;
 	}
 
-	var decodeEntities = (function() {
-	  // this prevents any overhead from creating the object each time
-	  var element = document.createElement('div');
-	  function decodeHTMLEntities (str) {
-	    if(str && typeof str === 'string') {
-	      // strip script/html tags
-	      str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
-	      str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
-	      element.innerHTML = str;
-	      str = element.textContent;
-	      element.textContent = '';
-	    }
-	    return str;
-	  }
-	  return decodeHTMLEntities;
-	})();
+	var releaseImages = function(content){
+		var imgP = $(content).children('p').has('img');
+		if(imgP.length > 0){
+			$.each(imgP, function(index, item){
+				$(item).replaceWith($(item).children());
+			});
+		}
+	    return content;
+	}
 
 	common.init(function(data){
 		console.log(JSON.parse(data.projects));

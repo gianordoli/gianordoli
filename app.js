@@ -4,18 +4,17 @@ var		express = require('express'),
 	 		 fs = require('fs');
           Parse = require('node-parse-api').Parse,
               _ = require('underscore'),
-       markdown = require('markdown').markdown;
+         marked = require('marked');
 
-var marked = require('marked');
 marked.setOptions({
   renderer: new marked.Renderer(),
   gfm: true,
   tables: true,
   breaks: false,
   pedantic: false,
-  sanitize: false,
+  sanitize: false,  // Don't sanitize! Keep html entities as is.
   smartLists: true,
-  smartypants: true
+  smartypants: true // Typographic quotes
 });
 
 var readData = fs.readFileSync('keys.txt');
