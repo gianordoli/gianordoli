@@ -4,7 +4,18 @@ var		express = require('express'),
 	 		 fs = require('fs');
           Parse = require('node-parse-api').Parse,
               _ = require('underscore'),
-       markdown = require('markdown').markdown;
+         marked = require('marked');
+
+marked.setOptions({
+  renderer: new marked.Renderer(),
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: false,  // Don't sanitize! Keep html entities as is.
+  smartLists: true,
+  smartypants: true // Typographic quotes
+});
 
 var readData = fs.readFileSync('keys.txt');
 readData = readData.toString(); // convert to string
@@ -100,12 +111,15 @@ app.post('/public-start', function(req, res) {
 app.post('/public-load-project', function(req, res) {   
     // console.log(req.body.projectId);
     parse.find('projects', req.body.projectId, function (err, response) {
-        // console.log(response);
+        
+        console.log(response.content);
+        console.log(marked(response.content));
 
         res.json({
             project: {
                 title: response.title,
-                content: markdown.toHTML(response.content)
+                // content: markdown.toHTML(response.content)
+                content: marked(response.content)
             }
         });
     });
