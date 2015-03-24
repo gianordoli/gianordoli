@@ -36,11 +36,21 @@ define(['./common'], function (common) {
 
 	var appendProject = function(project){
 		// Parse the iFrame html (for Youtube and Vimeo videos)
-		project.content = parseIframe(project.content);
+		// project.content = parseIframe(project.content);
 
 		var projectContainer = $('<div class="project-container"></div>')
 		$(projectContainer).html(project.content);
 		
+		var iframe = $(projectContainer).children('iframe');
+		var iframeSrc = $(iframe).attr('src');
+		var videoDiv = $('<div></div>');
+		var divClass = 'js-video';
+		if(iframeSrc.indexOf('vimeo') > -1){
+			divClass += ' vimeo widescreen';
+		}
+		$(videoDiv).attr('class', divClass)
+	    $(iframe).wrap(videoDiv);
+
 		// Releasing the images form inside the paragraphs
 		var imgP = $(projectContainer).children('p').has('img');
 		$.each(imgP, function(index, item){

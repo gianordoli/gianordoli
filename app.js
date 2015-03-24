@@ -6,6 +6,18 @@ var		express = require('express'),
               _ = require('underscore'),
        markdown = require('markdown').markdown;
 
+var marked = require('marked');
+marked.setOptions({
+  renderer: new marked.Renderer(),
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: false,
+  smartLists: true,
+  smartypants: true
+});
+
 var readData = fs.readFileSync('keys.txt');
 readData = readData.toString(); // convert to string
 keys = readData.split(',');
@@ -100,12 +112,15 @@ app.post('/public-start', function(req, res) {
 app.post('/public-load-project', function(req, res) {   
     // console.log(req.body.projectId);
     parse.find('projects', req.body.projectId, function (err, response) {
-        // console.log(response);
+        
+        console.log(response.content);
+        console.log(marked(response.content));
 
         res.json({
             project: {
                 title: response.title,
-                content: markdown.toHTML(response.content)
+                // content: markdown.toHTML(response.content)
+                content: marked(response.content)
             }
         });
     });
