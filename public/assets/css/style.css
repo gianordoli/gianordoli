@@ -1,0 +1,224 @@
+/*---------- GLOBAL ----------*/
+* {
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */;
+}
+
+/* www.aestheticallyloyal.com/public/optimize-legibility/ */ 
+h1,h2,h3,h4,h5,h6 {
+	text-rendering: optimizeLegibility;
+	font-weight: normal;
+}
+
+/* #444 looks better than black: twitter.com/H_FJ/statuses/11800719859 */ 
+body, select, input, textarea {	color: #333 }
+
+/* maxvoltar.com/archive/-webkit-font-smoothing */
+html { -webkit-font-smoothing: antialiased; }
+
+a:link, a:visited, a:active, a:hover{ outline: 0; }
+
+/*---------- COMMON ----------*/
+
+#sidebar{
+	position: fixed;
+	left: calc((100% - 1225px)/2);
+	padding: 0 10px;
+	width: 175px;
+	height: 100%;
+	text-align: left;
+	/*overflow: hidden;*/
+}
+
+#sidebar h1 { font-size: 32px; }
+#sidebar h2 {
+	font-size: 13px;
+	border-bottom: 1px solid #333;
+	padding: 5px 0;
+	margin: 5px 0;
+	text-transform: uppercase;
+}
+#sidebar p, ul{
+	list-style-type: none;	
+	font-size: 13px;
+	line-height: 18px;
+	margin: 0;
+	padding: 0;	
+}
+
+#sidebar a:link,
+#sidebar a:visited{ color: #333; }
+#sidebar a:active,
+#sidebar a:hover{ color: #F2663F; }
+
+#container{
+	position: absolute;
+	left: calc((100% - 1225px)/2 + 175px);
+	top: 10px;
+	width: 1050px;
+}
+
+/*---------- TYPOGRAPHY ----------*/
+#container h1 { font-size: 23px; line-height: 1; text-transform: }
+#container h2 { font-size: 20px; }
+#container h3 { font-size: 15px; line-height: 20px; padding-bottom: 5px; }
+#container h4 { font-size: 11px; line-height: 18px;  }
+#container h5 { font-size: 10px; }
+#container h6 { font-size: 9px; line-height: 14px; }
+#container p  { font-size: 13px; line-height: 18px; }
+#container ul { font-size: 11px; line-height: 13px; }
+#container hr { border-width: 0; height: 1px; background-color: #333 }
+
+#container a:link,
+#container a:visited,
+#container a:active,
+#container a:hover{ color: #333; }
+
+/*---------- INDEX ----------*/
+#container .item {
+  width: calc((100% - 60px)/3);	
+  max-width: 360px;
+  margin: 10px;
+  float: left;
+}
+
+#container .item img{
+	width: 100%;
+	border: 3px solid white;
+}
+
+/*-------- PROJECTS ---------*/
+#container .project-container{
+	/*width: 665px;*/
+	width: 100%;
+	/*max-width: 940px;*/
+/*	margin-left: auto;
+    margin-right: auto;*/
+    padding: 10px 10px 0 10px;
+}
+
+#container .project-container p,
+#container .project-container h1,
+#container .project-container h2,
+#container .project-container h3,
+#container .project-container h4,
+#container .project-container h5,
+#container .project-container h6,
+#container .project-container ul,
+#container .project-container hr{
+	max-width: 525px;
+	margin-left: 0;
+}
+
+#container .project-container img{
+	width: 100%;
+	margin: 0 0 20px 0;
+	display: block;
+}
+
+#container .project-container ul{
+	margin-top: -10px;
+	margin-bottom: 20px;
+}
+
+#container .project-container ul li{
+	display: inline-block;
+}
+
+/* Responsive video container:
+https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/ */
+#container .project-container .js-video {
+  height: 0;
+  padding-top: 25px;
+  padding-bottom: 67.5%;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+ 
+#container .project-container .js-video.widescreen {
+  padding-bottom: 56.34%;
+}
+ 
+#container .js-video.vimeo {
+  padding-top: 0;
+}
+
+#container .project-container .js-video embed,
+#container .project-container .js-video iframe,
+#container .project-container .js-video object,
+#container .project-container .js-video video {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+@media screen and (max-width: 1225px) {
+
+	#sidebar{
+		left: 0;
+	}
+
+	#container{	
+		width: calc(100% - 175px);
+		left: 175px;
+	}
+}
+
+/* For tablets or smaller, place the nav bar on the top */
+@media screen and (max-width: 885px) {
+
+	* {
+	-webkit-overflow-scrolling: touch;
+	    -moz-overflow-scrolling: touch;
+	      -ms-overflow-scrolling: touch;
+	         -o-overflow-scrolling: touch;
+	               overflow-scrolling: touch;
+	}
+
+	#sidebar{
+		width: 100%;
+		height: auto;
+		position: static;
+		text-align: center;
+		/*padding: 10px;*/
+	}
+
+	#sidebar li{
+		display: inline-block;
+		margin-right: 10px;
+	}
+
+	#container{
+		position: static;		
+		width: 100%;
+		left: 0;
+	}
+
+
+}
+
+/* For mobile, change to a 2-column grid */
+@media screen and (max-width: 760px) {
+
+	#container .item {
+		width: calc(50% - 20px);
+	}
+
+/*	#container{
+		padding: 10px;
+	}
+
+	#container .item {
+		width: calc(100% - 20px);
+		max-width: none;
+		margin: 5px 0;
+	}	
+
+	#container .project-container{
+		padding: 0;
+	}		*/
+}
