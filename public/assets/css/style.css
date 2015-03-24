@@ -202,10 +202,11 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 }
 
 /* For mobile, change to a 2-column grid */
-@media screen and (max-width: 760px) {
+@media screen and (max-width: 750px) {
 
 	#container .item {
-		width: calc(50% - 20px);
+		width: calc(50% - 10px);
+		margin: 5px;
 	}
 
 /*	#container{
