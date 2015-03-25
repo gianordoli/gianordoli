@@ -112,13 +112,12 @@ app.post('/public-load-project', function(req, res) {
     // console.log(req.body.projectId);
     parse.find('projects', req.body.projectId, function (err, response) {
         
-        console.log(response.content);
-        console.log(marked(response.content));
+        // console.log(response.content);           // Markdown
+        // console.log(marked(response.content));   // Parsed
 
         res.json({
             project: {
                 title: response.title,
-                // content: markdown.toHTML(response.content)
                 content: marked(response.content)
             }
         });
@@ -134,20 +133,20 @@ app.post('/admin-start', function(req, res) {
 });
 
 var login = function(req, res, callback){
-    console.log('request:');
-    console.log(req.body);
+    // console.log('request:');
+    // console.log(req.body);
     
     parse.find('users', {login: req.body.login}, function (err, response) {
-      console.log('Database response:');
-      console.log(response.results);
+      // console.log('Database response:');
+      // console.log(response.results);
       
       if(response.results.length > 0 && response.results[0].password == req.body.password){
-        console.log('Logged in.');
+        // console.log('Logged in.');
         callback(req, res);
 
       }else{
         var msg = 'User/login not found.';
-        console.log(msg);
+        // console.log(msg);
         res.json({
             error: msg
         });
@@ -158,13 +157,13 @@ var login = function(req, res, callback){
 var loadProjects = function(res){
     var projects;
     parse.find('projects', {}, function (err, response) {
-        console.log(response);
+        // console.log(response);
         
         // Sorting the projects
         response.results = _.sortBy(response.results, function(obj){
             return obj.order;
         });
-        console.log(response);
+        // console.log(response);
         res.json(response);
     }); 
 }
@@ -177,18 +176,18 @@ app.post('/admin-load-projects', function(req, res) {
 
 app.post('/admin-update-all', function(req, res) {
     login(req, res, function(req, res){
-        console.log('request:');
-        console.log(req.body);
+        // console.log('request:');
+        // console.log(req.body);
         var projects = req.body['projects[]'];
-        console.log(projects);
-        console.log(projects.length);
+        // console.log(projects);
+        // console.log(projects.length);
 
         var error = false;
 
         projects.forEach(function(item, index, array){
             // console.log(item);
             item = JSON.parse(item);
-            console.log(item.id + ',' + item.order + ', ' + item.publish);
+            // console.log(item.id + ',' + item.order + ', ' + item.publish);
             // console.log(typeof item.public);
             parse.update('projects', item.id, {
                 order: parseInt(item.order),
@@ -202,12 +201,12 @@ app.post('/admin-update-all', function(req, res) {
 
 app.post('/admin-expand-project', function(req, res) {
     login(req, res, function(req, res){
-        console.log('request:');
-        console.log(req.body);
-        console.log(req.body.id);
+        // console.log('request:');
+        // console.log(req.body);
+        // console.log(req.body.id);
 
         parse.find('projects', req.body.id, function (err, response) {
-            console.log(response);
+            // console.log(response);
             res.json(response);
         }); 
     });
@@ -215,10 +214,10 @@ app.post('/admin-expand-project', function(req, res) {
 
 app.post('/admin-create-project', function(req, res) {
     login(req, res, function(req, res){
-        console.log('request:');
-        console.log(req.body);
+        // console.log('request:');
+        // console.log(req.body);
         var project = JSON.parse(req.body.data);
-        console.log(project);
+        // console.log(project);
 
         var lastIndex = '';
         parse.findMany('projects', '', function (err, response) {
@@ -231,7 +230,7 @@ app.post('/admin-create-project', function(req, res) {
                 images: project.images,
                 order: lastIndex
             }, function (err, response) {
-                console.log(response);
+                // console.log(response);
                 res.json(response);
             });         
         });
@@ -240,17 +239,17 @@ app.post('/admin-create-project', function(req, res) {
 
 app.post('/admin-update-project', function(req, res) {
     login(req, res, function(req, res){    
-        console.log('request:');
-        console.log(req.body);
+        // console.log('request:');
+        // console.log(req.body);
         var project = JSON.parse(req.body.data);
-        console.log(project);
+        // console.log(project);
 
         parse.update('projects', project.id, {
             title: project.title,
             content: project.content,
             images: project.images
         }, function (err, response) {
-            console.log(response);
+            // console.log(response);
             res.json(response);
         });
     });
@@ -258,12 +257,12 @@ app.post('/admin-update-project', function(req, res) {
 
 app.post('/admin-delete-project', function(req, res) {
     login(req, res, function(req, res){
-        console.log('request:');
-        console.log(req.body);
-        console.log(req.body.id);
+        // console.log('request:');
+        // console.log(req.body);
+        // console.log(req.body.id);
 
         parse.delete('projects', req.body.id, function (err, response) {
-            console.log(response);
+            // console.log(response);
             res.json(response);
         }); 
     });
