@@ -39,12 +39,14 @@ a:link, a:visited, a:active, a:hover{ outline: 0; }
 	margin: 5px 0;
 	text-transform: uppercase;
 }
-#sidebar p, ul{
+#sidebar ul{
 	list-style-type: none;	
 	font-size: 13px;
 	line-height: 18px;
 	margin: 0;
-	padding: 0;	
+	padding: 0;
+	margin-left: 10px;
+	text-indent: -10px;
 }
 
 #sidebar a:link,
@@ -111,10 +113,15 @@ a:link, a:visited, a:active, a:hover{ outline: 0; }
 	margin-left: 0;
 }
 
-#container .project-container img{
+#container .project-container img:not(.no-resize){
 	width: 100%;
 	margin: 0 0 20px 0;
 	display: block;
+}
+
+#container .project-container img.no-resize{
+	display: inline-block;
+	margin: 0 10px 10px 0;
 }
 
 #container .project-container ul{
