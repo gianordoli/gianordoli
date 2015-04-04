@@ -122,11 +122,13 @@ a:link, a:visited, a:active, a:hover{ outline: 0; }
 #container .project-container img.no-resize{
 	display: inline-block;
 	margin: 0 10px 10px 0;
+	max-width: 100%;
 }
 
 #container .project-container ul{
 	margin-top: -10px;
 	margin-bottom: 20px;
+	padding: 0;
 }
 
 #container .project-container ul li{
