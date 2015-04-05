@@ -49,8 +49,12 @@ body{
 #sidebar a:link,
 #sidebar a:visited{ color: #333; text-decoration: none }
 #sidebar a:active,
-/*#sidebar a:hover{ color: #F2663F; text-decoration: none }*/
 #sidebar a:hover{ color: #fb81ac; text-decoration: none }
+
+#sidebar a:link.selected,
+#sidebar a:visited.selected,
+#sidebar a:active.selected,
+#sidebar a:hover.selected{ color: #fb81ac; }
 
 #sidebar h1 {
 	text-transform: uppercase;
@@ -100,14 +104,14 @@ body{
 	letter-spacing: 1px;
 }
 
-#container h1 { font-size: 16px; line-height: 1; }
-#container h2 {	font-size: 13px; }
+#container h1 { font-size: 16px; line-height: 1; margin-bottom: 5px; }
+#container h2 {	font-size: 13px; margin: 0; }
 /*#container h3 { font-size: 15px; line-height: 20px; padding-bottom: 5px; }
 #container h4 { font-size: 11px; line-height: 18px;  }
 #container h5 { font-size: 10px; }
 #container h6 { font-size: 9px; line-height: 14px; }*/
-#container p  { font-size: 13px; line-height: 18px; }
-#container ul { font-size: 11px; line-height: 13px; }
+#container p  { font-size: 13px; line-height: 18px; margin: 0 0 10px 0; }
+#container ul { font-size: 11px; line-height: 15px; }
 #container hr { border-width: 0; height: 1px; background-color: #333 }
 
 #container a:link,
@@ -126,6 +130,10 @@ body{
 #container .item img{
 	width: 100%;
 	border: 8px solid white;
+}
+
+#container .item img.selected{
+	border-color: #fb81ac;
 }
 
 /*-------- PROJECTS ---------*/
@@ -231,12 +239,12 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 		height: auto;
 		position: static;
 		text-align: center;
-		/*padding: 10px;*/
+		margin-top: 10px;
 	}
 
 	#sidebar li{
 		display: inline-block;
-		margin-right: 10px;
+		margin: 5px 15px;
 	}
 
 	#container{

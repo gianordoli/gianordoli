@@ -13,8 +13,9 @@ define(['./common'], function (common) {
 	};
 
 	var linkMarker = function(projectId){
-		$('#sidebar ul').find('a').css('color', '#333');
-        $('[name="'+projectId+'"]').css('color', '#fb81ac');
+		$('#sidebar ul').find('a').removeAttr('class');
+        // $('[name="'+projectId+'"]').css('color', '#fb81ac');
+        $('[name="'+projectId+'"]').attr('class', 'selected');
 	}
 
 	var loadProject = function(){

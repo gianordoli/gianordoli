@@ -35,15 +35,12 @@ define(['./common'], function (common) {
 
 	function attachEvents(){
 		$('a').off('mouseenter').on('mouseenter', function() {
-			console.log($(this).attr('name'));
+			// console.log($(this).attr('name'));
 			var projectId = $(this).attr('name');
-			var objectsWithSameName = $('[name="'+projectId+'"]');
-			$.each(objectsWithSameName, function(index, item){
-				if($(item).parent().is('.item')){
-					$(item).children('img').css('border-color', '#fb81ac');	
-				}else{
-					$(item).css('color', '#fb81ac');	
-				}			
+			var objectsWithSameName = $('[name="'+projectId+'"]').has('img');
+			// console.log(objectsWithSameName.length);
+			$.each(objectsWithSameName, function(index, item){			
+				$(item).children().attr('class', 'selected');	
 			});
 		});
 		$('a').off('mouseleave').on('mouseleave', function() {
@@ -51,11 +48,7 @@ define(['./common'], function (common) {
 			var projectId = $(this).attr('name');
 			var objectsWithSameName = $('[name="'+projectId+'"]');
 			$.each(objectsWithSameName, function(index, item){
-				if($(item).parent().is('.item')){
-					$(item).children('img').css('border-color', 'white');	
-				}else{
-					$(item).css('color', '#333');	
-				}			
+				$(item).children().removeAttr('class');
 			});
 		});
 	}

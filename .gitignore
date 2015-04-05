@@ -16,5 +16,6 @@ node_modules
 
 
 keys.txt
-public/assets/img
+public/assets/img/
+public/assets/fonts/
 public/downloads
