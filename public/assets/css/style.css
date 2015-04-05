@@ -7,12 +7,12 @@
 
 @font-face {
 	font-family: overpass-regular;
-	src: url('/assets/fonts/Overpass_Regular.ttf');
+	src: url('/assets/fonts/overpass_regular.ttf');
 }
 
 @font-face {
 	font-family: overpass-bold;
-	src: url('/assets/fonts/Overpass_Bold.ttf');
+	src: url('/assets/fonts/overpass_bold.ttf');
 }
 
 /* www.aestheticallyloyal.com/public/optimize-legibility/ */ 
