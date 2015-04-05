@@ -6,13 +6,13 @@
 }
 
 @font-face {
-	font-family: opensans-regular;
-	src: url('/assets/fonts/sourcesanspro-regular.otf');
+	font-family: overpass-regular;
+	src: url('/assets/fonts/Overpass_Regular.ttf');
 }
 
 @font-face {
-	font-family: opensans-semibold;
-	src: url('/assets/fonts/sourcesanspro-semibold.otf');
+	font-family: overpass-bold;
+	src: url('/assets/fonts/Overpass_Bold.ttf');
 }
 
 /* www.aestheticallyloyal.com/public/optimize-legibility/ */ 
@@ -32,7 +32,7 @@ a:link, a:visited, a:active, a:hover{ outline: 0; }
 /*---------- COMMON ----------*/
 
 body{
-	font-family: opensans-regular;
+	font-family: overpass-regular;
 }
 
 #sidebar{
@@ -52,25 +52,13 @@ body{
 /*#sidebar a:hover{ color: #F2663F; text-decoration: none }*/
 #sidebar a:hover{ color: #fb81ac; text-decoration: none }
 
-#sidebar #logo {
-	display: block;
-	width: 155px;
-	height: 155px;
-	border: 3px solid #333;
-}
-
-#sidebar #logo h1 {
-	position: relative;
-	top: 40%;
-	-webkit-transform: translateY(-40%);
-	-ms-transform: translateY(-40%);
-	transform: translateY(-40%);	
-	text-align: center;
+#sidebar h1 {
 	text-transform: uppercase;
 	font-size: 16px;
-	font-family: opensans-semibold;
-	line-height: 16px;
-	letter-spacing: 2px
+	font-family: overpass-bold;
+	line-height: 18px;
+	letter-spacing: 1px;
+	margin-top: 0;
 }
 
 #sidebar #logo h1 a{
@@ -80,10 +68,11 @@ body{
 #sidebar h2 {
 	font-size: 13px;
 	border-bottom: 3px solid #333;
+	border-top: 3px solid #333;
 	padding: 5px 0;
 	margin: 5px 0;
 	text-transform: uppercase;
-	font-family: opensans-semibold;
+	font-family: overpass-bold;
 	letter-spacing: 1px
 }
 #sidebar ul{
@@ -104,12 +93,19 @@ body{
 }
 
 /*---------- TYPOGRAPHY ----------*/
-#container h1 { font-size: 23px; line-height: 1; text-transform: }
-#container h2 { font-size: 20px; }
-#container h3 { font-size: 15px; line-height: 20px; padding-bottom: 5px; }
+#container h1,
+#container h2 {
+	text-transform: uppercase;
+	font-family: overpass-bold;
+	letter-spacing: 1px;
+}
+
+#container h1 { font-size: 16px; line-height: 1; }
+#container h2 {	font-size: 13px; }
+/*#container h3 { font-size: 15px; line-height: 20px; padding-bottom: 5px; }
 #container h4 { font-size: 11px; line-height: 18px;  }
 #container h5 { font-size: 10px; }
-#container h6 { font-size: 9px; line-height: 14px; }
+#container h6 { font-size: 9px; line-height: 14px; }*/
 #container p  { font-size: 13px; line-height: 18px; }
 #container ul { font-size: 11px; line-height: 13px; }
 #container hr { border-width: 0; height: 1px; background-color: #333 }

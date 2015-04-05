@@ -22,7 +22,7 @@ define(function (require) {
 
 		appendSidebar: function(projects){
 			console.log('Appending projects...');
-			var title = $('<div id="logo"><h1><a href="/">Gabriel<br/>Gianordoli</a></h1></div>');
+			var title = $('<h1><a href="/">Gabriel<br/>Gianordoli</a></h1>');
 			
 			var projectsNavBar = $('<div id="projects-nav-bar"></div>');
 				var projectsTitle = $('<h2>Projects</h2>');
