@@ -38,10 +38,10 @@ body{
 #sidebar{
 	position: fixed;
 	left: calc((100% - 1225px)/2);
-	top: 20px;
-	padding: 0 10px;
+	/*top: 20px;*/
+	padding: 20px 10px;
 	width: 175px;
-	height: calc(100% - 20px);
+	height: 100%;
 	text-align: left;
 	/*overflow: hidden;*/
 }
@@ -239,7 +239,6 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 		height: auto;
 		position: static;
 		text-align: center;
-		margin-top: 10px;
 	}
 
 	#sidebar li{
