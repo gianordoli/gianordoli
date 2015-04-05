@@ -40,9 +40,9 @@ define(['./common'], function (common) {
 			var objectsWithSameName = $('[name="'+projectId+'"]');
 			$.each(objectsWithSameName, function(index, item){
 				if($(item).parent().is('.item')){
-					$(item).children('img').css('border-color', '#F2663F');	
+					$(item).children('img').css('border-color', '#fb81ac');	
 				}else{
-					$(item).css('color', '#F2663F');	
+					$(item).css('color', '#fb81ac');	
 				}			
 			});
 		});
