@@ -56,7 +56,7 @@ footer hr{
 footer p{
 	float: left;
 	display: inline-block;
-	margin: 5px 0;
+	margin: 5px 5px 5px 0;
 }
 
 footer aside{
