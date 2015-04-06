@@ -30,6 +30,7 @@ define(['./common'], function (common) {
   				itemSelector: '.item'
 			});
 		  	attachEvents();
+  			common.appendFooter();
 		});
 	}
 

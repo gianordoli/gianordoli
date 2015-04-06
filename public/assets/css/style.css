@@ -35,6 +35,36 @@ body{
 	font-family: overpass-regular;
 }
 
+footer{
+	width: 100%;
+	/*height: 30px;*/
+	position: absolute;
+	bottom: 10px;
+	/*top: 100vh;*/
+ 	font-size: 13px;
+ 	line-height: 10px;	
+ 	padding: 0 10px;
+ 	/*margin-bottom: 20px;*/
+}
+
+footer hr{
+ 	border: none;
+ 	height: 3px;
+ 	background-color: #333; 	
+}
+
+footer p{
+	float: left;
+	display: inline-block;
+	margin: 5px 0;
+}
+
+footer aside{
+	float: right;
+	display: inline-block;
+	margin: 5px 0;
+}
+
 #sidebar{
 	position: fixed;
 	left: calc((100% - 1225px)/2);
@@ -94,6 +124,7 @@ body{
 	left: calc((100% - 1225px)/2 + 175px);
 	top: 10px;
 	width: 1050px;
+	padding: 0 0 30px 0;
 }
 
 /*---------- TYPOGRAPHY ----------*/
@@ -104,15 +135,15 @@ body{
 	letter-spacing: 1px;
 }
 
-#container h1 { font-size: 16px; line-height: 1; margin-bottom: 5px; }
-#container h2 {	font-size: 13px; margin: 0; }
+#container .project-container h1 { font-size: 16px; line-height: 1; margin-bottom: 5px; }
+#container .project-container h2 {	font-size: 13px; margin: 0; }
 /*#container h3 { font-size: 15px; line-height: 20px; padding-bottom: 5px; }
 #container h4 { font-size: 11px; line-height: 18px;  }
 #container h5 { font-size: 10px; }
 #container h6 { font-size: 9px; line-height: 14px; }*/
-#container p  { font-size: 13px; line-height: 18px; margin: 0 0 10px 0; }
-#container ul { font-size: 11px; line-height: 15px; }
-#container hr { border-width: 0; height: 1px; background-color: #333 }
+#container .project-container p  { font-size: 13px; line-height: 18px; margin: 0 0 10px 0; }
+#container .project-container ul { font-size: 11px; line-height: 15px; }
+/*#container hr { border-width: 0; height: 1px; background-color: #333 }*/
 
 #container a:link,
 #container a:visited,
@@ -250,8 +281,12 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 		position: static;		
 		width: 100%;
 		left: 0;
+		padding-bottom: 60px;
 	}
 
+	footer aside{
+		float: left;
+	}
 
 }
 

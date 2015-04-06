@@ -38,7 +38,7 @@ define(['./common'], function (common) {
 	var appendProject = function(project){
 
 		// Insert content into project-container's html
-		var projectContainer = $('<div class="project-container"></div>')
+		var projectContainer = $('<div class="project-container"></div>');
 		$(projectContainer).html(project.content);
 		
 		// Add video div to iframe
@@ -51,6 +51,7 @@ define(['./common'], function (common) {
 					   .append(projectContainer);
 		$('body').scrollTop(0);
 		common.addImagesPath();
+		common.appendFooter();
 	}
 
 	// Adding the div video tag and class to the iframes

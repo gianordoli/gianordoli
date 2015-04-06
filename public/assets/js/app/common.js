@@ -24,7 +24,7 @@ define(function (require) {
 			console.log('Appending projects...');
 			var title = $('<h1><a href="/">Gabriel Gianordoli</a></h1>');
 			
-			var projectsNavBar = $('<div id="projects-nav-bar"></div>');
+			var projectsNavBar = $('<nav id="projects-nav-bar"></nav>');
 				var projectsTitle = $('<h2>Projects</h2>');
 				var projectsUl = $('<ul></ul>');
 					projects.forEach(function(item, index, array){
@@ -48,6 +48,26 @@ define(function (require) {
 			$('#sidebar').append(title)
 						 .append(projectsNavBar)
 						 .append(infoNavBar);
+		},
+
+		appendFooter: function(){
+			console.log('Appending footer.');
+
+			var footer = $('<footer><hr/></footer>');
+			var p = $('<p>© 2008 ~ 2015 Gabriel Gianordoli – All rights reserved.</p>');
+			var aside = $('<aside>' +
+						  '<a href="mailto:gianordoligabriel@gmail.com" target="_blank">Email</a>, ' +
+						  '<a href="https://twitter.com/gianordoli" target="_blank">Twitter</a>, ' +
+						  '<a href="https://www.linkedin.com/pub/gabriel-gianordoli" target="_blank">LinkedIn</a>, ' +
+						  '<a href="https://www.behance.net/gianordoli" target="_blank">Behance</a>, ' +
+						  '<a href="https://www.pinterest.com/gianordoli/" target="_blank">Pinterest</a>, ' +						  
+						  '<a href="https://vimeo.com/gianordoli" target="_blank">Vimeo</a> & ' +
+						  '<a href="https://github.com/gianordoli" target="_blank">Github</a>' +
+						  '</aside>');
+
+			$('#container').append(footer);
+			$('footer').append(p);
+			$('footer').append(aside);
 		},
 
 		addImagesPath: function(){
