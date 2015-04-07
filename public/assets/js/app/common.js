@@ -65,7 +65,7 @@ define(function (require) {
 						  '<a href="https://github.com/gianordoli" target="_blank">Github</a>' +
 						  '</aside>');
 
-			$('#container').append(footer);
+			$('body').append(footer);
 			$('footer').append(p);
 			$('footer').append(aside);
 		},

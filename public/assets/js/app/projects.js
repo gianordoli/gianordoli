@@ -50,6 +50,7 @@ define(['./common'], function (common) {
 		$('#container').html('')
 					   .append(projectContainer);
 		$('body').scrollTop(0);
+		
 		common.addImagesPath();
 		common.appendFooter();
 	}
