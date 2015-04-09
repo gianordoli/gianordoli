@@ -38,7 +38,7 @@ define(function (require) {
 			var infoNavBar = $('<div id="info-nav-bar"></div>');
 				var infoTitle = $('<h2>Info</h2>');
 				var infoUl = $('<ul></ul>');
-					var bio = $('<li><a href="/bio.html">Bio</a></li>');
+					var bio = $('<li><a href="/about.html">About</a></li>');
 					var contact = $('<li><a href="/contact.html">Contact</a></li>');
 				$(infoUl).append(bio)
 						 .append(contact);
@@ -58,7 +58,7 @@ define(function (require) {
 			var aside = $('<aside>' +
 						  '<a href="mailto:gianordoligabriel@gmail.com" target="_blank">Email</a>, ' +
 						  '<a href="https://twitter.com/gianordoli" target="_blank">Twitter</a>, ' +
-						  '<a href="https://www.linkedin.com/pub/gabriel-gianordoli" target="_blank">LinkedIn</a>, ' +
+						  '<a href="www.linkedin.com/in/gianordoli" target="_blank">LinkedIn</a>, ' +
 						  '<a href="https://www.behance.net/gianordoli" target="_blank">Behance</a>, ' +
 						  '<a href="https://www.pinterest.com/gianordoli/" target="_blank">Pinterest</a>, ' +						  
 						  '<a href="https://vimeo.com/gianordoli" target="_blank">Vimeo</a> & ' +

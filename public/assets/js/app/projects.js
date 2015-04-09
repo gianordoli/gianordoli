@@ -52,7 +52,6 @@ define(['./common'], function (common) {
 		$('body').scrollTop(0);
 		
 		common.addImagesPath();
-		common.appendFooter();
 	}
 
 	// Adding the div video tag and class to the iframes
@@ -86,6 +85,7 @@ define(['./common'], function (common) {
 	common.init(function(data){
 		console.log(JSON.parse(data.projects));
 		common.appendSidebar(JSON.parse(data.projects));
+		common.appendFooter();
 		hashRouter();
 		loadProject();
 	});

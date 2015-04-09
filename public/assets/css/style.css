@@ -35,118 +35,115 @@ body{
 	font-family: overpass-regular;
 }
 
-footer{
-	width: 1050px;
-	position: static;
- 	font-size: 13px;
- 	line-height: 10px;
- 	margin-left: calc((100% - 1225px)/2 + 175px);
- 	margin-bottom: 20px;
- 	padding: 10px ;
-}
+	/* FOOTER */
+	footer{
+		width: 1050px;
+		position: static;
+	 	font-size: 13px;
+	 	line-height: 10px;
+	 	margin-left: calc((100% - 1225px)/2 + 175px);
+	 	margin-bottom: 20px;
+	 	padding: 10px ;
+	}
 
-footer hr{
- 	border: none;
- 	height: 3px;
- 	background-color: #333; 	
-}
+	footer hr{
+	 	border: none;
+	 	height: 3px;
+	 	background-color: #333; 	
+	}
 
-footer p{
-	float: left;
-	display: inline-block;
-	margin: 5px 5px 5px 0;
-}
+	footer p{
+		float: left;
+		display: inline-block;
+		margin: 5px 5px 5px 0;
+	}
 
-footer aside{
-	float: right;
-	display: inline-block;
-	margin: 5px 0;
-}
+	footer aside{
+		float: right;
+		display: inline-block;
+		margin: 5px 0;
+	}
 
-#sidebar{
-	position: fixed;
-	left: calc((100% - 1225px)/2);
-	/*top: 20px;*/
-	padding: 20px 10px;
-	width: 175px;
-	height: 100%;
-	text-align: left;
-	/*overflow: hidden;*/
-}
+	footer a:link,
+	footer a:visited,
+	footer a:active,
+	footer a:hover{ color: #333; }	
 
-#sidebar a:link,
-#sidebar a:visited{ color: #333; text-decoration: none }
-#sidebar a:active,
-#sidebar a:hover{ color: #fb81ac; text-decoration: none }
+	/* SIDEBAR */
+	#sidebar{
+		position: fixed;
+		left: calc((100% - 1225px)/2);
+		/*top: 20px;*/
+		padding: 20px 10px;
+		width: 175px;
+		height: 100%;
+		text-align: left;
+		/*overflow: hidden;*/
+	}
 
-#sidebar a:link.selected,
-#sidebar a:visited.selected,
-#sidebar a:active.selected,
-#sidebar a:hover.selected{ color: #fb81ac; }
+	#sidebar a:link,
+	#sidebar a:visited{ color: #333; text-decoration: none }
+	#sidebar a:active,
+	#sidebar a:hover{ color: #fb81ac; text-decoration: none }
 
-#sidebar h1 {
-	text-transform: uppercase;
-	font-size: 16px;
-	font-family: overpass-bold;
-	line-height: 18px;
-	letter-spacing: 1px;
-	margin-top: 0;
-}
+	#sidebar a:link.selected,
+	#sidebar a:visited.selected,
+	#sidebar a:active.selected,
+	#sidebar a:hover.selected{ color: #fb81ac; }
 
-#sidebar #logo h1 a{
-	text-decoration: none;
-}
+	#sidebar h1 {
+		text-transform: uppercase;
+		font-size: 16px;
+		font-family: overpass-bold;
+		line-height: 18px;
+		letter-spacing: 1px;
+		margin-top: 0;
+	}
 
-#sidebar h2 {
-	font-size: 13px;
-	border-bottom: 3px solid #333;
-	border-top: 3px solid #333;
-	padding: 5px 0;
-	margin: 5px 0;
-	text-transform: uppercase;
-	font-family: overpass-bold;
-	letter-spacing: 1px
-}
-#sidebar ul{
-	list-style-type: none;	
-	font-size: 13px;
-	line-height: 18px;
-	margin: 0;
-	padding: 0;
-	margin-left: 10px;
-	text-indent: -10px;
-}
+	#sidebar #logo h1 a{
+		text-decoration: none;
+	}
 
-#container{
-	position: relative;
-	left: calc((100% - 1225px)/2 + 175px);
-	top: 10px;
-	width: 1050px;
-	padding-bottom: 10px;
-}
+	#sidebar h2 {
+		font-size: 13px;
+		border-bottom: 3px solid #333;
+		border-top: 3px solid #333;
+		padding: 5px 0;
+		margin: 5px 0;
+		text-transform: uppercase;
+		font-family: overpass-bold;
+		letter-spacing: 1px
+	}
+	#sidebar ul{
+		list-style-type: none;	
+		font-size: 13px;
+		line-height: 18px;
+		margin: 0;
+		padding: 0;
+		margin-left: 10px;
+		text-indent: -10px;
+	}
 
-/*---------- TYPOGRAPHY ----------*/
-#container h1,
-#container h2 {
-	text-transform: uppercase;
-	font-family: overpass-bold;
-	letter-spacing: 1px;
-}
+	/* CONTAINER */
+	#container{
+		position: relative;
+		left: calc((100% - 1225px)/2 + 175px);
+		top: 10px;
+		width: 1050px;
+		padding-bottom: 10px;
+	}
 
-#container .project-container h1 { font-size: 16px; line-height: 1; margin-bottom: 5px; }
-#container .project-container h2 {	font-size: 13px; margin: 0; }
-/*#container h3 { font-size: 15px; line-height: 20px; padding-bottom: 5px; }
-#container h4 { font-size: 11px; line-height: 18px;  }
-#container h5 { font-size: 10px; }
-#container h6 { font-size: 9px; line-height: 14px; }*/
-#container .project-container p  { font-size: 13px; line-height: 18px; margin: 0 0 10px 0; }
-#container .project-container ul { font-size: 11px; line-height: 15px; }
-/*#container hr { border-width: 0; height: 1px; background-color: #333 }*/
+	#container h1,
+	#container h2 {
+		text-transform: uppercase;
+		font-family: overpass-bold;
+		letter-spacing: 1px;
+	}
 
-#container a:link,
-#container a:visited,
-#container a:active,
-#container a:hover{ color: #333; }
+	#container a:link,
+	#container a:visited,
+	#container a:active,
+	#container a:hover{ color: #333; }
 
 /*---------- INDEX ----------*/
 #container .item {
@@ -158,14 +155,44 @@ footer aside{
 
 #container .item img{
 	width: 100%;
-	border: 8px solid white;
+	/*border: 8px solid white;*/
 }
 
 #container .item img.selected{
+	border: 8px;
+	border-style: solid;
 	border-color: #fb81ac;
 }
 
 /*-------- PROJECTS ---------*/
+
+#container .project-container h1 {
+	font-size: 16px;
+	line-height: 1;
+	margin: 20px 0 0 0;
+}
+
+#container .project-container h2 {
+	font-size: 13px;
+	margin: 10px 0 0 0;
+}
+
+/*#container h3 { font-size: 15px; line-height: 20px; padding-bottom: 5px; }
+#container h4 { font-size: 11px; line-height: 18px;  }
+#container h5 { font-size: 10px; }
+#container h6 { font-size: 9px; line-height: 14px; }*/
+#container .project-container p  {
+	font-size: 13px;
+	line-height: 18px;
+	margin: 0;
+}
+
+#container .project-container ul {
+	font-size: 11px;
+	line-height: 15px;
+}
+/*#container hr { border-width: 0; height: 1px; background-color: #333 }*/
+
 #container .project-container{
 	/*width: 665px;*/
 	width: 100%;
@@ -185,18 +212,22 @@ footer aside{
 #container .project-container ul,
 #container .project-container hr{
 	max-width: 515px;
-	margin-left: 0;
+/*	margin: 0;*/
 }
 
 #container .project-container img:not(.column){
 	width: 100%;
-	margin: 0 0 20px 0;
 	display: block;
+	margin: 0;
+}
+
+#container .project-container img:not(:first-child){
+	margin: 20px 0 0 0;
 }
 
 #container .project-container img.half{
 	display: inline-block;
-	margin: 0 0 10px 0;
+	margin: 10px 0 0 0;
 	width: calc(50% - 5px);
 }
 
@@ -209,8 +240,8 @@ footer aside{
 }
 
 #container .project-container ul{
-	margin-top: -10px;
-	margin-bottom: 20px;
+	margin-top: 5px;
+	/*margin-bottom: 20px;*/
 	padding: 0;
 }
 
@@ -227,6 +258,10 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
   margin-bottom: 20px;
   position: relative;
   overflow: hidden;
+}
+
+#container .project-container .js-video:not(:first-child) {
+	margin-top: 20px;
 }
  
 #container .project-container .js-video.widescreen {
