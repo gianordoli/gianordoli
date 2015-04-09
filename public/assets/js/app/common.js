@@ -60,7 +60,7 @@ define(function (require) {
 			var aside = $('<aside>' +
 						  '<a href="mailto:gianordoligabriel@gmail.com" target="_blank">Email</a>, ' +
 						  '<a href="https://twitter.com/gianordoli" target="_blank">Twitter</a>, ' +
-						  '<a href="www.linkedin.com/in/gianordoli" target="_blank">LinkedIn</a>, ' +
+						  '<a href="https://www.linkedin.com/in/gianordoli" target="_blank">LinkedIn</a>, ' +
 						  '<a href="https://www.behance.net/gianordoli" target="_blank">Behance</a>, ' +
 						  '<a href="https://www.pinterest.com/gianordoli/" target="_blank">Pinterest</a>, ' +						  
 						  '<a href="https://vimeo.com/gianordoli" target="_blank">Vimeo</a> & ' +
