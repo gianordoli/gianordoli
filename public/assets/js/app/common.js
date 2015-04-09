@@ -38,9 +38,11 @@ define(function (require) {
 			var infoNavBar = $('<div id="info-nav-bar"></div>');
 				var infoTitle = $('<h2>Info</h2>');
 				var infoUl = $('<ul></ul>');
-					var bio = $('<li><a href="/about.html">About</a></li>');
-					var contact = $('<li><a href="/contact.html">Contact</a></li>');
-				$(infoUl).append(bio)
+					var about = $('<li><a href="/about.html">About</a></li>');
+					var cv = $('<li><a href="/downloads/gabriel_gianordoli_cv.pdf" target="_blank">CV</a></li>');
+					var contact = $('<li><a href="mailto:gianordoligabriel@gmail.com" target="_blank">Contact</a></li>');
+				$(infoUl).append(about)
+						 .append(cv)
 						 .append(contact);
 			$(infoNavBar).append(infoTitle)
 						 .append(infoUl);						 

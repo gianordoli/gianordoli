@@ -283,6 +283,38 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
   position: absolute;
 }
 
+/*-------- ABOUT ---------*/
+
+
+#container .project-container.about h2 {
+	padding-top: 20px;
+	border-bottom: 3px solid #333;
+}
+#container .project-container.about h3 {
+	font-family: overpass-bold;
+	text-transform: uppercase;
+	font-size: 13px;
+	margin: 10px 0 0 0;
+}
+#container .project-container.about h4 {
+	font-size: 13px;
+	margin: 0;
+	font-family: overpass-bold;
+}
+#container .project-container.about ul{
+	list-style-type: disc;	
+	font-size: 13px;
+	line-height: 18px;
+	margin: 0;
+}
+
+#container .project-container.about ul li{
+	display: list-item;
+	list-style-position: inside;
+}
+
+
+
 @media screen and (max-width: 1225px) {
 
 	#sidebar{
