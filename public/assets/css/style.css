@@ -155,13 +155,19 @@ body{
 
 #container .item img{
 	width: 100%;
-	/*border: 8px solid white;*/
+	-webkit-transition: border .10s;
+	-o-transition: border .10s;
+	-moz-transition: border .10s;
+	transition: border .10s;
+	border: 0 solid white;
 }
 
 #container .item img.selected{
-	border: 8px;
-	border-style: solid;
-	border-color: #fb81ac;
+	-webkit-transition: border .10s;
+	-o-transition: border .10s;
+	-moz-transition: border .10s;
+	transition: border .10s;	
+	border: 8px solid #fb81ac;
 }
 
 /*-------- PROJECTS ---------*/

@@ -38,18 +38,26 @@ define(['./common'], function (common) {
 		$('a').off('mouseenter').on('mouseenter', function() {
 			// console.log($(this).attr('name'));
 			var projectId = $(this).attr('name');
-			var objectsWithSameName = $('[name="'+projectId+'"]').has('img');
+			var objectsWithSameName = $('[name="'+projectId+'"]');
 			// console.log(objectsWithSameName.length);
-			$.each(objectsWithSameName, function(index, item){			
-				$(item).children().attr('class', 'selected');	
+			$.each(objectsWithSameName, function(index, item){	
+				if($(item).has('img').length > 0){
+					$(item).children().attr('class', 'selected');		
+				}else{
+					$(item).attr('class', 'selected');
+				}
 			});
 		});
 		$('a').off('mouseleave').on('mouseleave', function() {
-			console.log($(this).attr('name'));
+			// console.log($(this).attr('name'));
 			var projectId = $(this).attr('name');
 			var objectsWithSameName = $('[name="'+projectId+'"]');
 			$.each(objectsWithSameName, function(index, item){
-				$(item).children().removeAttr('class');
+				if($(item).has('img').length > 0){
+					$(item).children().removeAttr('class');
+				}else{
+					$(item).removeAttr('class');
+				}
 			});
 		});
 	}

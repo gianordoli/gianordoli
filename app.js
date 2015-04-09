@@ -95,9 +95,11 @@ app.post('/public-start', function(req, res) {
             return obj.order;
         });
 
-        images = _.sortBy(images, function(obj){
-            return obj.order;
-        });
+        images = _.shuffle(images);
+
+        // images = _.sortBy(images, function(obj){
+        //     return obj.order;
+        // });
 
         projects = JSON.stringify(projects);
         images = JSON.stringify(images);
