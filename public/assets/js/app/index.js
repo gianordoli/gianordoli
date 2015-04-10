@@ -9,10 +9,18 @@ define(['./common'], function (common) {
 
 	/*----- FUNCTIONS -----*/
 
+	var appendLoader = function(){
+		var loaderContainer = $('<div id="loader-container"></div>')
+		var loader = $('<span class="loader"></span>');
+
+		$('body').append(loaderContainer);
+		$(loaderContainer).append(loader);
+	}
+
 	var appendImages = function(images){
 		console.log('Appending images...');
 		images.forEach(function(item, index, array){
-			console.log(item);
+			// console.log(item);
 			var img = $('<div class="item"><a name="'+item.projectId+'" href="projects.html#'+item.projectId+'"><img src="'+item.url+'" /></a></div>');
 			$('#container').append(img);
 		});
@@ -22,15 +30,20 @@ define(['./common'], function (common) {
 
 	var drawLayout = function(){
 		$container = $('#container').masonry();
+		$('.item').css('visibility', 'hidden');
 		// layout Masonry again after all images have loaded
 		$container.imagesLoaded( function() {
-		  $container.masonry({
-  				// columnWidth: 50,
-  				containerStyle: null,
-  				itemSelector: '.item'
+			$container.masonry({
+				// columnWidth: 50,
+				containerStyle: null,
+				itemSelector: '.item'
 			});
-		  	attachEvents();
-  			common.appendFooter();
+			$container.masonry('on', 'layoutComplete', function(items){
+				$('#loader-container').remove();
+				$('.item').css('visibility', 'visible');
+			  	attachEvents();
+	  			common.appendFooter();				
+			});
 		});
 	}
 
@@ -63,8 +76,9 @@ define(['./common'], function (common) {
 	}
 
 	common.init(function(data){
-		console.log(JSON.parse(data.projects));
-		console.log(JSON.parse(data.images));
+		// console.log(JSON.parse(data.projects));
+		// console.log(JSON.parse(data.images));
+		appendLoader();
 		common.appendSidebar(JSON.parse(data.projects));
 		appendImages(JSON.parse(data.images));
 	});

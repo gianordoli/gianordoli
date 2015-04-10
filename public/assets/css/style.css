@@ -320,6 +320,54 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 }
 
 
+/*----- LOADER -----*/
+#loader-container{
+	text-align: center;
+	top: 50%;
+	position: absolute;
+	left: calc((100% - 1225px)/2 + 175px);
+	width: 1050px;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);	
+}
+
+#loader-container .loader {
+	width: 20px;
+	height: 20px;
+	border: 3px solid black;
+	display: inline-block;
+    -webkit-animation: myfirst 1s; /* Chrome, Safari, Opera */
+    animation: myfirst 1s;
+    -webkit-animation-iteration-count: infinite; /* Chrome, Safari, Opera */
+    animation-iteration-count: infinite;    
+}
+
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes myfirst {
+    from {
+        -ms-transform: rotate(0deg); /* IE 9 */
+    	-webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
+    	transform: rotate(0deg);
+    }
+    to {
+        -ms-transform: rotate(90deg); /* IE 9 */
+    	-webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+    	transform: rotate(90deg);
+    }
+}
+/* Standard syntax */
+@keyframes myfirst {
+    from {
+    	transform: rotate(0deg);
+    }
+    to {
+    	transform: rotate(90deg);
+    }
+}
+
+/*----- RESPONSIVE -----*/
 
 @media screen and (max-width: 1225px) {
 
@@ -335,6 +383,11 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 	footer{	
 		width: calc(100% - 175px);
 		margin-left: 175px;
+	}
+
+	#loader-container{
+		width: calc(100% - 175px);
+		left: 175px;
 	}	
 }
 
@@ -376,6 +429,12 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 	footer aside{
 		float: left;
 	}
+
+	#loader-container{
+		width: 100%;
+		left: 0;
+	}
+
 
 }
 
