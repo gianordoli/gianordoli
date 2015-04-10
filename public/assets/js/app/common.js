@@ -14,7 +14,7 @@ define(function (require) {
 	            if(response.error){
 	            	throw response.error	
 	            }else{
-					console.log(response);
+					// console.log(response);
 					callback(response);
 	            }
 	        });		
