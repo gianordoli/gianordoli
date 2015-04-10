@@ -72,9 +72,10 @@ define(function (require) {
 			$('footer').append(aside);
 		},
 
-		addImagesPath: function(){
+		addImagesPath: function(content){
+			console.log('Called addImagesPath.')
 			var path = '/assets/img/';
-			var images = $('img');
+			var images = $(content).find('img');
 
 			// Current page is...?
 			var url = window.location.pathname;
@@ -90,6 +91,7 @@ define(function (require) {
 				var originalSrc = $(this).attr('src');
 				$(this).attr('src', path + originalSrc);
 			});
+			return content;
 		}
 	} 
 });

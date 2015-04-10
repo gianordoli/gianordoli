@@ -19,17 +19,19 @@ define(['./common'], function (common) {
 
 	var appendImages = function(images){
 		console.log('Appending images...');
+		var container = $('#container');
 		images.forEach(function(item, index, array){
 			// console.log(item);
 			var img = $('<div class="item"><a name="'+item.projectId+'" href="projects.html#'+item.projectId+'"><img src="'+item.url+'" /></a></div>');
-			$('#container').append(img);
+			$(container).append(img);
 		});
-		common.addImagesPath();
-		drawLayout();
+		// Add images path
+		container = common.addImagesPath(container);		
+		drawLayout(container);
 	}
 
-	var drawLayout = function(){
-		$container = $('#container').masonry();
+	var drawLayout = function(parentDiv){
+		$container = $(parentDiv).masonry();
 		$('.item').css('visibility', 'hidden');
 		// layout Masonry again after all images have loaded
 		$container.imagesLoaded( function() {

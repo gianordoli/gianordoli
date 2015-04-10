@@ -47,11 +47,13 @@ define(['./common'], function (common) {
 		// Releasing the images form inside the paragraphs
 		projectContainer = releaseImages(projectContainer);
 
+		// Add images path
+		projectContainer = common.addImagesPath(projectContainer);		
+
 		$('#container').html('')
 					   .append(projectContainer);
+					   
 		$('body').scrollTop(0);
-		
-		common.addImagesPath();
 	}
 
 	// Adding the div video tag and class to the iframes
