@@ -5,16 +5,6 @@
   box-sizing: border-box;         /* Opera/IE 8+ */;
 }
 
-/*@font-face {
-	font-family: overpass-regular;
-	src: url('/assets/fonts/overpass_regular.ttf');
-}
-
-@font-face {
-	font-family: overpass-bold;
-	src: url('/assets/fonts/overpass_bold.ttf');
-}*/
-
 /* www.aestheticallyloyal.com/public/optimize-legibility/ */ 
 h1,h2,h3,h4,h5,h6 {
 	text-rendering: optimizeLegibility;
@@ -33,7 +23,7 @@ a:link, a:visited, a:active, a:hover{ outline: 0; }
 
 body{
 	/*font-family: overpass-regular;*/
-	font-family: "museo-sans";
+	font-family: "soleil";
 }
 
 	/* FOOTER */
