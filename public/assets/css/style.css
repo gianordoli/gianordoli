@@ -23,7 +23,7 @@ a:link, a:visited, a:active, a:hover{ outline: 0; }
 
 body{
 	/*font-family: overpass-regular;*/
-	font-family: "soleil";
+	font-family: "soleil", Helvetica, Arial, sans-serif;
 }
 
 	/* FOOTER */
