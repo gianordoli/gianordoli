@@ -5,20 +5,10 @@
   box-sizing: border-box;         /* Opera/IE 8+ */;
 }
 
-@font-face {
-	font-family: overpass-regular;
-	src: url('/assets/fonts/overpass_regular.ttf');
-}
-
-@font-face {
-	font-family: overpass-bold;
-	src: url('/assets/fonts/overpass_bold.ttf');
-}
-
 /* www.aestheticallyloyal.com/public/optimize-legibility/ */ 
 h1,h2,h3,h4,h5,h6 {
 	text-rendering: optimizeLegibility;
-	/*font-weight: normal;*/
+	font-weight: 700;
 }
 
 /* #444 looks better than black: twitter.com/H_FJ/statuses/11800719859 */ 
@@ -32,7 +22,8 @@ a:link, a:visited, a:active, a:hover{ outline: 0; }
 /*---------- COMMON ----------*/
 
 body{
-	font-family: overpass-regular;
+	/*font-family: overpass-regular;*/
+	font-family: "soleil";
 }
 
 	/* FOOTER */
@@ -48,7 +39,7 @@ body{
 
 	footer hr{
 	 	border: none;
-	 	height: 3px;
+	 	height: 2px;
 	 	background-color: #333; 	
 	}
 
@@ -93,10 +84,10 @@ body{
 
 	#sidebar h1 {
 		text-transform: uppercase;
-		font-size: 16px;
-		font-family: overpass-bold;
-		line-height: 18px;
-		letter-spacing: 1px;
+		font-size: 20px;
+		/*font-family: overpass-bold;*/
+		line-height: 20px;
+		letter-spacing: 2px;
 		margin-top: 0;
 	}
 
@@ -106,12 +97,12 @@ body{
 
 	#sidebar h2 {
 		font-size: 13px;
-		border-bottom: 3px solid #333;
-		border-top: 3px solid #333;
+		border-bottom: 2px solid #333;
+		border-top: 2px solid #333;
 		padding: 5px 0;
-		margin: 5px 0;
+		margin: 10px 0 5px 0;
 		text-transform: uppercase;
-		font-family: overpass-bold;
+		/*font-family: overpass-bold;*/
 		letter-spacing: 1px
 	}
 	#sidebar ul{
@@ -133,12 +124,15 @@ body{
 		padding-bottom: 10px;
 	}
 
-	#container h1,
+	#container h1 {
+		text-transform: uppercase;
+		/*font-family: overpass-bold;*/
+		letter-spacing: 1px;	
+	}
+
 	#container h2 {
 		text-transform: uppercase;
-		font-family: overpass-bold;
-		letter-spacing: 1px;
-	}
+	}	
 
 	#container a:link,
 	#container a:visited,
@@ -180,6 +174,7 @@ body{
 
 #container .project-container h2 {
 	font-size: 13px;
+	line-height: 18px;
 	margin: 10px 0 0 0;
 }
 
@@ -293,19 +288,28 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 
 
 #container .project-container.about h2 {
-	padding-top: 20px;
-	border-bottom: 3px solid #333;
+	font-size: 13px;
+	border-bottom: 2px solid #333;
+	border-top: 2px solid #333;
+	padding: 5px 0;
+	margin: 20px 0 5px 0;
+	text-transform: uppercase;
+	/*font-family: overpass-bold;*/
+	letter-spacing: 1px;	
+	line-height: 18px;
 }
 #container .project-container.about h3 {
-	font-family: overpass-bold;
+	/*font-family: overpass-bold;*/
 	text-transform: uppercase;
 	font-size: 13px;
 	margin: 10px 0 0 0;
+	line-height: 18px;
 }
 #container .project-container.about h4 {
 	font-size: 13px;
+	line-height: 18px;
 	margin: 0;
-	font-family: overpass-bold;
+	/*font-family: overpass-bold;*/
 }
 #container .project-container.about ul{
 	list-style-type: disc;	
