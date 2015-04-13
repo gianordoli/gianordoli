@@ -29,7 +29,7 @@ define(['./common'], function (common) {
             if(response.error){
             	throw response.error	
             }else{
-				console.log(response);
+				// console.log(response);
 				appendProject(response.project);
             }
         });			
@@ -85,7 +85,7 @@ define(['./common'], function (common) {
 	}
 
 	common.init(function(data){
-		console.log(JSON.parse(data.projects));
+		// console.log(JSON.parse(data.projects));
 		common.appendSidebar(JSON.parse(data.projects));
 		common.appendFooter();
 		hashRouter();

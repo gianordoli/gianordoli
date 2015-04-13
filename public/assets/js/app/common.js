@@ -73,7 +73,7 @@ define(function (require) {
 		},
 
 		addImagesPath: function(content){
-			console.log('Called addImagesPath.')
+			// console.log('Called addImagesPath.')
 			var path = '/assets/img/';
 			var images = $(content).find('img');
 
@@ -86,7 +86,7 @@ define(function (require) {
 			}else{
 				path += 'large/';
 			}
-			console.log(path);
+			// console.log(path);
 			$.each(images, function(index, item){
 				var originalSrc = $(this).attr('src');
 				$(this).attr('src', path + originalSrc);
