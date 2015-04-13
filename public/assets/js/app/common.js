@@ -56,7 +56,7 @@ define(function (require) {
 			console.log('Appending footer.');
 
 			var footer = $('<footer><hr/></footer>');
-			var p = $('<p>© 2008 ~ 2015 Gabriel Gianordoli – All rights reserved.</p>');
+			var p = $('<p>© 2006 ~ 2015 Gabriel Gianordoli – All rights reserved.</p>');
 			var aside = $('<aside>' +
 						  '<a href="mailto:gianordoligabriel@gmail.com" target="_blank">Email</a>, ' +
 						  '<a href="https://twitter.com/gianordoli" target="_blank">Twitter</a>, ' +
