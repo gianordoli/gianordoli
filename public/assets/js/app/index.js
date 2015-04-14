@@ -81,6 +81,7 @@ define(['./common'], function (common) {
 		// console.log(JSON.parse(data.projects));
 		// console.log(JSON.parse(data.images));
 		appendLoader();
+		common.appendGoogleAnalytics();		
 		common.appendSidebar(JSON.parse(data.projects));
 		appendImages(JSON.parse(data.images));
 	});
