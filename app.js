@@ -272,7 +272,7 @@ app.post('/admin-delete-project', function(req, res) {
 
 
 /*----------------- INIT SERVER -----------------*/
-var PORT = 80; //the port you want to use
+var PORT = 3333; //the port you want to use
 app.listen(PORT, function() {
     console.log('Server running at port ' + PORT + '. Ctrl+C to terminate.');
 });
