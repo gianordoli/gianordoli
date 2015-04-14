@@ -31,10 +31,10 @@ body{
 		width: 1050px;
 		position: static;
 	 	font-size: 13px;
-	 	line-height: 10px;
+	 	line-height: 18px;
 	 	margin-left: calc((100% - 1225px)/2 + 175px);
 	 	margin-bottom: 20px;
-	 	padding: 10px ;
+	 	padding: 10px;
 	}
 
 	footer hr{
@@ -46,6 +46,7 @@ body{
 	footer p{
 		float: left;
 		display: inline-block;
+		margin: 0;
 		margin: 5px 5px 5px 0;
 	}
 
@@ -437,6 +438,7 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 	#loader-container{
 		width: 100%;
 		left: 0;
+		top: 75%;
 	}
 
 

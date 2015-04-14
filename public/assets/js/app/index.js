@@ -44,7 +44,6 @@ define(['./common'], function (common) {
 				$('#loader-container').remove();
 				$('.item').css('visibility', 'visible');
 			  	attachEvents();
-	  			common.appendFooter();				
 			});
 		});
 	}
@@ -83,5 +82,6 @@ define(['./common'], function (common) {
 		appendLoader();
 		common.appendSidebar(JSON.parse(data.projects));
 		appendImages(JSON.parse(data.images));
+		common.appendFooter();
 	});
 });
