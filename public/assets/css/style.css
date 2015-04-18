@@ -5,6 +5,7 @@
   box-sizing: border-box;         /* Opera/IE 8+ */;
 }
 
+
 /* www.aestheticallyloyal.com/public/optimize-legibility/ */ 
 h1,h2,h3,h4,h5,h6 {
 	text-rendering: optimizeLegibility;
@@ -171,6 +172,7 @@ body{
 	font-size: 16px;
 	line-height: 1;
 	margin: 20px 0 0 0;
+	display: inline-block;
 }
 
 #container .project-container h2 {
@@ -217,10 +219,12 @@ body{
 /*	margin: 0;*/
 }
 
+#container .project-container img{
+	display: inline-block;
+}
+
 #container .project-container img:not(.column){
 	width: 100%;
-	display: block;
-	margin: 0;
 }
 
 #container .project-container img:not(:first-child){
@@ -228,9 +232,8 @@ body{
 }
 
 #container .project-container img.half{
-	display: inline-block;
-	margin: 10px 0 0 0;
-	width: calc(50% - 5px);
+	/*margin: 10px 0 0 0;*/
+	width: calc(50% - 10px);
 }
 
 #container .project-container img.left{
@@ -441,7 +444,13 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 		top: 85%;
 	}
 
+	#container .project-container img:not(:first-child){
+		margin: 10px 0 0 0;
+	}
 
+	#container .project-container img.half{
+		width: calc(50% - 5px);
+	}
 }
 
 /* For mobile, change to a 2-column grid */
