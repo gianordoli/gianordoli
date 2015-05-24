@@ -92,6 +92,19 @@ define(function (require) {
 				$(this).attr('src', path + originalSrc);
 			});
 			return content;
-		}
+		},
+
+		addImagesAlt: function(content){
+			// console.log('Called addImagesPath.')
+			var path = '/assets/img/';
+			var images = $(content).find('img');
+
+			$.each(images, function(index, item){
+				var newAlt = $(this).attr('alt') + ' - Gabriel Gianordoli';
+				$(this).attr('alt', newAlt);
+				$(this).attr('title', newAlt);
+			});
+			return content;
+		}		
 	} 
 });

@@ -46,9 +46,8 @@ define(['./common'], function (common) {
 
 		// Releasing the images form inside the paragraphs
 		projectContainer = releaseImages(projectContainer);
-
-		// Add images path
-		projectContainer = common.addImagesPath(projectContainer);		
+		projectContainer = common.addImagesPath(projectContainer);	// Add images path
+		projectContainer = common.addImagesAlt(projectContainer);	// Add images alt
 
 		$('#container').html('')
 					   .append(projectContainer);

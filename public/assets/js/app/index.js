@@ -25,8 +25,7 @@ define(['./common'], function (common) {
 			var img = $('<div class="item"><a name="'+item.projectId+'" href="projects.html#'+item.projectId+'"><img src="'+item.url+'" /></a></div>');
 			$(container).append(img);
 		});
-		// Add images path
-		container = common.addImagesPath(container);		
+		container = common.addImagesPath(container); // Add images path
 		drawLayout(container);
 	}
 
