@@ -41,13 +41,12 @@ define(['./common'], function (common) {
 		var projectContainer = $('<div class="project-container"></div>');
 		$(projectContainer).html(project.content);
 		
-		// Add video div to iframe
-		projectContainer = addVideoDiv(projectContainer);
-
-		// Releasing the images form inside the paragraphs
-		projectContainer = releaseImages(projectContainer);
+		// The markdown content need some adjustments...
+		projectContainer = addVideoDiv(projectContainer);			// Add video div to iframe
+		projectContainer = releaseImages(projectContainer);			// Releasing the images form inside the paragraphs
 		projectContainer = common.addImagesPath(projectContainer);	// Add images path
 		projectContainer = common.addImagesAlt(projectContainer);	// Add images alt
+		projectContainer = addTargetBlank(projectContainer);		// Adding target="_blank" to all links
 
 		$('#container').html('')
 					   .append(projectContainer);
@@ -68,6 +67,16 @@ define(['./common'], function (common) {
 				}
 				$(videoDiv).attr('class', divClass)
 			    $(item).wrap(videoDiv);
+			});
+		}
+	    return content;
+	}
+
+	var addTargetBlank = function(content){
+		var links = $(content).find('a');
+		if(links.length > 0){
+			$.each(links, function(index, item){
+				$(item).attr('target', '_blank');
 			});
 		}
 	    return content;
