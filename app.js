@@ -113,16 +113,17 @@ app.post('/public-start', function(req, res) {
 app.post('/public-load-project', function(req, res) {   
     // console.log(req.body.projectId);
     parse.find('projects', req.body.projectId, function (err, response) {
-        
-        // console.log(response.content);           // Markdown
-        // console.log(marked(response.content));   // Parsed
+        if(!err){
+            // console.log(response.content);           // Markdown
+            // console.log(marked(response.content));   // Parsed
 
-        res.json({
-            project: {
-                title: response.title,
-                content: marked(response.content)
-            }
-        });
+            res.json({
+                project: {
+                    title: response.title,
+                    content: marked(response.content)
+                }
+            });
+        }
     });
 });
 
