@@ -12,7 +12,110 @@
 body{
 	font-family: Helvetica, Arial, sans-serif;
 	/*font-family: 'neue';*/
-	font-size: 12;
+	font-size: 12px;
+}
+
+div#logo{
+  position: absolute;
+  z-index: 10;  
+  top: 0;
+  left: 0;
+}
+
+div#left-panel{
+  position: absolute;
+  z-index: 20;
+  top: 160px;
+  left: 40px;
+  width: 245px;
+  height: calc(100% - 210px);
+  overflow-y: auto;
+}
+
+select#term-select{
+  position: absolute;
+  z-index: 30;
+  top: 50px;
+  right: 285px;
+  width: 100px;
+}
+
+div#right-panel{
+  position: absolute;
+  z-index: 40;
+  top: 50px;
+  right: 40px;
+  width: 245px;
+  height: calc(100% - 100px);
+  
+  display: flex;
+  flex-direction: column;
+}
+
+    div#right-panel div.up{
+      /*background: green;*/
+    }
+
+      /* Search Box*/
+      div#right-panel div.up div#search-container{
+        width: 100%;
+        visibility: hidden;
+        border: 2px solid #E6E6E6;
+        height: 24px;
+      }
+
+      div#right-panel div.up div#search-container.visible{
+        visibility: visible;
+      }
+
+        div#right-panel div.up div#search-container input#search-box{
+          border: 0;  
+          width: calc(100% - 20px);
+          height: 20px;
+        } 
+
+        div#right-panel div.up div#search-container input#search-button{
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          border: 0;
+          background-color: white;
+          background-image: url('../images/search_button.svg');
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: 14px 14px;
+          float: right;
+          cursor: pointer;
+        } 
+
+    /* Courses List */
+    div#right-panel div.down{
+      flex-grow: 1;
+      overflow-y: auto;
+      /*background: red;*/
+    }
+
+    div#right-panel div ul#courses-list{
+      /*display: table-cell;*/
+      /*height: 100%;
+      overflow-y: auto; */
+      /*background-color: red;*/
+    }
+
+      div#right-panel div ul#courses-list li.mouseover{
+        color: white;
+        background-color: black;
+      }
+
+      div#right-panel div ul#courses-list li.search-result{
+        background-color: rgba(0, 0, 0, 20);
+      }      
+
+svg{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
 }
 
 /*svg text{
@@ -21,7 +124,7 @@ body{
 
 /* Path of Study */
 g#path-of-study-chart g.path-of-study path {
-  stroke: #fff;
+  /*stroke: #fff;*/
   stroke-width: 2px;
   /*fill: #E6E6E6;*/
   fill: white;

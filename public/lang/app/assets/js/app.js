@@ -13,7 +13,8 @@ app.main = (function(){
     var anchors		= [];	// Arc coordinates; used as 'anchors' on the network graph;
     					 	// Will compute after drawing them.
 
-	var graph;	// Network graph with courses;
+	var graph;				// Network graph with courses;
+	var searchEngineIndex;
 
 	/*------------------ CATEGORIES -------------------*/
 	// Categories change from term to term. Think about how to handle arc updates
@@ -223,7 +224,136 @@ app.main = (function(){
 		});
 	};
 
-	// The donut 'communicates' with the graph through these 2 functions
+	function createSearchEngine(){
+		searchEngineIndex = lunr(function(){
+		    // boost increases the importance of words found in this field
+		    this.field('title', {boost: 10});
+		    // this.field('description', {boost: 2});
+		    // the id
+		    this.ref('course_number');
+		});
+	}
+
+	function addSearchListener(){
+		
+		var searchBox = document.getElementById('search-box');
+		searchBox.addEventListener('keyup', function(e){
+			if(e.keyCode === 13){
+				search();
+			}
+		});
+
+		var searchButton = document.getElementById('search-button');
+		searchButton.addEventListener('mouseup', function(){
+			search();
+		});
+
+		function search(){
+			var query = searchBox.value;
+			// console.log(query);
+			var results = searchEngineIndex.search(query);
+			console.log(results);
+			highlightResults(results);
+		}
+	}
+
+	function highlightResults(results){
+		// console.log('Called highlightResults');
+		var opacityScale = d3.scale.linear()
+			.domain([0, 1])
+			.range([0, 0.5])
+			;
+
+		var ulCourses = d3.select('#courses-list');
+		// Loop through each course on the list...
+		ulCourses.selectAll('li')
+			.each(function(d, i){
+				var thisCourse = d3.select(this);
+				// First, let's clean up any previous formatting
+				thisCourse.style('background-color', null);
+
+				// Now loop through each search result
+				for(var j = 0; j < results.length; j++){
+					// If course's and result's id matches...
+					if(d['course_number'] === results[j]['ref']){
+						// Highlight course based on its resulting score
+						d3.select(this)
+							.style('background-color', 'rgba(232, 46, 33, '+opacityScale(results[j]['score'])+')')
+							;
+					}
+				}
+			});
+	}
+
+	function updateSearchEngine(){
+		for(var i = 0; i < prevFilter.length; i++){
+		    searchEngineIndex.add({
+		    	title: prevFilter[i]['title'],
+		        course_number: prevFilter[i]['course_number']
+		    });			
+		}
+		// console.log(searchEngineIndex);
+	}
+
+	function updateCoursesList(){
+		
+		// Paths of Study
+		var ulPathsOfStudy = d3.select('#paths-of-study-list');
+		
+		var pathOfStudy = ulPathsOfStudy.selectAll('li')
+			.data(selected)
+			;
+
+		var pathOfStudyEnter = pathOfStudy
+			.enter()
+			.append('li')
+			.text(function(d, i){
+				return d;
+			})
+			;
+
+		var pathOfStudyExit = pathOfStudy
+			.exit()
+			.remove()
+			;		
+
+		// Search Box		
+		d3.select('#search-container').classed("visible", prevFilter.length > 0);
+		// console.log(prevFilter.length > 0);
+		// console.log(d3.select('#search-box').classed());
+		
+		// Courses
+		var ulCourses = d3.select('#courses-list');
+		// console.log(prevFilter);
+		
+		var courseSelection = ulCourses.selectAll('li')
+			.data(prevFilter)
+			;
+
+		var courseEnter = courseSelection
+			.enter()
+			.append('li')
+			;
+
+		var courseUpdate = courseSelection
+			.attr('id', function(d, i){
+				return 'course_' + d.course_number;
+			})
+			.text(function(d, i){
+				return d.title;
+			})
+			;
+
+		var courseExit = courseSelection
+			.exit()
+			.remove()
+			;
+
+	}
+
+	// The donut 'communicates' with the graph through these 2 functions:
+	// drawGraph and updateGraph
+	// updateGraph also updates the list on the right side and the search
 	function drawGraph(){
 
 		console.log('drawGraph()');
@@ -250,17 +380,28 @@ app.main = (function(){
 				}
 			}, 1000);
 		}
-	};
+
+		createSearchEngine();
+		addSearchListener();
+	}
 
 	function updateGraph(){
 		
+		// This filter will loop through each course...
 		var newFilter = _.filter(courses, function(o) {
 			var nMatches = 0;
+			// ..., loop through each selected path of study and...
 			for(var i = 0; i < selected.length; i++){
+				// ...for each match found within
+				// selected[i] x o.path_of_study
 				if(o.path_of_study.indexOf(selected[i]) > -1){
+					// Add one to this counter.
 					nMatches ++;
 				}
 			}
+			// If by the end the course has as many matches as selected paths of study
+			// AND there is something selected
+			// THEN include it into our new filter
 			return nMatches === selected.length && selected.length > 0;
 		});
 		// console.log('newFilter: ' + newFilter.length);
@@ -287,8 +428,10 @@ app.main = (function(){
 
 		prevFilter = newFilter;
 
-		graph.update();
-	}	
+		graph.update();			// update graph
+		updateCoursesList();	// update courses list on the right-side panel
+		updateSearchEngine();
+	}
 
 	// (list of courses, position of arcs, selected pathOfStudy)
 	function myGraph(){
@@ -460,24 +603,33 @@ app.main = (function(){
 			
 			// console.log('myGraph.update()');
 
+			// Links
 			var linkSelection = coursesChart.selectAll('line')
 	      		.data(links)
 	      		;
 
 	      	var linkEnter = linkSelection.enter()
 	    		.append("line")
+	    		;
+
+	    	var linkUpdate = linkSelection
 	      		.style("stroke-width", function(d) { return Math.sqrt(d.value); })
 	      		;
 
-	      	linkSelection.exit()
+	      	var linkExit = linkSelection
+	      		.exit()
 	      		.remove()
 	      		;
 
+	      	// Nodes
 			var nodeSelection = coursesChart.selectAll("circle")
 				.data(nodes);
 
 			var nodeEnter = nodeSelection.enter()
 				.append("circle")
+				;
+
+			var nodeUpdate = nodeSelection
 			    .attr("r", radius)
 			    .attr("id", function(d, i){
 			    	return d.title;
@@ -493,8 +645,27 @@ app.main = (function(){
 			    	// newGraph.removeNode(d.id);
 			    	console.log(d);
 			    })
-				.on('mouseover', tip.show)
-				.on('mouseout', tip.hide)			    
+				.on('mouseover', function(d, i){
+					tip.show(d);
+					d3.select('#course-description')
+						// .text(d.description)
+						.text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non bibendum sem, sit amet blandit justo. Quisque volutpat viverra nulla, sed vehicula purus auctor a. Nulla auctor luctus euismod. Proin sem arcu, molestie id sapien vitae, mollis consectetur lorem. Donec vulputate lacinia vulputate. Sed rhoncus lectus at sem accumsan, a vulputate metus mattis. Aenean vitae dictum nisl. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean ut lacus a elit lacinia gravida non nec nisl. In vel nisl nec enim imperdiet pretium dictum non elit. Proin scelerisque a lectus a hendrerit. Curabitur sit amet tempus turpis, vel malesuada augue. Maecenas dapibus arcu id est interdum, posuere fringilla augue sodales.");
+						;
+
+					// Highlight course name on right-side list
+					d3.select('li#course_'+d.course_number)
+						.classed('mouseover', true)
+						;
+				})
+				.on('mouseout', function(d, i){
+					tip.hide();
+					d3.select('#course-description')
+						.text('')
+						;
+					d3.select('li#course_'+d.course_number)
+						.classed('mouseover', false)
+						;						
+				})			    
 	      		// .each(function(d, i){	
 	      		// 	if(!d.isAnchor){
 	      		// 		// Let's make nodes show up somewhere inside the donut
@@ -509,7 +680,8 @@ app.main = (function(){
 	      		// })
 			    ;
 
-			nodeSelection.exit()
+			var nodeExit = nodeSelection
+				.exit()
 				.remove()
 				;
 
