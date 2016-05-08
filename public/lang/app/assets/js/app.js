@@ -19,8 +19,8 @@ app.main = (function(){
 	/*------------------ CATEGORIES -------------------*/
 	// Categories change from term to term. Think about how to handle arc updates
 	var loadPathsOfStudy = function(){
-		// d3.csv('assets/data/fall_2015_path_of_study.tsv', function(error, data) {
-		d3.json('assets/data/lang_paths_of_study_fall_2015.json', function(error, data) {			
+		// d3.json('assets/data/fall_2015/lang_paths_of_study_fall_2015.json', function(error, data) {
+		d3.json('assets/data/2015/lang_paths_of_study_2015.json', function(error, data) {						
 			if (error) return console.warn(error);
 			// console.log('Loaded categories:');
 			// console.log(data);
@@ -216,7 +216,8 @@ app.main = (function(){
 
 	/*-------------------- COURSES --------------------*/
 	var loadCourses = function(){
-		d3.json('assets/data/lang_courses_fall_2015.json', function(error, data) {
+		// d3.json('assets/data/fall_2015/lang_courses_fall_2015.json', function(error, data) {
+		d3.json('assets/data/2015/lang_courses_2015.json', function(error, data) {
 			if (error) return console.warn(error);
 			// console.log('Loaded courses:');
 			// console.log(data);
@@ -230,7 +231,7 @@ app.main = (function(){
 		    this.field('title', {boost: 10});
 		    // this.field('description', {boost: 2});
 		    // the id
-		    this.ref('course_number');
+		    this.ref('subject_code_course_number');
 		});
 	}
 
@@ -275,7 +276,7 @@ app.main = (function(){
 				// Now loop through each search result
 				for(var j = 0; j < results.length; j++){
 					// If course's and result's id matches...
-					if(d['course_number'] === results[j]['ref']){
+					if(d['subject_code_course_number'] === results[j]['ref']){
 						// Highlight course based on its resulting score
 						d3.select(this)
 							.style('background-color', 'rgba(232, 46, 33, '+opacityScale(results[j]['score'])+')')
@@ -289,7 +290,7 @@ app.main = (function(){
 		for(var i = 0; i < prevFilter.length; i++){
 		    searchEngineIndex.add({
 		    	title: prevFilter[i]['title'],
-		        course_number: prevFilter[i]['course_number']
+		        subject_code_course_number: prevFilter[i]['subject_code_course_number']
 		    });			
 		}
 		// console.log(searchEngineIndex);
@@ -337,7 +338,7 @@ app.main = (function(){
 
 		var courseUpdate = courseSelection
 			.attr('id', function(d, i){
-				return 'course_' + d.course_number;
+				return 'course_' + d.subject_code_course_number;
 			})
 			.text(function(d, i){
 				return d.title;
@@ -365,7 +366,7 @@ app.main = (function(){
 
 		// Debugging, not really using this now
 		function debugLinks(){
-			var source = '[{"title":"Rvolution & Pop Media in Hist","path_of_study":["Global Studies"],"course_number":"910"},{"title":"Documentary Self","path_of_study":["The Arts","Culture & Media","Economics","Literary Studies","Journalism + Design","Religious Studies","Screen Studies"],"course_number":"920"},{"title":"The Spiritual Autobiography","path_of_study":["Global Studies","Anthropology","Contemporary Music","Journalism + Design","Psychology","Education Studies","The Arts","Liberal Arts","Literary Studies","Culture & Media","Economics","History","Sociology","Theater","Religious Studies","Interdisciplinary Science","Philosophy","Social Inquiry","Politics"],"course_number":"1000"},{"title":"Reading Poetry","path_of_study":["The Arts","Interdisciplinary Science"],"course_number":"1002"},{"title":"Fantastic Short Fiction","path_of_study":["Economics"],"course_number":"1003"},{"title":"Self and Social Structure","path_of_study":["Liberal Arts"],"course_number":"1008"},{"title":"Fundamentals of Western Music","path_of_study":["Contemporary Music","Screen Studies"],"course_number":"1010"}]';
+			var source = '[{"title":"Rvolution & Pop Media in Hist","path_of_study":["Global Studies"],"subject_code_course_number":"910"},{"title":"Documentary Self","path_of_study":["The Arts","Culture & Media","Economics","Literary Studies","Journalism + Design","Religious Studies","Screen Studies"],"subject_code_course_number":"920"},{"title":"The Spiritual Autobiography","path_of_study":["Global Studies","Anthropology","Contemporary Music","Journalism + Design","Psychology","Education Studies","The Arts","Liberal Arts","Literary Studies","Culture & Media","Economics","History","Sociology","Theater","Religious Studies","Interdisciplinary Science","Philosophy","Social Inquiry","Politics"],"subject_code_course_number":"1000"},{"title":"Reading Poetry","path_of_study":["The Arts","Interdisciplinary Science"],"subject_code_course_number":"1002"},{"title":"Fantastic Short Fiction","path_of_study":["Economics"],"subject_code_course_number":"1003"},{"title":"Self and Social Structure","path_of_study":["Liberal Arts"],"subject_code_course_number":"1008"},{"title":"Fundamentals of Western Music","path_of_study":["Contemporary Music","Screen Studies"],"subject_code_course_number":"1010"}]';
 			var sourceData = JSON.parse(source);
 			console.log(sourceData);
 			var i = 0;
@@ -411,7 +412,7 @@ app.main = (function(){
 
 		// Remove nodes
 		if(prevFilter.length > newFilter.length){
-			var diff = _.differenceBy(prevFilter, newFilter, 'course_number');
+			var diff = _.differenceBy(prevFilter, newFilter, 'subject_code_course_number');
 			if(diff.length > 0){
 				for(var i = 0; i < diff.length; i++){
 					graph.removeNode(diff[i]['id']);
@@ -461,7 +462,7 @@ app.main = (function(){
 
         var addIdToNode = function(_obj){
         	var obj = _obj;
-        	obj.id = obj.isAnchor ? obj.path_of_study : obj.course_number;
+        	obj.id = obj.isAnchor ? obj.path_of_study : obj.subject_code_course_number;
         	return obj;
         };
 
@@ -503,7 +504,7 @@ app.main = (function(){
 					
 					if(obj['path_of_study'].indexOf(anchors[i]['path_of_study']) > -1){
 						
-						var sourceIndex = findNodeIndexById(obj['course_number']);			// Course
+						var sourceIndex = findNodeIndexById(obj['subject_code_course_number']);			// Course
 						var targetIndex = findNodeIndexById(anchors[i]['path_of_study']);	// Anchor
 						// console.log(sourceIndex);
 						var newLink = { source: sourceIndex,
@@ -526,7 +527,7 @@ app.main = (function(){
 
 		/*---------- PUBLIC ----------*/
         newGraph.addNode = function(obj) {
-        	obj = addIdToNode(obj);		// Anchor id: path_of_study; Course id: course_number
+        	obj = addIdToNode(obj);		// Anchor id: path_of_study; Course id: subject_code_course_number
         	obj = addRadiusToNode(obj);
         	obj = addLinkCountToNode(obj);
 
@@ -653,7 +654,7 @@ app.main = (function(){
 						;
 
 					// Highlight course name on right-side list
-					d3.select('li#course_'+d.course_number)
+					d3.select('li#course_'+d.subject_code_course_number)
 						.classed('mouseover', true)
 						;
 				})
@@ -662,7 +663,7 @@ app.main = (function(){
 					d3.select('#course-description')
 						.text('')
 						;
-					d3.select('li#course_'+d.course_number)
+					d3.select('li#course_'+d.subject_code_course_number)
 						.classed('mouseover', false)
 						;						
 				})			    
