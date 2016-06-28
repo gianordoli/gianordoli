@@ -140,9 +140,9 @@ app.main = (function(){
 					})
 					.attr("dy", function(d, i){
 						if(!d.data.hasOwnProperty('2ndLine')){
-							return - arcWeight + arcWeight/2;
+							return - arcWeight + arcWeight*0.5;
 						}else{
-							return - arcWeight + arcWeight/3;
+							return - arcWeight + arcWeight*0.25;
 						}
 					})
 				// <tspan> 2ndLine
@@ -159,11 +159,14 @@ app.main = (function(){
 									return d.data['2ndLine'];
 							})
 							.each(function(d){
-								var secondLineWidth = this.getComputedTextLength();
+								// var secondLineWidth = this.getComputedTextLength();
 								d3.select(this)
 									// .attr("dx", -(firstLineWidth + secondLineWidth)/1.7)	// CENTERED TEXT
-									.attr("dx", -firstLineWidth)
-									.attr("dy", arcWeight/3)
+									// .attr("dx", -firstLineWidth)
+									// getComputedTextLength doesn't seem to be working right for the Neue font
+									// had to add this 1.28 as a manual compensation
+									.attr("dx", -firstLineWidth*1.28)
+									.attr("dy", arcWeight*0.35)
 									;
 							})
 							;
@@ -216,14 +219,25 @@ app.main = (function(){
 
 	/*-------------------- COURSES --------------------*/
 	var loadCourses = function(){
-		// d3.json('assets/data/fall_2015/lang_courses_fall_2015.json', function(error, data) {
-		d3.json('assets/data/2015/lang_courses_2015.json', function(error, data) {
+		// d3.json('assets/data/fall_2015/lang_courses_with_desc_fall_2015.json', function(error, data) {
+		d3.json('assets/data/2015/lang_courses_with_desc_2015.json', function(error, data) {
 			if (error) return console.warn(error);
 			// console.log('Loaded courses:');
 			// console.log(data);
+			console.log(data.length);
+
+			// Replace whitespaces in subject_code_course_number with underscores
+			data = replaceWhiteSpaces(data);
 			courses = data;			// Won't change unless navigating to a different term
 		});
 	};
+
+	function replaceWhiteSpaces(data){
+		for(var i = 0; i < data.length; i++){
+			data[i]['subject_code_course_number'] = data[i]['subject_code_course_number'].split(' ').join('_');
+		}
+		return data;
+	}
 
 	function createSearchEngine(){
 		searchEngineIndex = lunr(function(){
@@ -405,7 +419,7 @@ app.main = (function(){
 			// THEN include it into our new filter
 			return nMatches === selected.length && selected.length > 0;
 		});
-		// console.log('newFilter: ' + newFilter.length);
+		console.log('newFilter: ' + newFilter.length);
 		// console.log(newFilter);
 		// console.log('prevFilter: ' + prevFilter.length);
 		// console.log(prevFilter);
@@ -648,24 +662,48 @@ app.main = (function(){
 			    })
 				.on('mouseover', function(d, i){
 					tip.show(d);
-					d3.select('#course-description')
-						// .text(d.description)
-						.text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non bibendum sem, sit amet blandit justo. Quisque volutpat viverra nulla, sed vehicula purus auctor a. Nulla auctor luctus euismod. Proin sem arcu, molestie id sapien vitae, mollis consectetur lorem. Donec vulputate lacinia vulputate. Sed rhoncus lectus at sem accumsan, a vulputate metus mattis. Aenean vitae dictum nisl. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean ut lacus a elit lacinia gravida non nec nisl. In vel nisl nec enim imperdiet pretium dictum non elit. Proin scelerisque a lectus a hendrerit. Curabitur sit amet tempus turpis, vel malesuada augue. Maecenas dapibus arcu id est interdum, posuere fringilla augue sodales.");
-						;
+					// console.log(d)
 
 					// Highlight course name on right-side list
 					d3.select('li#course_'+d.subject_code_course_number)
 						.classed('mouseover', true)
 						;
+
+					if(d['description'].length > 0){
+						d3.select('#left-panel')
+							.classed("visible", true)
+							;
+
+						d3.select('#course-title')
+							.text(d['title']);
+							;
+
+						d3.select('#course-description')
+							.text(d['description']);
+							;
+					}
+
 				})
 				.on('mouseout', function(d, i){
 					tip.hide();
-					d3.select('#course-description')
-						.text('')
-						;
+
 					d3.select('li#course_'+d.subject_code_course_number)
 						.classed('mouseover', false)
-						;						
+						;
+
+					// d3.select('#left-panel')
+					// 	.classed("visible", false)
+					// 	;
+
+					// d3.select('#course-title')
+					// 	.text('');
+					// 	;						
+
+					// d3.select('#course-description')
+					// 	.text('')
+					// 	;
+
+
 				})			    
 	      		// .each(function(d, i){	
 	      		// 	if(!d.isAnchor){
