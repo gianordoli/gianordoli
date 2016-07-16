@@ -165,6 +165,7 @@ div#right-panel{
           text-transform: uppercase;
           padding: 4px;
           margin-bottom: 4px;
+          margin-right: 4px;
           height: 26px;
         }        
 
@@ -186,13 +187,14 @@ div#right-panel{
     }
 
       div#right-panel div ul#courses-list li.mouseover{
-        color: white;
-        background-color: black;
+        /*color: white;*/
+        /*background-color: black;*/
+        background-color: rgba(0, 0, 0, 0.2);
       }
 
-      div#right-panel div ul#courses-list li.search-result{
+/*      div#right-panel div ul#courses-list li.search-result{
         background-color: rgba(0, 0, 0, 20);
-      }      
+      }  */    
 
 svg{
   position: absolute;
@@ -213,16 +215,17 @@ g#path-of-study-chart g.path-of-study path {
   stroke-width: 2px;
   /*fill: #E6E6E6;*/
   fill: white;
-  stroke: #E6E6E6;
+  /*stroke: #E6E6E6;*/
+  stroke: #EFEFEF;
 }
 
 	g#path-of-study-chart g.path-of-study path.linked {
-	  stroke: white;
+	  /*stroke: white;*/
 	}
 
 	g#path-of-study-chart g.path-of-study path.selected {
 	  fill: rgb(232, 46, 33);
-	  stroke: white;
+	  /*stroke: white;*/
 	}
 
 g#path-of-study-chart g.path-of-study text {
