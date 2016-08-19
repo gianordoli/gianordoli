@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Autocomplete Archive</title>
+	<meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+	<link rel="stylesheet" href="assets/css/normalize.min.css">
+	<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+	<nav id="header"></nav>
+	<div id="container">
+		<div id="about-container">
+			<h1>Technical Information</h1>
+			<p>The Google Autocomplete Archive runs on NodeJS and MongoDB. In case you're interested in the code, everything is on this <a href="https://github.com/gianordoli/autocomplete_archive" target="_blank">Github repo</a>. If you just want to understand better how it works, take a look into the diagrams below.</p>
+
+			<h2>Saving the Predictions</h2>
+			<p>This process is triggered and executed automatically, on a daily basis.</p>
+			<img src="/assets/img/diagrams_01.png" />
+
+			<h2>Getting the Images and Videos</h2>
+			<p>This process saves the url for the images and videos displayed on the <a href="archive.html">archive page</a>.</p>
+			<img src="/assets/img/diagrams_02.png" />
+
+			<h2>Languages X Services</h2>
+			<p>This is the full list of languages and the services working for each. Predictions for Google News, Books, Recipes, and Products were not included in the archive because they're for English only.</p>
+			<img src="/assets/img/diagrams_03.png" />
+		</div>
+	</div>
+	<script data-main="/assets/js/app" src="/assets/js/lib/require.js"></script>
+</body>
+</html>

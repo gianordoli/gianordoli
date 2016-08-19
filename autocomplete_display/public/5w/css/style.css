@@ -1,0 +1,301 @@
+/* your style begins here */
+
+/*---------- GLOBAL ----------*/
+* {
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */;
+}
+
+/* www.aestheticallyloyal.com/public/optimize-legibility/ */ 
+h1,h2,h3,h4,h5,h6 {
+	text-rendering: optimizeLegibility;
+	/*font-weight: normal;*/
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+/* #444 looks better than black: twitter.com/H_FJ/statuses/11800719859 */ 
+body, select, input, textarea {	color: #333 }
+
+/* maxvoltar.com/archive/-webkit-font-smoothing */
+html { -webkit-font-smoothing: antialiased; }
+
+a:link,
+a:visited{ outline: 0; color: #333; }
+a:active,
+a:hover{ outline: 0; color: #3939bf; }
+
+/*---------- STYLES ----------*/
+
+body, html{
+	width: 100%;
+	height: 100%;
+}
+
+div#about-bt{
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	background-color: rgba(255, 0, 50, 0.65);
+	color: white;
+	font-weight: bold;
+	font-size: 13px;
+	padding: 5px;
+	z-index: 1000;
+	cursor: pointer;
+}
+
+div#about-bt img{
+	display: block;
+}
+
+.container{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	text-align: center;
+}
+
+	.container #results-container{
+
+	}
+
+		.container #results-container .word-container{
+			width: 100vw;
+			height: 100vh;
+			border-bottom: 1px solid #333;
+			/*overflow-x: scroll;
+			overflow-y: hidden;*/
+			overflow: hidden;
+			white-space: nowrap;		
+		}
+
+			.container #results-container .word-container .predictions-container{
+				text-align: center;
+				width: 100vw;
+				height: 100vh;
+				display: inline-block;
+				top: 0;
+			}
+
+				.container #results-container .word-container .predictions-container ul{
+					list-style-type: none;	
+					font-size: 2rem;
+					line-height: 2.5rem;
+					/*font-size: calc(100vh/30);
+					line-height: calc(100vh/20);*/
+					margin: 0;
+					padding: 0;	
+
+					position: relative;
+					top: 47%;
+					width: 100%;
+					-webkit-transform: translateY(-47%);
+					-ms-transform: translateY(-47%);
+					transform: translateY(-47%);
+				}
+
+					.container #results-container .word-container .predictions-container ul li:first-child{
+						font-size: 1.2rem;
+					}
+
+.container#titles{
+	pointer-events: none;
+}
+	
+	.container#titles #titles-container{
+
+	}
+
+		#titles-container .word{
+			width: 100vw;
+			height: 100vh;
+			text-align: center;
+
+		}
+
+			#titles-container .word h1{
+				/*font-size: 16em;*/
+				/*font-size: calc(100vw/6);*/
+				font-size: 16rem;
+				color: rgba(255, 0, 50, 0.65);
+
+				position: relative;
+				top: 50%;
+				width: 100%;
+				-webkit-transform: translateY(-50%);
+				-ms-transform: translateY(-50%);
+				transform: translateY(-50%);
+			}
+
+
+/*--------------- ARROWS ---------------*/
+
+div.nav-container{
+	position: absolute;
+}
+
+div.nav-container#nav-container-right{
+	right: 20px;
+	height: 100%;
+}
+div.nav-container#nav-container-down{
+	bottom: 20px;
+	width: 100%;
+	text-align: center;		
+}
+div.nav-container#nav-container-left{
+	left: 20px;
+	height: 100%;
+}
+div.nav-container#nav-container-up{
+	top: 20px;
+	width: 100%;
+	text-align: center;	
+}
+
+	div.nav{
+		width: 50px;
+		height: 50px;
+		border: 2px solid black;
+		display: inline-block;
+		cursor: pointer;
+	}
+
+		div.nav#left,
+		div.nav#right{
+			position: relative;
+			top: 47%;
+			-webkit-transform: translateY(-47%);
+			-ms-transform: translateY(-47%);
+			transform: translateY(-47%);
+		    -webkit-transform: rotate(-45deg); 
+			-ms-transform: rotate(-45deg);
+			transform: rotate(-45deg); 			
+		}
+
+		div.nav#up,
+		div.nav#down{
+		    -webkit-transform: rotate(45deg); 
+			-ms-transform: rotate(45deg);
+			transform: rotate(45deg);
+		}
+
+		div.nav#right{
+			border-width: 0 2px 2px 0;
+		}
+		div.nav#down{
+			border-width: 0 2px 2px 0;
+		}
+		div.nav#left{
+			border-width: 2px 0 0 2px;
+		}
+		div.nav#up{
+			border-width: 2px 0 0 2px;	
+		}
+
+/*--------------- ABOUT ---------------*/
+#about-container{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	line-height: 20px;
+	padding: 40px;
+	color: white;
+	background-color: rgba(70, 70, 70, 0.9);
+	display: none;
+}
+	#about-container .content{
+		width: 600px;
+		position: relative;
+		top: calc(50% - 150px);
+		display: inline-block;
+	}	
+	#about-container .content a{
+		color: white;
+	}	
+
+/*--------------- LOADER ---------------*/
+#loader-container{
+	text-align: center;
+	top: 50%;
+	width: 100%;
+	position: absolute;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);	
+}
+
+#loader-container .loader {
+	width: 20px;
+	height: 20px;
+	border: 3px solid black;
+	display: inline-block;
+    -webkit-animation: myfirst 1s; /* Chrome, Safari, Opera */
+    animation: myfirst 1s;
+    -webkit-animation-iteration-count: infinite; /* Chrome, Safari, Opera */
+    animation-iteration-count: infinite;    
+}
+
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes myfirst {
+    from {
+        -ms-transform: rotate(0deg); /* IE 9 */
+    	-webkit-transform: rotate(0deg); /* Chrome, Safari, Opera */
+    	transform: rotate(0deg);
+    }
+    to {
+        -ms-transform: rotate(90deg); /* IE 9 */
+    	-webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+    	transform: rotate(90deg);
+    }
+}
+/* Standard syntax */
+@keyframes myfirst {
+    from {
+    	transform: rotate(0deg);
+    }
+    to {
+    	transform: rotate(90deg);
+    }
+}
+
+
+/*------------- RESPONSIVE -------------*/
+
+@media screen and (max-width: 1024px) {
+	#titles-container .word h1{
+		font-size: 13rem;
+	}	
+}
+
+@media screen and (max-width: 700px) {
+
+	.container #results-container .word-container .predictions-container ul{
+		list-style-type: none;	
+		font-size: 1.1rem;
+		line-height: 1.5rem;
+	}
+
+	#titles-container .word h1{
+		font-size: 5rem;
+	}
+
+	.container #results-container .word-container .predictions-container ul li:first-child{
+		font-size: 0.9rem;
+	}	
+
+	div.nav{
+		width: 40px;
+		height: 40px;
+	}	
+}
