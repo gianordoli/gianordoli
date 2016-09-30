@@ -1,6 +1,3 @@
 [submodule "public/websites/fora-temer"]
 	path = public/websites/fora-temer
 	url = https://github.com/gianordoli/fora-temer.git
-[submodule "public/websites/lang_catalog_prototype"]
-	path = public/websites/lang_catalog_prototype
-	url = https://github.com/gianordoli/lang_catalog_prototype.git
