@@ -144,7 +144,7 @@ app.post('/public-start', function(req, res) {
             if(item.publish){
                 var project = {
                     title: item.title,
-                    projectId: item.objectId,
+                    projectUrl: item.url,
                     order: item.order
                 }
                 projects.push(project);
@@ -154,7 +154,7 @@ app.post('/public-start', function(req, res) {
                     if(obj.homepage){
                         var image = {
                             url: obj.url,
-                            projectId: item.objectId,
+                            projectUrl: item.url,
                             order: item.order
                         }
                         images.push(image);
@@ -190,8 +190,14 @@ app.post('/public-start', function(req, res) {
 });
 
 // app.post('/public-load-project', function(req, res) {   
-//     // console.log(req.body.projectId);
-//     parse.find('projects', req.body.projectId, function (err, response) {
+//     // console.log(req.body.projectUrl);
+
+//     var queryRef = projectsRef.orderByChild("url").equalTo(req.body.projectUrl);
+// queryRef.on("value", function(snapshot) {
+//     console.log("Loaded project");
+//     console.log(snapshot.val());
+// });    
+//     parse.find('projects', req.body.projectUrl, function (err, response) {
 //         if(!err){
 //             // console.log(response.content);           // Markdown
 //             // console.log(marked(response.content));   // Parsed

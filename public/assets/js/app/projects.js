@@ -12,18 +12,18 @@ define(['./common'], function (common) {
 	    });
 	};
 
-	var linkMarker = function(projectId){
+	var linkMarker = function(projectUrl){
 		$('#sidebar ul').find('a').removeAttr('class');
-        // $('[name="'+projectId+'"]').css('color', '#fb81ac');
-        $('[name="'+projectId+'"]').attr('class', 'selected');
+        // $('[name="'+projectUrl+'"]').css('color', '#fb81ac');
+        $('[name="'+projectUrl+'"]').attr('class', 'selected');
 	}
 
 	var loadProject = function(){
-		var projectId = location.hash.substring(1, location.hash.length);
-		linkMarker(projectId);
-		// console.log(projectId);
+		var projectUrl = location.hash.substring(1, location.hash.length);
+		linkMarker(projectUrl);
+		// console.log(projectUrl);
 		$.post('/public-load-project', {
-			projectId: projectId
+			projectUrl: projectUrl
 		}, function(response) {
             // console.log(response);
             if(response.error){

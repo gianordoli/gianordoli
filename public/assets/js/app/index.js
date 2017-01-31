@@ -22,7 +22,7 @@ define(['./common'], function (common) {
 		var container = $('#container');
 		images.forEach(function(item, index, array){
 			// console.log(item);
-			var img = $('<div class="item"><a name="'+item.projectId+'" href="projects.html#'+item.projectId+'"><img src="'+item.url+'" /></a></div>');
+			var img = $('<div class="item"><a name="'+item.projectUrl+'" href="projects.html#'+item.projectUrl+'"><img src="'+item.url+'" /></a></div>');
 			$(container).append(img);
 		});
 		container = common.addImagesPath(container); // Add images path
@@ -50,8 +50,8 @@ define(['./common'], function (common) {
 	function attachEvents(){
 		$('a').off('mouseenter').on('mouseenter', function() {
 			// console.log($(this).attr('name'));
-			var projectId = $(this).attr('name');
-			var objectsWithSameName = $('[name="'+projectId+'"]');
+			var projectUrl = $(this).attr('name');
+			var objectsWithSameName = $('[name="'+projectUrl+'"]');
 			// console.log(objectsWithSameName.length);
 			$.each(objectsWithSameName, function(index, item){	
 				if($(item).has('img').length > 0){
@@ -63,8 +63,8 @@ define(['./common'], function (common) {
 		});
 		$('a').off('mouseleave').on('mouseleave', function() {
 			// console.log($(this).attr('name'));
-			var projectId = $(this).attr('name');
-			var objectsWithSameName = $('[name="'+projectId+'"]');
+			var projectUrl = $(this).attr('name');
+			var objectsWithSameName = $('[name="'+projectUrl+'"]');
 			$.each(objectsWithSameName, function(index, item){
 				if($(item).has('img').length > 0){
 					$(item).children().removeAttr('class');
