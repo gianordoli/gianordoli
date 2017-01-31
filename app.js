@@ -1,11 +1,14 @@
 /*-------------------- MODULES --------------------*/
 var		express = require('express'),
-	 bodyParser = require('body-parser')
-	 		 fs = require('fs');
-          Parse = require('node-parse-api').Parse,
+	 bodyParser = require('body-parser'),
+	 		 fs = require('fs'),
+          admin = require("firebase-admin"),
               _ = require('underscore'),
-         marked = require('marked');
+         marked = require('marked'),
+       jsonfile = require('jsonfile')
+    ;
 
+// Markdown setup
 marked.setOptions({
   renderer: new marked.Renderer(),
   gfm: true,
@@ -17,15 +20,64 @@ marked.setOptions({
   smartypants: true // Typographic quotes
 });
 
-var readData = fs.readFileSync('keys.txt');
-readData = readData.toString(); // convert to string
-keys = readData.split(',');
+// Firebase setup
+var serviceAccount = require("gianordoli-95c21-firebase-adminsdk-u34a5-e71b509fa6.json");
 
-var options = {
-    app_id: keys[0],
-    api_key: keys[1] // master_key:'...' could be used too
-};
-var parse = new Parse(options);
+// Initialize the app with a custom auth variable, limiting the server's access
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://gianordoli-95c21.firebaseio.com"
+});
+
+// The app only has access as defined in the Security Rules
+var db = admin.database();
+var projectsRef = db.ref("/projects");
+
+
+// var queryRef = projectsRef.orderByChild("full_name").equalTo("Gabriel Gianordoli");
+// queryRef.on("value", function(snapshot) {
+//     console.log("Loaded project");
+//     console.log(snapshot.val());
+// });
+
+// var usersRef = ref.child("users");
+// BULK SAVE
+// usersRef.set({
+//   alanisawesome: {
+//     date_of_birth: "June 23, 1912",
+//     full_name: "Alan Turing"
+//   },
+//   gracehop: {
+//     date_of_birth: "December 9, 1906",
+//     full_name: "Grace Hopper"
+//   }
+// });
+
+
+// SAVE EACH
+// usersRef.child("gabriel").set({
+//   date_of_birth: "June 23, 1912",
+//   full_name: "Alan Turing"
+// });
+
+// Callback
+// usersRef.child("laura").set({
+//   date_of_birth: "December 9, 1906",
+//   full_name: "Grace Hopper"
+// }, function(error){
+//   if (error) {
+//     console.log("Data could not be saved." + error);
+//   } else {
+//     console.log("Data saved successfully.");
+//   }
+// });
+
+// UPDATE
+// var hopperRef = usersRef.child("gracehop");
+// hopperRef.update({
+//   "nickname": "Amazing Grace"
+// });
+
 var app = express();
 
 
@@ -55,14 +107,20 @@ app.use('/', express.static(__dirname + '/public'));
 
 /*------------------- ROUTERS -------------------*/
 
-/*----- PUBLIC -----*/
+// /*----- PUBLIC -----*/
 app.post('/public-start', function(req, res) {
+
+    projectsRef.once("value", function(snapshot, error) {
+        
+        console.log("Connected to DB");
+        console.log(snapshot.val());
     
-    parse.findMany('projects', '', function (err, response) {
+    // parse.findMany('projects', '', function (err, response) {
+
         var projects = [];
         var images = [];
 
-        response.results.forEach(function(item, index, array){
+        snapshot.val().forEach(function(item, index, array){
             
             // Filter by published projects
             if(item.publish){
@@ -110,166 +168,166 @@ app.post('/public-start', function(req, res) {
     });
 });
 
-app.post('/public-load-project', function(req, res) {   
-    // console.log(req.body.projectId);
-    parse.find('projects', req.body.projectId, function (err, response) {
-        if(!err){
-            // console.log(response.content);           // Markdown
-            // console.log(marked(response.content));   // Parsed
+// app.post('/public-load-project', function(req, res) {   
+//     // console.log(req.body.projectId);
+//     parse.find('projects', req.body.projectId, function (err, response) {
+//         if(!err){
+//             // console.log(response.content);           // Markdown
+//             // console.log(marked(response.content));   // Parsed
 
-            res.json({
-                project: {
-                    title: response.title,
-                    content: marked(response.content)
-                }
-            });
-        }
-    });
-});
+//             res.json({
+//                 project: {
+//                     title: response.title,
+//                     content: marked(response.content)
+//                 }
+//             });
+//         }
+//     });
+// });
 
-/*----- ADMIN -----*/
-// Log in
-app.post('/admin-start', function(req, res) {
-    login(req, res, function(req, res){
-        loadProjects(res);
-    });
-});
+// /*----- ADMIN -----*/
+// // Log in
+// app.post('/admin-start', function(req, res) {
+//     login(req, res, function(req, res){
+//         loadProjects(res);
+//     });
+// });
 
-var login = function(req, res, callback){
-    // console.log('request:');
-    // console.log(req.body);
+// var login = function(req, res, callback){
+//     // console.log('request:');
+//     // console.log(req.body);
     
-    parse.find('users', {login: req.body.login}, function (err, response) {
-      // console.log('Database response:');
-      // console.log(response.results);
+//     parse.find('users', {login: req.body.login}, function (err, response) {
+//       // console.log('Database response:');
+//       // console.log(response.results);
       
-      if(response.results.length > 0 && response.results[0].password == req.body.password){
-        // console.log('Logged in.');
-        callback(req, res);
+//       if(response.results.length > 0 && response.results[0].password == req.body.password){
+//         // console.log('Logged in.');
+//         callback(req, res);
 
-      }else{
-        var msg = 'User/login not found.';
-        // console.log(msg);
-        res.json({
-            error: msg
-        });
-      }
-    });  
-}
+//       }else{
+//         var msg = 'User/login not found.';
+//         // console.log(msg);
+//         res.json({
+//             error: msg
+//         });
+//       }
+//     });  
+// }
 
-var loadProjects = function(res){
-    var projects;
-    parse.find('projects', {}, function (err, response) {
-        // console.log(response);
+// var loadProjects = function(res){
+//     var projects;
+//     parse.find('projects', {}, function (err, response) {
+//         // console.log(response);
         
-        // Sorting the projects
-        response.results = _.sortBy(response.results, function(obj){
-            return obj.order;
-        });
-        // console.log(response);
-        res.json(response);
-    }); 
-}
+//         // Sorting the projects
+//         response.results = _.sortBy(response.results, function(obj){
+//             return obj.order;
+//         });
+//         // console.log(response);
+//         res.json(response);
+//     }); 
+// }
 
-app.post('/admin-load-projects', function(req, res) {
-    login(req, res, function(req, res){
-        loadProjects(res);
-    });
-});
+// app.post('/admin-load-projects', function(req, res) {
+//     login(req, res, function(req, res){
+//         loadProjects(res);
+//     });
+// });
 
-app.post('/admin-update-all', function(req, res) {
-    login(req, res, function(req, res){
-        // console.log('request:');
-        // console.log(req.body);
-        var projects = req.body['projects[]'];
-        // console.log(projects);
-        // console.log(projects.length);
+// app.post('/admin-update-all', function(req, res) {
+//     login(req, res, function(req, res){
+//         // console.log('request:');
+//         // console.log(req.body);
+//         var projects = req.body['projects[]'];
+//         // console.log(projects);
+//         // console.log(projects.length);
 
-        var error = false;
+//         var error = false;
 
-        projects.forEach(function(item, index, array){
-            // console.log(item);
-            item = JSON.parse(item);
-            // console.log(item.id + ',' + item.order + ', ' + item.publish);
-            // console.log(typeof item.public);
-            parse.update('projects', item.id, {
-                order: parseInt(item.order),
-                publish: item.publish
-            }, function (err, response) {
-                console.log(response);
-            }); 
-        });
-    });
-});
+//         projects.forEach(function(item, index, array){
+//             // console.log(item);
+//             item = JSON.parse(item);
+//             // console.log(item.id + ',' + item.order + ', ' + item.publish);
+//             // console.log(typeof item.public);
+//             parse.update('projects', item.id, {
+//                 order: parseInt(item.order),
+//                 publish: item.publish
+//             }, function (err, response) {
+//                 console.log(response);
+//             }); 
+//         });
+//     });
+// });
 
-app.post('/admin-expand-project', function(req, res) {
-    login(req, res, function(req, res){
-        // console.log('request:');
-        // console.log(req.body);
-        // console.log(req.body.id);
+// app.post('/admin-expand-project', function(req, res) {
+//     login(req, res, function(req, res){
+//         // console.log('request:');
+//         // console.log(req.body);
+//         // console.log(req.body.id);
 
-        parse.find('projects', req.body.id, function (err, response) {
-            // console.log(response);
-            res.json(response);
-        }); 
-    });
-});
+//         parse.find('projects', req.body.id, function (err, response) {
+//             // console.log(response);
+//             res.json(response);
+//         }); 
+//     });
+// });
 
-app.post('/admin-create-project', function(req, res) {
-    login(req, res, function(req, res){
-        // console.log('request:');
-        // console.log(req.body);
-        var project = JSON.parse(req.body.data);
-        // console.log(project);
+// app.post('/admin-create-project', function(req, res) {
+//     login(req, res, function(req, res){
+//         // console.log('request:');
+//         // console.log(req.body);
+//         var project = JSON.parse(req.body.data);
+//         // console.log(project);
 
-        var lastIndex = '';
-        parse.findMany('projects', '', function (err, response) {
+//         var lastIndex = '';
+//         parse.findMany('projects', '', function (err, response) {
 
-            lastIndex = response.results.length;
+//             lastIndex = response.results.length;
 
-            parse.insert('projects', {
-                title: project.title,
-                content: project.content,
-                images: project.images,
-                order: lastIndex
-            }, function (err, response) {
-                // console.log(response);
-                res.json(response);
-            });         
-        });
-    });
-});
+//             parse.insert('projects', {
+//                 title: project.title,
+//                 content: project.content,
+//                 images: project.images,
+//                 order: lastIndex
+//             }, function (err, response) {
+//                 // console.log(response);
+//                 res.json(response);
+//             });         
+//         });
+//     });
+// });
 
-app.post('/admin-update-project', function(req, res) {
-    login(req, res, function(req, res){    
-        // console.log('request:');
-        // console.log(req.body);
-        var project = JSON.parse(req.body.data);
-        // console.log(project);
+// app.post('/admin-update-project', function(req, res) {
+//     login(req, res, function(req, res){    
+//         // console.log('request:');
+//         // console.log(req.body);
+//         var project = JSON.parse(req.body.data);
+//         // console.log(project);
 
-        parse.update('projects', project.id, {
-            title: project.title,
-            content: project.content,
-            images: project.images
-        }, function (err, response) {
-            // console.log(response);
-            res.json(response);
-        });
-    });
-});
+//         parse.update('projects', project.id, {
+//             title: project.title,
+//             content: project.content,
+//             images: project.images
+//         }, function (err, response) {
+//             // console.log(response);
+//             res.json(response);
+//         });
+//     });
+// });
 
-app.post('/admin-delete-project', function(req, res) {
-    login(req, res, function(req, res){
-        // console.log('request:');
-        // console.log(req.body);
-        // console.log(req.body.id);
+// app.post('/admin-delete-project', function(req, res) {
+//     login(req, res, function(req, res){
+//         // console.log('request:');
+//         // console.log(req.body);
+//         // console.log(req.body.id);
 
-        parse.delete('projects', req.body.id, function (err, response) {
-            // console.log(response);
-            res.json(response);
-        }); 
-    });
-});
+//         parse.delete('projects', req.body.id, function (err, response) {
+//             // console.log(response);
+//             res.json(response);
+//         }); 
+//     });
+// });
 
 
 /*----------------- INIT SERVER -----------------*/
