@@ -1,12 +1,12 @@
 /*-------------------- MODULES --------------------*/
 var		express = require('express'),
 	 bodyParser = require('body-parser'),
-	 		 fs = require('fs'),
-          admin = require("firebase-admin"),
-              _ = require('underscore'),
-         marked = require('marked'),
-       jsonfile = require('jsonfile')
-    ;
+			 fs = require('fs'),
+		  admin = require("firebase-admin"),
+			  _ = require('underscore'),
+		 marked = require('marked'),
+	   jsonfile = require('jsonfile')
+	;
 
 // Markdown setup
 marked.setOptions({
@@ -99,20 +99,20 @@ var app = express();
 // .use is a middleware
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
-    extended: false
+	extended: false
 }));
 
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
-    // Setup a Cross Origin Resource sharing
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    console.log('incoming request from ---> ' + ip);
-    // Show the target URL that the user just hit
-    var url = req.originalUrl;
-    console.log('### requesting ---> ' + url);
-    next();
+	// Setup a Cross Origin Resource sharing
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+	console.log('incoming request from ---> ' + ip);
+	// Show the target URL that the user just hit
+	var url = req.originalUrl;
+	console.log('### requesting ---> ' + url);
+	next();
 });
 
 app.use('/', express.static(__dirname + '/public'));
@@ -123,94 +123,109 @@ app.use('/', express.static(__dirname + '/public'));
 // /*----- PUBLIC -----*/
 app.post('/public-start', function(req, res) {
 
-    projectsRef.once("value", function(snapshot) {
+	projectsRef.once("value", function(snapshot) {
 
-        console.log("Connected to DB");
-        console.log(snapshot.val());
-        var results = snapshot.val();
+		console.log("Connected to DB");
+		console.log(snapshot.val());
+		var results = snapshot.val();
 
-        var projects = [];
-        var images = [];
+		var projects = [];
+		var images = [];
 
-        for(var id in results){
+		for(var id in results){
 
-            var item = results[id];
-            // console.log(item);
-            // console.log(item.title);
-            // console.log(item.images);
-            // console.log(typeof item.images);
-            
-            // Filter by published projects
-            if(item.publish){
-                var project = {
-                    title: item.title,
-                    projectUrl: item.url,
-                    order: item.order
-                }
-                projects.push(project);
+			var item = results[id];
+			// console.log(item);
+			// console.log(item.title);
+			// console.log(item.images);
+			// console.log(typeof item.images);
+			
+			// Filter by published projects
+			if(item.publish){
+				var project = {
+					title: item.title,
+					projectUrl: item.url,
+					order: item.order
+				}
+				projects.push(project);
 
-                // Filter by images with homepage == true
-                item.images.forEach(function(obj, i){
-                    if(obj.homepage){
-                        var image = {
-                            url: obj.url,
-                            projectUrl: item.url,
-                            order: item.order
-                        }
-                        images.push(image);
-                    }
-                });                
-            }
-        }
-        // console.log(projects);
-        // console.log(projects.length);        
-        // console.log(images);
-        // console.log(images.length);
+				// Filter by images with homepage == true
+				item.images.forEach(function(obj, i){
+					if(obj.homepage){
+						var image = {
+							url: obj.url,
+							projectUrl: item.url,
+							order: item.order
+						}
+						images.push(image);
+					}
+				});                
+			}
+		}
+		// console.log(projects);
+		// console.log(projects.length);        
+		// console.log(images);
+		// console.log(images.length);
 
-        projects = _.sortBy(projects, function(obj){
-            return obj.order;
-        });
+		projects = _.sortBy(projects, function(obj){
+			return obj.order;
+		});
 
-        images = _.shuffle(images);
+		images = _.shuffle(images);
 
-        // images = _.sortBy(images, function(obj){
-        //     return obj.order;
-        // });
+		// images = _.sortBy(images, function(obj){
+		//     return obj.order;
+		// });
 
-        projects = JSON.stringify(projects);
-        images = JSON.stringify(images);
-        res.json({
-            projects: projects,
-            images: images
-        });
+		projects = JSON.stringify(projects);
+		images = JSON.stringify(images);
+		res.json({
+			projects: projects,
+			images: images
+		});
 
-    }, function(error){
-        console.log("The read failed: " + errorObject.code);
-    });
+	}, function(error){
+		console.log("The read failed: " + errorObject.code);
+	});
 });
 
-// app.post('/public-load-project', function(req, res) {   
-//     // console.log(req.body.projectUrl);
+app.post('/public-load-project', function(req, res) {   
+	// console.log(req.body.projectUrl);
 
-//     var queryRef = projectsRef.orderByChild("url").equalTo(req.body.projectUrl);
-// queryRef.on("value", function(snapshot) {
-//     console.log("Loaded project");
-//     console.log(snapshot.val());
-// });    
-//     parse.find('projects', req.body.projectUrl, function (err, response) {
-//         if(!err){
-//             // console.log(response.content);           // Markdown
-//             // console.log(marked(response.content));   // Parsed
+	var queryRef = projectsRef.orderByChild("url").equalTo(req.body.projectUrl);
+	
+	queryRef.on("value", function(snapshot) {
+		console.log("Loaded project");
+		// console.log(snapshot.val());
+		var results = snapshot.val();
+		var title, content;
+		for(var id in results){
+			title = results[id]["title"];
+			content = marked(results[id]["content"]);
+		}
+		res.json({
+			project: {
+				title: title,
+				content: content
+			}
+		});		
+	}, function(error){
+		console.log("The read failed: " + errorObject.code);
+	});    
+	// parse.find('projects', req.body.projectUrl, function (err, response) {
+	// 	if(!err){
+	// 		// console.log(response.content);           // Markdown
+	// 		// console.log(marked(response.content));   // Parsed
 
-//             res.json({
-//                 project: {
-//                     title: response.title,
-//                     content: marked(response.content)
-//                 }
-//             });
-//         }
-//     });
-// });
+	// 		res.json({
+	// 			project: {
+	// 				title: response.title,
+	// 				content: marked(response.content)
+	// 			}
+	// 		});
+	// 	}
+	// });
+});
 
 // /*----- ADMIN -----*/
 // // Log in
@@ -223,11 +238,11 @@ app.post('/public-start', function(req, res) {
 // var login = function(req, res, callback){
 //     // console.log('request:');
 //     // console.log(req.body);
-    
+	
 //     parse.find('users', {login: req.body.login}, function (err, response) {
 //       // console.log('Database response:');
 //       // console.log(response.results);
-      
+	  
 //       if(response.results.length > 0 && response.results[0].password == req.body.password){
 //         // console.log('Logged in.');
 //         callback(req, res);
@@ -246,7 +261,7 @@ app.post('/public-start', function(req, res) {
 //     var projects;
 //     parse.find('projects', {}, function (err, response) {
 //         // console.log(response);
-        
+		
 //         // Sorting the projects
 //         response.results = _.sortBy(response.results, function(obj){
 //             return obj.order;
@@ -360,5 +375,5 @@ app.post('/public-start', function(req, res) {
 /*----------------- INIT SERVER -----------------*/
 var PORT = 3000; //the port you want to use
 app.listen(PORT, function() {
-    console.log('Server running at port ' + PORT + '. Ctrl+C to terminate.');
+	console.log('Server running at port ' + PORT + '. Ctrl+C to terminate.');
 });
