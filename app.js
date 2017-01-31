@@ -32,6 +32,7 @@ admin.initializeApp({
 // The app only has access as defined in the Security Rules
 var db = admin.database();
 var projectsRef = db.ref("/projects");
+var usersRef = db.ref("/users");
 
 // var queryRef = projectsRef.orderByChild("title").equalTo("Blindness");
 // queryRef.on("value", function(snapshot) {
@@ -195,10 +196,12 @@ app.post('/public-load-project', function(req, res) {
 	var queryRef = projectsRef.orderByChild("url").equalTo(req.body.projectUrl);
 	
 	queryRef.on("value", function(snapshot) {
+		
 		console.log("Loaded project");
 		// console.log(snapshot.val());
 		var results = snapshot.val();
 		var title, content;
+		
 		for(var id in results){
 			title = results[id]["title"];
 			content = marked(results[id]["content"]);
@@ -211,53 +214,52 @@ app.post('/public-load-project', function(req, res) {
 		});		
 	}, function(error){
 		console.log("The read failed: " + errorObject.code);
-	});    
-	// parse.find('projects', req.body.projectUrl, function (err, response) {
-	// 	if(!err){
-	// 		// console.log(response.content);           // Markdown
-	// 		// console.log(marked(response.content));   // Parsed
-
-	// 		res.json({
-	// 			project: {
-	// 				title: response.title,
-	// 				content: marked(response.content)
-	// 			}
-	// 		});
-	// 	}
-	// });
+	});
 });
 
 // /*----- ADMIN -----*/
-// // Log in
-// app.post('/admin-start', function(req, res) {
-//     login(req, res, function(req, res){
-//         loadProjects(res);
-//     });
-// });
+// Log in
+app.post('/admin-start', function(req, res) {
+    login(req, res, function(req, res){
+    	console.log("User logged in");
+        loadProjects(res);
+    });
+});
 
-// var login = function(req, res, callback){
-//     // console.log('request:');
-//     // console.log(req.body);
+var login = function(req, res, callback){
+    // console.log('request:');
+    // console.log(req.body);
 	
-//     parse.find('users', {login: req.body.login}, function (err, response) {
-//       // console.log('Database response:');
-//       // console.log(response.results);
-	  
-//       if(response.results.length > 0 && response.results[0].password == req.body.password){
-//         // console.log('Logged in.');
-//         callback(req, res);
+	var queryRef = usersRef.orderByChild("login").equalTo(req.body.login);
+	
+	queryRef.on("value", function(snapshot) {
+		
+		console.log("Loaded user");
+		// console.log(snapshot.val());
+		var results = snapshot.val();
+		var err = true;
 
-//       }else{
-//         var msg = 'User/login not found.';
-//         // console.log(msg);
-//         res.json({
-//             error: msg
-//         });
-//       }
-//     });  
-// }
+		if(Object.keys(results).length > 0){
+			for(var id in results){
+				if(results[id]["password"] === req.body.password){
+					error = false;
+				}
+			}
+		}
+		if(!error){
+			callback(req, res);			
+		}else{
+			// console.log(msg);
+			res.json({
+			    error: msg
+			});
+		}
+	}, function(error){
+		console.log("The read failed: " + errorObject.code);
+	});
+}
 
-// var loadProjects = function(res){
+var loadProjects = function(res){
 //     var projects;
 //     parse.find('projects', {}, function (err, response) {
 //         // console.log(response);
@@ -269,7 +271,7 @@ app.post('/public-load-project', function(req, res) {
 //         // console.log(response);
 //         res.json(response);
 //     }); 
-// }
+}
 
 // app.post('/admin-load-projects', function(req, res) {
 //     login(req, res, function(req, res){
