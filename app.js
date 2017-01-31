@@ -33,6 +33,18 @@ admin.initializeApp({
 var db = admin.database();
 var projectsRef = db.ref("/projects");
 
+// var queryRef = projectsRef.orderByChild("title").equalTo("Blindness");
+// queryRef.on("value", function(snapshot) {
+//     console.log("Loaded project");
+//     // console.log(snapshot.val());
+//     var results = snapshot.val();
+//     for(var id in results){
+
+//         projectsRef.child(id).update({
+//             images: [{homepage: false, url: ""}]
+//         });
+//     }
+// });
 
 // var queryRef = projectsRef.orderByChild("full_name").equalTo("Gabriel Gianordoli");
 // queryRef.on("value", function(snapshot) {
@@ -78,6 +90,7 @@ var projectsRef = db.ref("/projects");
 //   "nickname": "Amazing Grace"
 // });
 
+
 var app = express();
 
 
@@ -110,17 +123,22 @@ app.use('/', express.static(__dirname + '/public'));
 // /*----- PUBLIC -----*/
 app.post('/public-start', function(req, res) {
 
-    projectsRef.once("value", function(snapshot, error) {
-        
+    projectsRef.once("value", function(snapshot) {
+
         console.log("Connected to DB");
         console.log(snapshot.val());
-    
-    // parse.findMany('projects', '', function (err, response) {
+        var results = snapshot.val();
 
         var projects = [];
         var images = [];
 
-        snapshot.val().forEach(function(item, index, array){
+        for(var id in results){
+
+            var item = results[id];
+            // console.log(item);
+            // console.log(item.title);
+            // console.log(item.images);
+            // console.log(typeof item.images);
             
             // Filter by published projects
             if(item.publish){
@@ -143,7 +161,7 @@ app.post('/public-start', function(req, res) {
                     }
                 });                
             }
-        });
+        }
         // console.log(projects);
         // console.log(projects.length);        
         // console.log(images);
@@ -165,6 +183,9 @@ app.post('/public-start', function(req, res) {
             projects: projects,
             images: images
         });
+
+    }, function(error){
+        console.log("The read failed: " + errorObject.code);
     });
 });
 
