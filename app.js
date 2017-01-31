@@ -226,7 +226,7 @@ app.post('/admin-start', function(req, res) {
     });
 });
 
-var login = function(req, res, callback){
+function login(req, res, callback){
     // console.log('request:');
     // console.log(req.body);
 	
@@ -259,18 +259,23 @@ var login = function(req, res, callback){
 	});
 }
 
-var loadProjects = function(res){
-//     var projects;
-//     parse.find('projects', {}, function (err, response) {
-//         // console.log(response);
+function loadProjects(res){
+    
+    var projects;
+	
+	projectsRef.once("value", function(snapshot) {
+
+		console.log("Loaded projects");
+		// console.log(snapshot.val());
+		var results = snapshot.val();
 		
-//         // Sorting the projects
-//         response.results = _.sortBy(response.results, function(obj){
-//             return obj.order;
-//         });
-//         // console.log(response);
-//         res.json(response);
-//     }); 
+        // Sorting the projects
+        results = _.sortBy(results, function(obj){
+            return obj.order;
+        });
+        console.log(results);
+        res.json({results: results});
+    }); 
 }
 
 // app.post('/admin-load-projects', function(req, res) {
