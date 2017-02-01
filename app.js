@@ -167,7 +167,7 @@ app.post('/public-start', function(req, res) {
 			images: images
 		});
 
-	}, function(error){
+	}, function(errorObject){
 		console.log("The read failed: " + errorObject.code);
 	});	
 });
@@ -196,7 +196,7 @@ app.post('/public-load-project', function(req, res) {
 			}
 		});
 
-	}, function(error){
+	}, function(errorObject){
 		console.log("The read failed: " + errorObject.code);
 	});	
 });
@@ -244,7 +244,7 @@ function login(req, res, callback){
 			    error: "User or password invalid."
 			});
 		}
-	}, function(error){
+	}, function(errorObject){
 		console.log("The read failed: " + errorObject.code);
 	});
 }
@@ -305,13 +305,13 @@ app.post('/admin-update-all', function(req, res) {
 					projectsRef.child(key).update({
 		                order: parseInt(item.order),
 		                publish: item.publish
-					}, function(error){
+					}, function(errorObject){
 						error = true;
 						msg = "Could not update object.";
 					});
 				});
 
-			}, function(error){
+			}, function(errorObject){
 				error = true;
 				msg = "The read failed: " + errorObject.code;
 			});
@@ -347,45 +347,60 @@ app.post('/admin-expand-project', function(req, res) {
 		// console.log(thisObj);
 		res.json(thisObj);
 
-	}, function(error){
+	}, function(errorObject){
 		console.log("The read failed: " + errorObject.code);
 	});
 });
 
-// app.post('/admin-create-project', function(req, res) {
-//     login(req, res, function(req, res){
-//         // console.log('request:');
-//         // console.log(req.body);
-//         var project = JSON.parse(req.body.data);
-//         // console.log(project);
+app.post('/admin-create-project', function(req, res) {
+    login(req, res, function(req, res){
+        // console.log('request:');
+        // console.log(req.body);
+        var project = JSON.parse(req.body.data);
+        // console.log(project);
 
-//         var lastIndex = '';
-//         parse.findMany('projects', '', function (err, response) {
+        var error = false;
+        var msg;
 
-//             lastIndex = response.results.length;
+        var queryRef = projectsRef.orderByKey();
+        queryRef.once("value", function(snapshot){
+        	
+        	var lastIndex = snapshot.numChildren();
+        	var url = project["title"].toLowerCase();
+    		while(url.indexOf(" ") > -1){ url = url.replace(" ", "-"); };
+    		url = encodeURI(url);
 
-//             parse.insert('projects', {
-//                 title: project.title,
-//                 content: project.content,
-//                 images: project.images,
-//                 order: lastIndex
-//             }, function (err, response) {
-//                 // console.log(response);
-//                 res.json(response);
-//             });         
-//         });
-//     });
-// });
+        	projectsRef.push({
+				title: project.title,
+				content: project.content,
+				images: project.images,
+				order: lastIndex,
+				url: url
+            }, function(errorObject){
+				if (errorObject) {
+					msg = "Data could not be saved." + errorObject;
+				} else {
+					msg = "Data saved successfully.";
+				}
+            });
+        }, function(errorObject){
+        	msg = "The read failed: " + errorObject.code;
+        });
+    	console.log(msg);
+    	res.json({msg: msg});
+    });
+});
 
 app.post('/admin-update-project', function(req, res) {
-	
-	var msg;
 
     login(req, res, function(req, res){
         // console.log('request:');
         // console.log(req.body);
         var project = JSON.parse(req.body.data);
         // console.log(project);
+
+        var error = false;
+        var msg;
 
 		var thisObj;
 		var queryRef = projectsRef.orderByKey().equalTo(project.id);
@@ -402,17 +417,21 @@ app.post('/admin-update-project', function(req, res) {
 		            title: project.title,
 		            content: project.content,
 		            images: project.images
-				}, function(error){
+				}, function(errorObject){
+					error = true;
 					msg = "Could not update object.";
-					console.log(msg);
-					res.json({msg: msg});
 				});
 			});
 
-		}, function(error){
+		}, function(errorObject){
+			error = true;
 			msg = "The read failed: " + errorObject.code;
-			res.json({msg: msg});
 		});
+
+		if(error){
+			console.log(msg);
+			res.json({msg: msg});			
+		}
     });
 });
 
