@@ -124,64 +124,44 @@ app.use('/', express.static(__dirname + '/public'));
 // /*----- PUBLIC -----*/
 app.post('/public-start', function(req, res) {
 
-	projectsRef.once("value", function(snapshot) {
-
-		console.log("Connected to DB");
-		console.log(snapshot.val());
-		var results = snapshot.val();
-
+	// console.log(req.body.projectUrl);
+	var queryRef = projectsRef.orderByChild("publish").equalTo(true);
+	
+	queryRef.once("value", function(snapshot) {
+		
+		console.log("Loaded projects");
 		var projects = [];
-		var images = [];
+		var images = [];		
 
-		for(var id in results){
-
-			var item = results[id];
-			// console.log(item);
-			// console.log(item.title);
-			// console.log(item.images);
-			// console.log(typeof item.images);
-			
-			// Filter by published projects
-			if(item.publish){
-				var project = {
-					title: item.title,
-					projectUrl: item.url,
-					order: item.order
-				}
-				projects.push(project);
-
-				// Filter by images with homepage == true
-				if(item.images !== undefined && item.images.length > 0){
-					item.images.forEach(function(obj, i){
-						if(obj.homepage){
-							var image = {
-								url: obj.url,
-								projectUrl: item.url,
-								order: item.order
-							}
-							images.push(image);
+		snapshot.forEach(function(childSnapshot) {
+			var childData = childSnapshot.val();
+			// console.log(">>>>> DATA");
+			// console.log(childData);
+			projects.push(childData);
+			if(childData.images !== undefined && childData.images.length > 0){
+				childData.images.forEach(function(obj, i){
+					if(obj.homepage){
+						var image = {
+							url: obj.url,
+							projectUrl: childData.url,
+							order: childData.order
 						}
-					});
-				}
+						images.push(image);
+					}
+				});
 			}
-		}
-		// console.log(projects);
-		// console.log(projects.length);        
-		// console.log(images);
-		// console.log(images.length);
+		});
 
+		// Sorting
 		projects = _.sortBy(projects, function(obj){
 			return obj.order;
 		});
-
 		images = _.shuffle(images);
 
-		// images = _.sortBy(images, function(obj){
-		//     return obj.order;
-		// });
-
+		// Stringifying
 		projects = JSON.stringify(projects);
 		images = JSON.stringify(images);
+
 		res.json({
 			projects: projects,
 			images: images
@@ -189,14 +169,79 @@ app.post('/public-start', function(req, res) {
 
 	}, function(error){
 		console.log("The read failed: " + errorObject.code);
-	});
+	});	
+
+	// projectsRef.once("value", function(snapshot) {
+
+	// 	console.log("Connected to DB");
+	// 	console.log(snapshot.val());
+	// 	var results = snapshot.val();
+
+	// 	var projects = [];
+	// 	var images = [];
+
+	// 	for(var id in results){
+
+	// 		var item = results[id];
+	// 		// console.log(item);
+	// 		// console.log(item.title);
+	// 		// console.log(item.images);
+	// 		// console.log(typeof item.images);
+			
+	// 		// Filter by published projects
+	// 		if(item.publish){
+	// 			var project = {
+	// 				title: item.title,
+	// 				projectUrl: item.url,
+	// 				order: item.order
+	// 			}
+	// 			projects.push(project);
+
+	// 			// Filter by images with homepage == true
+	// 			if(item.images !== undefined && item.images.length > 0){
+	// 				item.images.forEach(function(obj, i){
+	// 					if(obj.homepage){
+	// 						var image = {
+	// 							url: obj.url,
+	// 							projectUrl: item.url,
+	// 							order: item.order
+	// 						}
+	// 						images.push(image);
+	// 					}
+	// 				});
+	// 			}
+	// 		}
+	// 	}
+	// 	// console.log(projects);
+	// 	// console.log(projects.length);        
+	// 	// console.log(images);
+	// 	// console.log(images.length);
+
+	// 	projects = _.sortBy(projects, function(obj){
+	// 		return obj.order;
+	// 	});
+
+	// 	images = _.shuffle(images);
+
+	// 	// images = _.sortBy(images, function(obj){
+	// 	//     return obj.order;
+	// 	// });
+
+	// 	projects = JSON.stringify(projects);
+	// 	images = JSON.stringify(images);
+	// 	res.json({
+	// 		projects: projects,
+	// 		images: images
+	// 	});
+
+	// }, function(error){
+	// 	console.log("The read failed: " + errorObject.code);
+	// });
 });
 
 app.post('/public-load-project', function(req, res) {   
+	
 	// console.log(req.body.projectUrl);
-
-	// console.log(req.body.projectId);
-	var thisObj;
 	var queryRef = projectsRef.orderByChild("url").equalTo(req.body.projectUrl);
 	
 	queryRef.once("value", function(snapshot) {

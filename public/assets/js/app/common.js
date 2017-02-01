@@ -29,7 +29,7 @@ define(function (require) {
 				var projectsUl = $('<ul></ul>');
 					projects.forEach(function(item, index, array){
 						// console.log(item);
-						var li = $('<li><a name="'+item.projectUrl+'" href="/projects.html#'+item.projectUrl+'">'+item.title+'</li>');
+						var li = $('<li><a name="'+item.url+'" href="/projects.html#'+item.url+'">'+item.title+'</li>');
 						$(projectsUl).append(li);
 					});
 			$(projectsNavBar).append(projectsTitle)
