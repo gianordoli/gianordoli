@@ -207,10 +207,12 @@ define(function (require) {
         var desc = $('<textarea rows="20" cols="50" class="content-textarea">'+response.content+'</textarea>');
         var imagesUl = $('<ul></ul>');
 
-        response.images.forEach(function(item, index, array){
-        	var li = createImageInput(item);
-        	$(imagesUl).append(li);
-        });
+        if(response.images !== undefined && response.images.length > 0){
+	        response.images.forEach(function(item, index, array){
+	        	var li = createImageInput(item);
+	        	$(imagesUl).append(li);
+	        });        	
+        }
 		var addImage = $('<button class="add-image-bt">Add Images</button>');
 		var cancel = $('<button class="cancel-bt">Cancel</button>');
 		var update = $('<button class="update-bt">Update</button>');
