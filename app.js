@@ -237,7 +237,7 @@ function login(req, res, callback){
 		console.log("Loaded user");
 		// console.log(snapshot.val());
 		var results = snapshot.val();
-		var err = true;
+		var error = true;
 
 		if(Object.keys(results).length > 0){
 			for(var id in results){
@@ -251,7 +251,7 @@ function login(req, res, callback){
 		}else{
 			// console.log(msg);
 			res.json({
-			    error: msg
+			    error: "User or password invalid."
 			});
 		}
 	}, function(error){
@@ -260,22 +260,49 @@ function login(req, res, callback){
 }
 
 function loadProjects(res){
+	console.log("Called loadProjects");
     
-    var projects;
+    var results = [];
 	
-	projectsRef.once("value", function(snapshot) {
+	var queryRef = projectsRef.orderByChild("order");
+	queryRef.once("value")
+		.then(function(snapshot) {
+			console.log("Loaded projects");
+			snapshot.forEach(function(childSnapshot) {
+				var key = childSnapshot.key;
+				var childData = childSnapshot.val();
+				console.log(">>>>> KEY: " + key);
+				// console.log(">>>>> DATA");
+				// console.log(childData);
 
-		console.log("Loaded projects");
-		// console.log(snapshot.val());
-		var results = snapshot.val();
-		
-        // Sorting the projects
-        results = _.sortBy(results, function(obj){
-            return obj.order;
-        });
-        console.log(results);
-        res.json({results: results});
-    }); 
+				var thisObj = childData;
+				thisObj["id"] = key;
+				results.push(thisObj);
+			});
+			console.log("Finished loop");
+			console.log(results);
+			res.json({results: results});
+		});
+	
+	// projectsRef.once("value", function(snapshot) {
+
+	// 	console.log("Loaded projects");
+	// 	// console.log(snapshot);
+	// 	console.log(snapshot.getChildren());
+	// 	var results = snapshot.val();
+
+	// 	// console.log(results);
+ //        // Sorting the projects
+ //        results = _.sortBy(results, function(obj){
+ //            return obj.order;
+ //        });
+
+	// 	// for(var id in results){
+	// 	// 	results["objectId"] = id;
+	// 	// }
+ //        // console.log(results);
+ //        res.json({results: results});
+ //    });
 }
 
 // app.post('/admin-load-projects', function(req, res) {
@@ -309,18 +336,25 @@ function loadProjects(res){
 //     });
 // });
 
-// app.post('/admin-expand-project', function(req, res) {
-//     login(req, res, function(req, res){
-//         // console.log('request:');
-//         // console.log(req.body);
-//         // console.log(req.body.id);
+app.post('/admin-expand-project', function(req, res) {
 
-//         parse.find('projects', req.body.id, function (err, response) {
-//             // console.log(response);
-//             res.json(response);
-//         }); 
-//     });
-// });
+	var queryRef = projectsRef.orderByKey("url").equalTo(req.body.id);
+	
+	queryRef.on("value", function(snapshot) {
+		
+		console.log("Loaded project");
+		// console.log(snapshot.val());
+		var results = snapshot.val();
+		for(var id in results){
+			results["objectId"] = id;
+		}
+
+		res.json(results);
+
+	}, function(error){
+		console.log("The read failed: " + errorObject.code);
+	});
+});
 
 // app.post('/admin-create-project', function(req, res) {
 //     login(req, res, function(req, res){
