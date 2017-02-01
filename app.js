@@ -170,73 +170,6 @@ app.post('/public-start', function(req, res) {
 	}, function(error){
 		console.log("The read failed: " + errorObject.code);
 	});	
-
-	// projectsRef.once("value", function(snapshot) {
-
-	// 	console.log("Connected to DB");
-	// 	console.log(snapshot.val());
-	// 	var results = snapshot.val();
-
-	// 	var projects = [];
-	// 	var images = [];
-
-	// 	for(var id in results){
-
-	// 		var item = results[id];
-	// 		// console.log(item);
-	// 		// console.log(item.title);
-	// 		// console.log(item.images);
-	// 		// console.log(typeof item.images);
-			
-	// 		// Filter by published projects
-	// 		if(item.publish){
-	// 			var project = {
-	// 				title: item.title,
-	// 				projectUrl: item.url,
-	// 				order: item.order
-	// 			}
-	// 			projects.push(project);
-
-	// 			// Filter by images with homepage == true
-	// 			if(item.images !== undefined && item.images.length > 0){
-	// 				item.images.forEach(function(obj, i){
-	// 					if(obj.homepage){
-	// 						var image = {
-	// 							url: obj.url,
-	// 							projectUrl: item.url,
-	// 							order: item.order
-	// 						}
-	// 						images.push(image);
-	// 					}
-	// 				});
-	// 			}
-	// 		}
-	// 	}
-	// 	// console.log(projects);
-	// 	// console.log(projects.length);        
-	// 	// console.log(images);
-	// 	// console.log(images.length);
-
-	// 	projects = _.sortBy(projects, function(obj){
-	// 		return obj.order;
-	// 	});
-
-	// 	images = _.shuffle(images);
-
-	// 	// images = _.sortBy(images, function(obj){
-	// 	//     return obj.order;
-	// 	// });
-
-	// 	projects = JSON.stringify(projects);
-	// 	images = JSON.stringify(images);
-	// 	res.json({
-	// 		projects: projects,
-	// 		images: images
-	// 	});
-
-	// }, function(error){
-	// 	console.log("The read failed: " + errorObject.code);
-	// });
 });
 
 app.post('/public-load-project', function(req, res) {   
@@ -342,30 +275,54 @@ function loadProjects(res){
 		});
 }
 
-// app.post('/admin-update-all', function(req, res) {
-//     login(req, res, function(req, res){
-//         // console.log('request:');
-//         // console.log(req.body);
-//         var projects = req.body['projects[]'];
-//         // console.log(projects);
-//         // console.log(projects.length);
+app.post('/admin-update-all', function(req, res) {
+    login(req, res, function(req, res){
+        // console.log('request:');
+        // console.log(req.body);
+        var projects = req.body['projects[]'];
+        // console.log(projects);
+        // console.log(projects.length);
 
-//         var error = false;
+        var error = false;
+        var msg;
 
-//         projects.forEach(function(item, index, array){
-//             // console.log(item);
-//             item = JSON.parse(item);
-//             // console.log(item.id + ',' + item.order + ', ' + item.publish);
-//             // console.log(typeof item.public);
-//             parse.update('projects', item.id, {
-//                 order: parseInt(item.order),
-//                 publish: item.publish
-//             }, function (err, response) {
-//                 console.log(response);
-//             }); 
-//         });
-//     });
-// });
+        projects.forEach(function(item, index, array){
+            // console.log(item);
+            item = JSON.parse(item);
+            // console.log(item.id + ',' + item.order + ', ' + item.publish);
+            // console.log(typeof item.public);
+
+			var queryRef = projectsRef.orderByKey().equalTo(item.id);
+			
+			queryRef.once("value", function(snapshot) {
+				
+				console.log("Loaded project");
+
+				snapshot.forEach(function(childSnapshot) {
+					var key = childSnapshot.key;
+					// console.log(">>>>> KEY: " + key);
+
+					projectsRef.child(key).update({
+		                order: parseInt(item.order),
+		                publish: item.publish
+					}, function(error){
+						error = true;
+						msg = "Could not update object.";
+					});
+				});
+
+			}, function(error){
+				error = true;
+				msg = "The read failed: " + errorObject.code;
+			});
+        });
+
+        if(error){
+			console.log(msg);
+			res.json({msg: msg});
+        }
+    });
+});
 
 app.post('/admin-expand-project', function(req, res) {
 
