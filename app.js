@@ -435,18 +435,17 @@ app.post('/admin-update-project', function(req, res) {
     });
 });
 
-// app.post('/admin-delete-project', function(req, res) {
-//     login(req, res, function(req, res){
-//         // console.log('request:');
-//         // console.log(req.body);
-//         // console.log(req.body.id);
-
-//         parse.delete('projects', req.body.id, function (err, response) {
-//             // console.log(response);
-//             res.json(response);
-//         }); 
-//     });
-// });
+app.post('/admin-delete-project', function(req, res) {
+    login(req, res, function(req, res){
+        // console.log('request:');
+        // console.log(req.body);
+        // console.log(req.body.projectId);
+		projectsRef.child(req.body.projectId).remove(function(error) {
+			msg = error ? "Could not delete project" : "Success!";
+			res.json({msg: msg});
+		});
+    });
+});
 
 
 /*----------------- INIT SERVER -----------------*/
