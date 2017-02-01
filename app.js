@@ -195,28 +195,32 @@ app.post('/public-start', function(req, res) {
 app.post('/public-load-project', function(req, res) {   
 	// console.log(req.body.projectUrl);
 
+	// console.log(req.body.projectId);
+	var thisObj;
 	var queryRef = projectsRef.orderByChild("url").equalTo(req.body.projectUrl);
 	
 	queryRef.once("value", function(snapshot) {
 		
 		console.log("Loaded project");
-		// console.log(snapshot.val());
-		var results = snapshot.val();
 		var title, content;
-		
-		for(var id in results){
-			title = results[id]["title"];
-			content = marked(results[id]["content"]);
-		}
+
+		snapshot.forEach(function(childSnapshot) {
+			var childData = childSnapshot.val();
+			// console.log(">>>>> DATA");
+			// console.log(childData);
+			title = childData["title"];
+			content = marked(childData["content"]);
+		});
 		res.json({
 			project: {
 				title: title,
 				content: content
 			}
-		});		
+		});
+
 	}, function(error){
 		console.log("The read failed: " + errorObject.code);
-	});
+	});	
 });
 
 // /*----- ADMIN -----*/
