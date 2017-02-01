@@ -112,7 +112,7 @@ define(function (require) {
 
         // Ajax call
         $.post('/admin-delete-project', {
-        	id: projectId,
+        	projectId: projectId,
             login: localStorage['usr'],
             password: localStorage['pwd']        	
         }, function(response) {
@@ -127,7 +127,7 @@ define(function (require) {
 		console.log(projectId);
         // Ajax call
         $.post('/admin-expand-project', {
-        	id: projectId,
+        	projectId: projectId,
             login: localStorage['usr'],
             password: localStorage['pwd']           	
         }, function(response) {
@@ -159,7 +159,7 @@ define(function (require) {
 		results.forEach(function(item, index, array){
 			console.log(item);
 			
-			var li = $('<li class="project-li" id="'+item.objectId+'"></li>');
+			var li = $('<li class="project-li" id="'+item.projectId+'"></li>');
 			
 			var checkbox = $('<input class="publish-input" type="checkbox">');
 			$(checkbox).prop('checked', item.publish);
@@ -200,7 +200,7 @@ define(function (require) {
 	}
 
 	var expandProject = function(response){
-        var projectContainer = $('<div id="'+response.objectId+'" class="container project"></div>');
+        var projectContainer = $('<div id="'+response.projectId+'" class="container project"></div>');
         
         var title = $('<input type="text" class="title-input">');
         $(title).val(response.title);
