@@ -1,11 +1,14 @@
 /*-------------------- MODULES --------------------*/
 var		express = require('express'),
-	 bodyParser = require('body-parser')
-	 		 fs = require('fs');
-          Parse = require('node-parse-api').Parse,
-              _ = require('underscore'),
-         marked = require('marked');
+	 bodyParser = require('body-parser'),
+			 fs = require('fs'),
+		  admin = require("firebase-admin"),
+			  _ = require('underscore'),
+		 marked = require('marked'),
+	   jsonfile = require('jsonfile')
+	;
 
+// Markdown setup
 marked.setOptions({
   renderer: new marked.Renderer(),
   gfm: true,
@@ -17,15 +20,78 @@ marked.setOptions({
   smartypants: true // Typographic quotes
 });
 
-var readData = fs.readFileSync('keys.txt');
-readData = readData.toString(); // convert to string
-keys = readData.split(',');
+// Firebase setup
+var serviceAccount = require("gianordoli-95c21-firebase-adminsdk-u34a5-e71b509fa6.json");
 
-var options = {
-    app_id: keys[0],
-    api_key: keys[1] // master_key:'...' could be used too
-};
-var parse = new Parse(options);
+// Initialize the app with a custom auth variable, limiting the server's access
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://gianordoli-95c21.firebaseio.com"
+});
+
+// The app only has access as defined in the Security Rules
+var db = admin.database();
+var projectsRef = db.ref("/projects");
+var usersRef = db.ref("/users");
+
+// var queryRef = projectsRef.orderByChild("title").equalTo("Blindness");
+// queryRef.on("value", function(snapshot) {
+//     console.log("Loaded project");
+//     // console.log(snapshot.val());
+//     var results = snapshot.val();
+//     for(var id in results){
+
+//         projectsRef.child(id).update({
+//             images: [{homepage: false, url: ""}]
+//         });
+//     }
+// });
+
+// var queryRef = projectsRef.orderByChild("full_name").equalTo("Gabriel Gianordoli");
+// queryRef.on("value", function(snapshot) {
+//     console.log("Loaded project");
+//     console.log(snapshot.val());
+// });
+
+// var usersRef = ref.child("users");
+// BULK SAVE
+// usersRef.set({
+//   alanisawesome: {
+//     date_of_birth: "June 23, 1912",
+//     full_name: "Alan Turing"
+//   },
+//   gracehop: {
+//     date_of_birth: "December 9, 1906",
+//     full_name: "Grace Hopper"
+//   }
+// });
+
+
+// SAVE EACH
+// usersRef.child("gabriel").set({
+//   date_of_birth: "June 23, 1912",
+//   full_name: "Alan Turing"
+// });
+
+// Callback
+// usersRef.child("laura").set({
+//   date_of_birth: "December 9, 1906",
+//   full_name: "Grace Hopper"
+// }, function(error){
+//   if (error) {
+//     console.log("Data could not be saved." + error);
+//   } else {
+//     console.log("Data saved successfully.");
+//   }
+// });
+
+// UPDATE
+// var hopperRef = usersRef.child("gracehop");
+// hopperRef.update({
+//   "nickname": "Amazing Grace"
+// });
+
+
 var app = express();
 
 
@@ -34,20 +100,20 @@ var app = express();
 // .use is a middleware
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
-    extended: false
+	extended: false
 }));
 
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
-    // Setup a Cross Origin Resource sharing
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    console.log('incoming request from ---> ' + ip);
-    // Show the target URL that the user just hit
-    var url = req.originalUrl;
-    console.log('### requesting ---> ' + url);
-    next();
+	// Setup a Cross Origin Resource sharing
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+	console.log('incoming request from ---> ' + ip);
+	// Show the target URL that the user just hit
+	var url = req.originalUrl;
+	console.log('### requesting ---> ' + url);
+	next();
 });
 
 app.use('/', express.static(__dirname + '/public'));
@@ -55,127 +121,159 @@ app.use('/', express.static(__dirname + '/public'));
 
 /*------------------- ROUTERS -------------------*/
 
-/*----- PUBLIC -----*/
+// /*----- PUBLIC -----*/
 app.post('/public-start', function(req, res) {
-    
-    parse.findMany('projects', '', function (err, response) {
-        var projects = [];
-        var images = [];
 
-        response.results.forEach(function(item, index, array){
-            
-            // Filter by published projects
-            if(item.publish){
-                var project = {
-                    title: item.title,
-                    projectId: item.objectId,
-                    order: item.order
-                }
-                projects.push(project);
+	// console.log(req.body.projectUrl);
+	var queryRef = projectsRef.orderByChild("publish").equalTo(true);
+	
+	queryRef.once("value", function(snapshot) {
+		
+		console.log("Loaded projects");
+		var projects = [];
+		var images = [];		
 
-                // Filter by images with homepage == true
-                item.images.forEach(function(obj, i){
-                    if(obj.homepage){
-                        var image = {
-                            url: obj.url,
-                            projectId: item.objectId,
-                            order: item.order
-                        }
-                        images.push(image);
-                    }
-                });                
-            }
-        });
-        // console.log(projects);
-        // console.log(projects.length);        
-        // console.log(images);
-        // console.log(images.length);
+		snapshot.forEach(function(childSnapshot) {
+			var childData = childSnapshot.val();
+			// console.log(">>>>> DATA");
+			// console.log(childData);
+			projects.push(childData);
+			if(childData.images !== undefined && childData.images.length > 0){
+				childData.images.forEach(function(obj, i){
+					if(obj.homepage){
+						var image = {
+							url: obj.url,
+							projectUrl: childData.url,
+							order: childData.order
+						}
+						images.push(image);
+					}
+				});
+			}
+		});
 
-        projects = _.sortBy(projects, function(obj){
-            return obj.order;
-        });
+		// Sorting
+		projects = _.sortBy(projects, function(obj){
+			return obj.order;
+		});
+		images = _.shuffle(images);
 
-        images = _.shuffle(images);
+		// Stringifying
+		projects = JSON.stringify(projects);
+		images = JSON.stringify(images);
 
-        // images = _.sortBy(images, function(obj){
-        //     return obj.order;
-        // });
+		res.json({
+			projects: projects,
+			images: images
+		});
 
-        projects = JSON.stringify(projects);
-        images = JSON.stringify(images);
-        res.json({
-            projects: projects,
-            images: images
-        });
-    });
+	}, function(errorObject){
+		console.log("The read failed: " + errorObject.code);
+	});	
 });
 
 app.post('/public-load-project', function(req, res) {   
-    // console.log(req.body.projectId);
-    parse.find('projects', req.body.projectId, function (err, response) {
-        if(!err){
-            // console.log(response.content);           // Markdown
-            // console.log(marked(response.content));   // Parsed
+	
+	// console.log(req.body.projectUrl);
+	var queryRef = projectsRef.orderByChild("url").equalTo(req.body.projectUrl);
+	
+	queryRef.once("value", function(snapshot) {
+		
+		console.log("Loaded project");
+		var title, content;
 
-            res.json({
-                project: {
-                    title: response.title,
-                    content: marked(response.content)
-                }
-            });
-        }
-    });
+		snapshot.forEach(function(childSnapshot) {
+			var childData = childSnapshot.val();
+			// console.log(">>>>> DATA");
+			// console.log(childData);
+			title = childData["title"];
+			content = marked(childData["content"]);
+		});
+		res.json({
+			project: {
+				title: title,
+				content: content
+			}
+		});
+
+	}, function(errorObject){
+		console.log("The read failed: " + errorObject.code);
+	});	
 });
 
-/*----- ADMIN -----*/
+// /*----- ADMIN -----*/
 // Log in
 app.post('/admin-start', function(req, res) {
     login(req, res, function(req, res){
+    	console.log("User logged in");
         loadProjects(res);
     });
 });
-
-var login = function(req, res, callback){
-    // console.log('request:');
-    // console.log(req.body);
-    
-    parse.find('users', {login: req.body.login}, function (err, response) {
-      // console.log('Database response:');
-      // console.log(response.results);
-      
-      if(response.results.length > 0 && response.results[0].password == req.body.password){
-        // console.log('Logged in.');
-        callback(req, res);
-
-      }else{
-        var msg = 'User/login not found.';
-        // console.log(msg);
-        res.json({
-            error: msg
-        });
-      }
-    });  
-}
-
-var loadProjects = function(res){
-    var projects;
-    parse.find('projects', {}, function (err, response) {
-        // console.log(response);
-        
-        // Sorting the projects
-        response.results = _.sortBy(response.results, function(obj){
-            return obj.order;
-        });
-        // console.log(response);
-        res.json(response);
-    }); 
-}
 
 app.post('/admin-load-projects', function(req, res) {
     login(req, res, function(req, res){
         loadProjects(res);
     });
 });
+
+function login(req, res, callback){
+    // console.log('request:');
+    // console.log(req.body);
+	
+	var queryRef = usersRef.orderByChild("login").equalTo(req.body.login);
+	
+	queryRef.once("value", function(snapshot) {
+		
+		console.log("Loaded user");
+		// console.log(snapshot.val());
+		var results = snapshot.val();
+		var error = true;
+
+		if(Object.keys(results).length > 0){
+			for(var id in results){
+				if(results[id]["password"] === req.body.password){
+					error = false;
+				}
+			}
+		}
+		if(!error){
+			callback(req, res);			
+		}else{
+			// console.log(msg);
+			res.json({
+			    error: "User or password invalid."
+			});
+		}
+	}, function(errorObject){
+		console.log("The read failed: " + errorObject.code);
+	});
+}
+
+function loadProjects(res){
+	console.log("Called loadProjects");
+    
+    var results = [];
+	
+	var queryRef = projectsRef.orderByChild("order");
+	queryRef.once("value")
+		.then(function(snapshot) {
+			console.log("Loaded projects");
+			snapshot.forEach(function(childSnapshot) {
+				var key = childSnapshot.key;
+				var childData = childSnapshot.val();
+				// console.log(">>>>> KEY: " + key);
+				// console.log(">>>>> DATA");
+				// console.log(childData);
+
+				var thisObj = childData;
+				thisObj["projectId"] = key;
+				results.push(thisObj);
+			});
+			// console.log("Finished loop");
+			// console.log(results);
+			res.json({results: results});
+		});
+}
 
 app.post('/admin-update-all', function(req, res) {
     login(req, res, function(req, res){
@@ -186,33 +284,72 @@ app.post('/admin-update-all', function(req, res) {
         // console.log(projects.length);
 
         var error = false;
+        var msg;
 
         projects.forEach(function(item, index, array){
             // console.log(item);
             item = JSON.parse(item);
             // console.log(item.id + ',' + item.order + ', ' + item.publish);
             // console.log(typeof item.public);
-            parse.update('projects', item.id, {
-                order: parseInt(item.order),
-                publish: item.publish
-            }, function (err, response) {
-                console.log(response);
-            }); 
+
+			var queryRef = projectsRef.orderByKey().equalTo(item.id);
+			
+			queryRef.once("value", function(snapshot) {
+				
+				console.log("Loaded project");
+
+				snapshot.forEach(function(childSnapshot) {
+					var key = childSnapshot.key;
+					// console.log(">>>>> KEY: " + key);
+
+					projectsRef.child(key).update({
+		                order: parseInt(item.order),
+		                publish: item.publish
+					}, function(errorObject){
+						error = true;
+						msg = "Could not update object.";
+					});
+				});
+
+			}, function(errorObject){
+				error = true;
+				msg = "The read failed: " + errorObject.code;
+			});
         });
+
+        if(error){
+			console.log(msg);
+			res.json({msg: msg});
+        }
     });
 });
 
 app.post('/admin-expand-project', function(req, res) {
-    login(req, res, function(req, res){
-        // console.log('request:');
-        // console.log(req.body);
-        // console.log(req.body.id);
 
-        parse.find('projects', req.body.id, function (err, response) {
-            // console.log(response);
-            res.json(response);
-        }); 
-    });
+	// console.log(req.body.projectId);
+	var thisObj;
+	var queryRef = projectsRef.orderByKey().equalTo(req.body.projectId);
+	
+	queryRef.once("value", function(snapshot) {
+		
+		console.log("Loaded project");
+
+		snapshot.forEach(function(childSnapshot) {
+			var key = childSnapshot.key;
+			var childData = childSnapshot.val();
+			// console.log(">>>>> KEY: " + key);
+			// console.log(">>>>> DATA");
+			// console.log(childData);
+
+			thisObj = childData;
+			thisObj["projectId"] = key;
+		});
+		// console.log(thisObj);
+		res.json(thisObj);
+
+	}, function(errorObject){
+		console.log("The read failed: " + errorObject.code);
+	});
 });
 
 app.post('/admin-create-project', function(req, res) {
@@ -222,39 +359,79 @@ app.post('/admin-create-project', function(req, res) {
         var project = JSON.parse(req.body.data);
         // console.log(project);
 
-        var lastIndex = '';
-        parse.findMany('projects', '', function (err, response) {
+        var error = false;
+        var msg;
 
-            lastIndex = response.results.length;
+        var queryRef = projectsRef.orderByKey();
+        queryRef.once("value", function(snapshot){
+        	
+        	var lastIndex = snapshot.numChildren();
+        	var url = project["title"].toLowerCase();
+    		while(url.indexOf(" ") > -1){ url = url.replace(" ", "-"); };
+    		url = encodeURI(url);
 
-            parse.insert('projects', {
-                title: project.title,
-                content: project.content,
-                images: project.images,
-                order: lastIndex
-            }, function (err, response) {
-                // console.log(response);
-                res.json(response);
-            });         
+        	projectsRef.push({
+				title: project.title,
+				content: project.content,
+				images: project.images,
+				order: lastIndex,
+				url: url
+            }, function(errorObject){
+				if (errorObject) {
+					msg = "Data could not be saved." + errorObject;
+				} else {
+					msg = "Data saved successfully.";
+				}
+            });
+        }, function(errorObject){
+        	msg = "The read failed: " + errorObject.code;
         });
+    	console.log(msg);
+    	res.json({msg: msg});
     });
 });
 
 app.post('/admin-update-project', function(req, res) {
-    login(req, res, function(req, res){    
+
+    login(req, res, function(req, res){
         // console.log('request:');
         // console.log(req.body);
         var project = JSON.parse(req.body.data);
         // console.log(project);
 
-        parse.update('projects', project.id, {
-            title: project.title,
-            content: project.content,
-            images: project.images
-        }, function (err, response) {
-            // console.log(response);
-            res.json(response);
-        });
+        var error = false;
+        var msg;
+
+		var thisObj;
+		var queryRef = projectsRef.orderByKey().equalTo(project.id);
+		
+		queryRef.once("value", function(snapshot) {
+			
+			console.log("Loaded project");
+
+			snapshot.forEach(function(childSnapshot) {
+				var key = childSnapshot.key;
+				// console.log(">>>>> KEY: " + key);
+
+				projectsRef.child(key).update({
+		            title: project.title,
+		            content: project.content,
+		            images: project.images
+				}, function(errorObject){
+					error = true;
+					msg = "Could not update object.";
+				});
+			});
+
+		}, function(errorObject){
+			error = true;
+			msg = "The read failed: " + errorObject.code;
+		});
+
+		if(error){
+			console.log(msg);
+			res.json({msg: msg});			
+		}
     });
 });
 
@@ -262,12 +439,11 @@ app.post('/admin-delete-project', function(req, res) {
     login(req, res, function(req, res){
         // console.log('request:');
         // console.log(req.body);
-        // console.log(req.body.id);
-
-        parse.delete('projects', req.body.id, function (err, response) {
-            // console.log(response);
-            res.json(response);
-        }); 
+        // console.log(req.body.projectId);
+		projectsRef.child(req.body.projectId).remove(function(error) {
+			msg = error ? "Could not delete project" : "Success!";
+			res.json({msg: msg});
+		});
     });
 });
 
@@ -275,5 +451,5 @@ app.post('/admin-delete-project', function(req, res) {
 /*----------------- INIT SERVER -----------------*/
 var PORT = 3000; //the port you want to use
 app.listen(PORT, function() {
-    console.log('Server running at port ' + PORT + '. Ctrl+C to terminate.');
+	console.log('Server running at port ' + PORT + '. Ctrl+C to terminate.');
 });
