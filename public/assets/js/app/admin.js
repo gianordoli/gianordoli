@@ -295,9 +295,25 @@ define(function (require) {
 		};	    
 
 	    // register page
-	    $('#btn-login').off('click').on('click', function() {
-	    	login();
-	    });
+	    // $('#btn-login').off('click').on('click', function() {
+	    	
+	    // });
+		document.querySelector('#login-input').addEventListener('keypress', handleLoginButton);
+		document.querySelector('#password-input').addEventListener('keypress', handleLoginButton);		
+	    document.querySelector('#btn-login').addEventListener('keypress', handleLoginButton);
+	    document.querySelector('#btn-login').addEventListener('click', handleLoginButton);
+
+		function handleLoginButton(e){
+			if(e.type === "keypress"){
+				var key = e.which || e.keyCode;
+			    if (key === 13) { // 13 is enter
+			    	login();
+			    }				
+			}else if(e.type === "click"){
+			    login();				
+			}
+
+		}
 
 	    /*----- PROJECTS LIST -----*/
 	    $('#projects-list .update-bt').off('click').on('click', function() {
@@ -346,7 +362,7 @@ define(function (require) {
 	    // Images
 	    $('.project li .del-bt').off('click').on('click', function() {
 	    	$(this).parent().remove();
-	    });	    
+	    });
 	};	
 
 	attachEvents();
