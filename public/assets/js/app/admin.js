@@ -159,7 +159,7 @@ define(function (require) {
 		results.forEach(function(item, index, array){
 			console.log(item);
 			
-			var li = $('<li class="project-li" id="'+item.projectId+'"></li>');
+			var li = $('<li class="project-li" id="'+item.projectId+'" name="'+item.url+'"></li>');
 			
 			var checkbox = $('<input class="publish-input" type="checkbox">');
 			$(checkbox).prop('checked', item.publish);
@@ -167,12 +167,14 @@ define(function (require) {
 			$(order).val(item.order);
 			var title = $('<span>'+item.title+'</span>');
 			var edit = $('<button class="edit-bt">Edit</button>');
+			var view = $('<button class="view-bt">View</button>');
 			var del = $('<button class="del-bt">Delete</button>');
 			
 			$(li).append(checkbox)
 				 .append(order)
 				 .append(title)
 				 .append(edit)
+				 .append(view)
 				 .append(del);
 
 			$(ui).append(li);
@@ -189,6 +191,10 @@ define(function (require) {
 		$('body').append(projectsList);
 
 		attachEvents();
+	}
+
+	var viewProject = function(name){
+		window.open("projects.html#" + name);
 	}
 
 	var updateProjectsOrder = function(parent){
@@ -306,6 +312,10 @@ define(function (require) {
 	    	// console.log($(this).parent());
 	    	expandProjectParse($(this).parent().attr('id'));
 	    });
+
+	    $('#projects-list .view-bt').off('click').on('click', function() {
+	    	viewProject($(this).parent().attr('name'));
+	    });	    
 
 	    $('#projects-list .add-project-bt').off('click').on('click', function() {
 	    	// console.log('add project');
