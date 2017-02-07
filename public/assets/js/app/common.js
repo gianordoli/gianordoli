@@ -62,6 +62,7 @@ define(function (require) {
 						  '<a href="https://twitter.com/gianordoli" target="_blank">Twitter</a>, ' +
 						  '<a href="https://www.linkedin.com/in/gianordoli" target="_blank">LinkedIn</a>, ' +
 						  '<a href="https://www.behance.net/gianordoli" target="_blank">Behance</a>, ' +
+						  '<a href="http://gabrielgianordoli.tumblr.com/" target="_blank">Tumblr</a>, ' +
 						  '<a href="https://www.pinterest.com/gianordoli/" target="_blank">Pinterest</a>, ' +						  
 						  '<a href="https://vimeo.com/gianordoli" target="_blank">Vimeo</a> & ' +
 						  '<a href="https://github.com/gianordoli" target="_blank">Github</a>' +
