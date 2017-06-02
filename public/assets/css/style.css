@@ -113,8 +113,8 @@ body{
 	}
 	#sidebar ul{
 		list-style-type: none;
-		font-size: 12px;
-		line-height: 20px;
+		font-size: 13px;
+		line-height: 24px;
 		margin: 0;
 		padding: 0;
 		margin-left: 10px;
@@ -131,9 +131,9 @@ body{
 	}
 
 	#container h1 {
-		/*text-transform: uppercase;*/
+		text-transform: uppercase;
 		/*font-family: overpass-bold;*/
-		/*letter-spacing: 1px;*/
+		letter-spacing: 1px;
     font-weight: 900;
 	}
 
@@ -220,7 +220,7 @@ body{
 #container .project-container h6,
 #container .project-container ul,
 #container .project-container hr{
-	max-width: 515px;
+	max-width: 600px;
 /*	margin: 0;*/
 }
 
