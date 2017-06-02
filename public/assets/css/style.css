@@ -329,6 +329,11 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 	list-style-position: inside;
 }
 
+#container .project-container.about p.legend{
+  font-size: 11px;
+	line-height: 15px;
+}
+
 
 /*----- LOADER -----*/
 #loader-container{
