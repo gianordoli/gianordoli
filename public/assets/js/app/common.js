@@ -1,7 +1,7 @@
 /* Your code starts here */
 
 define(function (require) {
-	
+
 	console.log('Loading common functions...')
 
 	return {
@@ -12,18 +12,18 @@ define(function (require) {
 			$.post('/public-start', {}, function(response) {
 	            // console.log(response);
 	            if(response.error){
-	            	throw response.error	
+	            	throw response.error
 	            }else{
 					// console.log(response);
 					callback(response);
 	            }
-	        });		
+	        });
 		},
 
 		appendSidebar: function(projects){
 			console.log('Appending projects...');
 			var title = $('<h1><a href="/">Gabriel Gianordoli</a></h1>');
-			
+
 			var projectsNavBar = $('<nav id="projects-nav-bar"></nav>');
 				var projectsTitle = $('<h2>Projects</h2>');
 				var projectsUl = $('<ul></ul>');
@@ -34,7 +34,7 @@ define(function (require) {
 					});
 			$(projectsNavBar).append(projectsTitle)
 						 	 .append(projectsUl);
-			
+
 			var infoNavBar = $('<div id="info-nav-bar"></div>');
 				var infoTitle = $('<h2>Info</h2>');
 				var infoUl = $('<ul></ul>');
@@ -45,7 +45,7 @@ define(function (require) {
 						 .append(cv)
 						 .append(contact);
 			$(infoNavBar).append(infoTitle)
-						 .append(infoUl);						 
+						 .append(infoUl);
 
 			$('#sidebar').append(title)
 						 .append(projectsNavBar)
@@ -56,14 +56,14 @@ define(function (require) {
 			console.log('Appending footer.');
 
 			var footer = $('<footer><hr/></footer>');
-			var p = $('<p>© 2006 ~ 2015 Gabriel Gianordoli – All rights reserved.</p>');
+			var p = $('<p>© 2006 ~ 2017 Gabriel Gianordoli – All rights reserved.</p>');
 			var aside = $('<aside>' +
 						  '<a href="mailto:gianordoligabriel@gmail.com" target="_blank">Email</a>, ' +
 						  '<a href="https://twitter.com/gianordoli" target="_blank">Twitter</a>, ' +
 						  '<a href="https://www.linkedin.com/in/gianordoli" target="_blank">LinkedIn</a>, ' +
 						  '<a href="https://www.behance.net/gianordoli" target="_blank">Behance</a>, ' +
 						  '<a href="http://gabrielgianordoli.tumblr.com/" target="_blank">Tumblr</a>, ' +
-						  '<a href="https://www.pinterest.com/gianordoli/" target="_blank">Pinterest</a>, ' +						  
+						  '<a href="https://www.pinterest.com/gianordoli/" target="_blank">Pinterest</a>, ' +
 						  '<a href="https://vimeo.com/gianordoli" target="_blank">Vimeo</a> & ' +
 						  '<a href="https://github.com/gianordoli" target="_blank">Github</a>' +
 						  '</aside>');
@@ -106,6 +106,6 @@ define(function (require) {
 				$(this).attr('title', newAlt);
 			});
 			return content;
-		}		
-	} 
+		}
+	}
 });

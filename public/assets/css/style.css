@@ -6,13 +6,13 @@
 }
 
 
-/* www.aestheticallyloyal.com/public/optimize-legibility/ */ 
+/* www.aestheticallyloyal.com/public/optimize-legibility/ */
 h1,h2,h3,h4,h5,h6 {
 	text-rendering: optimizeLegibility;
 	font-weight: 700;
 }
 
-/* #444 looks better than black: twitter.com/H_FJ/statuses/11800719859 */ 
+/* #444 looks better than black: twitter.com/H_FJ/statuses/11800719859 */
 body, select, input, textarea {	color: #333 }
 
 /* maxvoltar.com/archive/-webkit-font-smoothing */
@@ -24,7 +24,8 @@ a:link, a:visited, a:active, a:hover{ outline: 0; }
 
 body{
 	/*font-family: overpass-regular;*/
-	font-family: "soleil", Helvetica, Arial, sans-serif;
+	/*font-family: "soleil", Helvetica, Arial, sans-serif;*/
+  font-family: 'Heebo', sans-serif;
 }
 
 	/* FOOTER */
@@ -41,7 +42,7 @@ body{
 	footer hr{
 	 	border: none;
 	 	height: 2px;
-	 	background-color: #333; 	
+	 	background-color: #333;
 	}
 
 	footer p{
@@ -60,7 +61,7 @@ body{
 	footer a:link,
 	footer a:visited,
 	footer a:active,
-	footer a:hover{ color: #333; }	
+	footer a:hover{ color: #333; }
 
 	/* SIDEBAR */
 	#sidebar{
@@ -69,8 +70,10 @@ body{
 		/*top: 20px;*/
 		padding: 20px 10px;
 		width: 175px;
+    height: 100vh;
 		height: 100%;
 		text-align: left;
+    overflow-y: auto;
 		/*overflow: hidden;*/
 	}
 
@@ -85,12 +88,13 @@ body{
 	#sidebar a:hover.selected{ color: #fb81ac; }
 
 	#sidebar h1 {
-		text-transform: uppercase;
-		font-size: 20px;
+		/*text-transform: uppercase;*/
+		font-size: 24px;
 		/*font-family: overpass-bold;*/
-		line-height: 20px;
-		letter-spacing: 2px;
+		line-height: 24px;
+		letter-spacing: 1px;
 		margin-top: 0;
+    font-weight: 900;
 	}
 
 	#sidebar #logo h1 a{
@@ -108,9 +112,9 @@ body{
 		letter-spacing: 1px
 	}
 	#sidebar ul{
-		list-style-type: none;	
-		font-size: 13px;
-		line-height: 18px;
+		list-style-type: none;
+		font-size: 12px;
+		line-height: 20px;
 		margin: 0;
 		padding: 0;
 		margin-left: 10px;
@@ -127,14 +131,15 @@ body{
 	}
 
 	#container h1 {
-		text-transform: uppercase;
+		/*text-transform: uppercase;*/
 		/*font-family: overpass-bold;*/
-		letter-spacing: 1px;	
+		/*letter-spacing: 1px;*/
+    font-weight: 900;
 	}
 
 	#container h2 {
 		text-transform: uppercase;
-	}	
+	}
 
 	#container a:link,
 	#container a:visited,
@@ -143,7 +148,7 @@ body{
 
 /*---------- INDEX ----------*/
 #container .item {
-  width: calc((100% - 60px)/3);	
+  width: calc((100% - 60px)/3);
   max-width: 360px;
   margin: 10px;
   float: left;
@@ -162,7 +167,7 @@ body{
 	-webkit-transition: border .10s;
 	-o-transition: border .10s;
 	-moz-transition: border .10s;
-	transition: border .10s;	
+	transition: border .10s;
 	border: 8px solid #fb81ac;
 }
 
@@ -186,8 +191,8 @@ body{
 #container h5 { font-size: 10px; }
 #container h6 { font-size: 9px; line-height: 14px; }*/
 #container .project-container p  {
-	font-size: 13px;
-	line-height: 18px;
+	font-size: 15px;
+	line-height: 24px;
 	margin: 0;
 }
 
@@ -268,11 +273,11 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 #container .project-container .js-video:not(:first-child) {
 	margin-top: 20px;
 }
- 
+
 #container .project-container .js-video.widescreen {
   padding-bottom: 56.34%;
 }
- 
+
 #container .js-video.vimeo {
   padding-top: 0;
 }
@@ -299,7 +304,7 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 	margin: 20px 0 5px 0;
 	text-transform: uppercase;
 	/*font-family: overpass-bold;*/
-	letter-spacing: 1px;	
+	letter-spacing: 1px;
 	line-height: 18px;
 }
 #container .project-container.about h3 {
@@ -316,7 +321,7 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 	/*font-family: overpass-bold;*/
 }
 #container .project-container.about ul{
-	list-style-type: disc;	
+	list-style-type: disc;
 	font-size: 13px;
 	line-height: 18px;
 	margin: 0;
@@ -337,7 +342,7 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 	width: 1050px;
 	-webkit-transform: translateY(-50%);
 	-ms-transform: translateY(-50%);
-	transform: translateY(-50%);	
+	transform: translateY(-50%);
 }
 
 #loader-container .loader {
@@ -348,7 +353,7 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
     -webkit-animation: myfirst 1s; /* Chrome, Safari, Opera */
     animation: myfirst 1s;
     -webkit-animation-iteration-count: infinite; /* Chrome, Safari, Opera */
-    animation-iteration-count: infinite;    
+    animation-iteration-count: infinite;
 }
 
 
@@ -383,12 +388,12 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 		left: 0;
 	}
 
-	#container{	
+	#container{
 		width: calc(100% - 175px);
 		left: 175px;
 	}
 
-	footer{	
+	footer{
 		width: calc(100% - 175px);
 		margin-left: 175px;
 	}
@@ -396,7 +401,7 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 	#loader-container{
 		width: calc(100% - 175px);
 		left: 175px;
-	}	
+	}
 }
 
 /* For tablets or smaller, place the nav bar on the top */
@@ -423,13 +428,13 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 	}
 
 	#container{
-		position: static;		
+		position: static;
 		width: 100%;
 		left: 0;
 	}
 
 	footer{
-		position: static;		
+		position: static;
 		width: 100%;
 		margin-left: 0;
 	}
@@ -469,7 +474,7 @@ https://jonsuh.com/blog/responsive-youtube-vimeo-embed-and-html5-video-with-css/
 		width: calc(100% - 20px);
 		max-width: none;
 		margin: 5px 0;
-	}	
+	}
 
 	#container .project-container{
 		padding: 0;
