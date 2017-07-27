@@ -76,22 +76,22 @@ define(function (require) {
 				console.log("The read failed: " + errorObject.code);
 			});
 		}
+	}
 
-		// // Load projects
-		// $.post('/public-start', {}, function(response) {
-		//         // console.log(response);
-		//         if(response.error){
-		//         	throw response.error
-		//         }else{
-		// 		// console.log(response);
-		// 		callback(response);
-		//         }
-		//     });
+	function getProjectsRef() {
+		if (!projectsRef) {
+			firebaseSetup();
+			getProjectsRef();
+		} else {
+			return projectsRef;
+		}
 	}
 
 	return {
 
 		init: init,
+
+		getProjectsRef: getProjectsRef,
 
 		appendSidebar: function(projects){
 			console.log('Appending projects...');
@@ -102,7 +102,7 @@ define(function (require) {
 				var projectsUl = $('<ul></ul>');
 					projects.forEach(function(item, index, array){
 						// console.log(item);
-						var li = $('<li><a name="'+item.url+'" href="/projects.html#'+item.url+'">'+item.title+'</li>');
+						var li = $('<li><a name="'+item.url+'" href="projects.html#'+item.url+'">'+item.title+'</li>');
 						$(projectsUl).append(li);
 					});
 			$(projectsNavBar).append(projectsTitle)
@@ -111,8 +111,8 @@ define(function (require) {
 			var infoNavBar = $('<div id="info-nav-bar"></div>');
 				var infoTitle = $('<h2>Info</h2>');
 				var infoUl = $('<ul></ul>');
-					var about = $('<li><a href="/about.html">About</a></li>');
-					var cv = $('<li><a href="/downloads/gabriel_gianordoli_cv.pdf" target="_blank">CV</a></li>');
+					var about = $('<li><a href="about.html">About</a></li>');
+					var cv = $('<li><a href="downloads/gabriel_gianordoli_cv.pdf" target="_blank">CV</a></li>');
 					var contact = $('<li><a href="mailto:gianordoligabriel@gmail.com" target="_blank">Contact</a></li>');
 				$(infoUl).append(about)
 						 .append(cv)

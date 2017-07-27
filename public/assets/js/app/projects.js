@@ -3,7 +3,7 @@
 define(['./common'], function (common) {
 
 	console.log('Loaded projects.js');
-	
+
 	// A function where we detect the change of '#' on the browser address field
 	var hashRouter = function() {
 	    $(window).off('hashchange').on('hashchange', function() {
@@ -22,17 +22,44 @@ define(['./common'], function (common) {
 		var projectUrl = location.hash.substring(1, location.hash.length);
 		linkMarker(projectUrl);
 		// console.log(projectUrl);
-		$.post('/public-load-project', {
-			projectUrl: projectUrl
-		}, function(response) {
-            // console.log(response);
-            if(response.error){
-            	throw response.error	
-            }else{
-				// console.log(response);
-				appendProject(response.project);
-            }
-        });			
+
+		var projectsRef = common.getProjectsRef();
+		var queryRef = projectsRef.orderByChild("url").equalTo(projectUrl);
+
+		queryRef.once("value", function(snapshot) {
+
+			console.log("Loaded project");
+			var title, content;
+
+			snapshot.forEach(function(childSnapshot) {
+				var childData = childSnapshot.val();
+				console.log(">>>>> DATA");
+				console.log(childData);
+				title = childData["title"];
+				content = marked(childData["content"]);
+			});
+			// res.json({
+			// 	project: {
+			// 		title: title,
+			// 		content: content
+			// 	}
+			// });
+
+		}, function(errorObject){
+			console.log("The read failed: " + errorObject.code);
+		});
+
+		// $.post('/public-load-project', {
+		// 	projectUrl: projectUrl
+		// }, function(response) {
+    //         // console.log(response);
+    //         if(response.error){
+    //         	throw response.error
+    //         }else{
+		// 		// console.log(response);
+		// 		appendProject(response.project);
+    //         }
+    //     });
 	}
 
 	var appendProject = function(project){
@@ -40,7 +67,7 @@ define(['./common'], function (common) {
 		// Insert content into project-container's html
 		var projectContainer = $('<div class="project-container"></div>');
 		$(projectContainer).html(project.content);
-		
+
 		// The markdown content need some adjustments...
 		projectContainer = addVideoDiv(projectContainer);			// Add video div to iframe
 		projectContainer = releaseImages(projectContainer);			// Releasing the images form inside the paragraphs
@@ -50,7 +77,7 @@ define(['./common'], function (common) {
 
 		$('#container').html('')
 					   .append(projectContainer);
-					   
+
 		$('body').scrollTop(0);
 	}
 
