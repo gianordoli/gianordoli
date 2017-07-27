@@ -6,9 +6,9 @@
 //except for 'app' ones, which are in a sibling
 //directory.
 requirejs.config({
-    baseUrl: '/assets/js/lib',
+    baseUrl: 'assets/js/lib',
     paths: {
-        app: '/assets/js/app',
+        app: 'assets/js/app',
         /*
         Files inside lib will be made available by
         require('filename') — without the js extension.
@@ -18,9 +18,14 @@ requirejs.config({
 
         If you have minified files,
         you should either rename them, or add them here using:
-        
+
         jquery: 'jquery.min',
         Masonry: 'masonry.pkgd.min'
         */
+    },
+    shim: {
+        'firebase': {
+            exports: 'firebase'
+        }
     }
 });

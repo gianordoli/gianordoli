@@ -3,7 +3,7 @@
 define(['./common'], function (common) {
 
 	console.log('Loaded index.js');
-	
+
 	/*------- VARS --------*/
 	var $container;
 
@@ -53,9 +53,9 @@ define(['./common'], function (common) {
 			var projectUrl = $(this).attr('name');
 			var objectsWithSameName = $('[name="'+projectUrl+'"]');
 			// console.log(objectsWithSameName.length);
-			$.each(objectsWithSameName, function(index, item){	
+			$.each(objectsWithSameName, function(index, item){
 				if($(item).has('img').length > 0){
-					$(item).children().attr('class', 'selected');		
+					$(item).children().attr('class', 'selected');
 				}else{
 					$(item).attr('class', 'selected');
 				}
@@ -75,12 +75,12 @@ define(['./common'], function (common) {
 		});
 	}
 
-	common.init(function(data){
+	// common.init(function(data){
 		// console.log(JSON.parse(data.projects));
 		// console.log(JSON.parse(data.images));
 		appendLoader();
-		common.appendSidebar(JSON.parse(data.projects));
-		appendImages(JSON.parse(data.images));
+		// common.appendSidebar(JSON.parse(data.projects));
+		// appendImages(JSON.parse(data.images));
 		common.appendFooter();
-	});
+	// });
 });
