@@ -1,9 +1,9 @@
 /* Your code starts here */
 
-define(['./common'], function (common) {
+define(['./common', 'marked'], function (common, marked) {
 
 	console.log('Loaded projects.js');
-	
+
 	// A function where we detect the change of '#' on the browser address field
 	var hashRouter = function() {
 	    $(window).off('hashchange').on('hashchange', function() {
@@ -22,17 +22,28 @@ define(['./common'], function (common) {
 		var projectUrl = location.hash.substring(1, location.hash.length);
 		linkMarker(projectUrl);
 		// console.log(projectUrl);
-		$.post('/public-load-project', {
-			projectUrl: projectUrl
-		}, function(response) {
-            // console.log(response);
-            if(response.error){
-            	throw response.error	
-            }else{
-				// console.log(response);
-				appendProject(response.project);
-            }
-        });			
+
+		var projectsRef = common.getProjectsRef();
+		var queryRef = projectsRef.orderByChild("url").equalTo(projectUrl);
+
+		queryRef.once("value", function(snapshot) {
+
+			console.log("Loaded project");
+			var title, content;
+
+			snapshot.forEach(function(childSnapshot) {
+				var childData = childSnapshot.val();
+				// console.log(">>>>> DATA");
+				// console.log(childData);
+				appendProject({
+					title: childData["title"],
+					content: marked(childData["content"]),
+				});
+			});
+
+		}, function(errorObject){
+			console.log("The read failed: " + errorObject.code);
+		});
 	}
 
 	var appendProject = function(project){
@@ -40,7 +51,7 @@ define(['./common'], function (common) {
 		// Insert content into project-container's html
 		var projectContainer = $('<div class="project-container"></div>');
 		$(projectContainer).html(project.content);
-		
+
 		// The markdown content need some adjustments...
 		projectContainer = addVideoDiv(projectContainer);			// Add video div to iframe
 		projectContainer = releaseImages(projectContainer);			// Releasing the images form inside the paragraphs
@@ -50,7 +61,7 @@ define(['./common'], function (common) {
 
 		$('#container').html('')
 					   .append(projectContainer);
-					   
+
 		$('body').scrollTop(0);
 	}
 
@@ -92,11 +103,25 @@ define(['./common'], function (common) {
 	    return content;
 	}
 
+	function markedSetup() {
+		marked.setOptions({
+		  renderer: new marked.Renderer(),
+		  gfm: true,
+		  tables: true,
+		  breaks: false,
+		  pedantic: false,
+		  sanitize: false,  // Don't sanitize! Keep html entities as is.
+		  smartLists: true,
+		  smartypants: true // Typographic quotes
+		});
+	}
+
 	common.init(function(data){
 		// console.log(JSON.parse(data.projects));
 		common.appendSidebar(JSON.parse(data.projects));
 		common.appendFooter();
 		hashRouter();
+		markedSetup();
 		loadProject();
 	});
 });

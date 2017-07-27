@@ -4,24 +4,24 @@
 require(['config'], function () {
 
 	console.log('Loaded config file.');
-	
+
 	// All pages load jQuery
-	require(['jquery'], function($){
-		
-		console.log('Loaded jquery.');
+	require(['jquery', 'firebase', 'underscore'], function($, firebase, _){
+
+		console.log('Loaded jquery, firebase, underscore, and marked.');
 
 		// Current page is...?
 		var url = window.location.pathname;
 		var filename = url.substring(url.lastIndexOf('/')+1, url.lastIndexOf('.html'));
 		if(filename == '/') filename = 'index';
-		
+
 		console.log('Loading dependencies for '+filename);
-		
+
 		// ADMIN
 		if(filename == 'admin'){
 			require(['jquery-ui']);
 			loadMainScript(filename);
-		
+
 		// PUBLIC
 		}else{
 
@@ -44,7 +44,7 @@ require(['config'], function () {
 						loadMainScript(filename);
 				    });
 				});
-				
+
 			// ALL
 			}else{
 				loadMainScript(filename);
@@ -54,7 +54,7 @@ require(['config'], function () {
 
 	function loadMainScript(filename){
 		console.log('Loading script for ' + filename);
-		require(['app/'+filename]);		
+		require(['../app/'+filename]);
 	}
 
 });

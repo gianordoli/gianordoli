@@ -3,7 +3,7 @@
 define(['./common'], function (common) {
 
 	console.log('Loaded index.js');
-	
+
 	/*------- VARS --------*/
 	var $container;
 
@@ -53,9 +53,9 @@ define(['./common'], function (common) {
 			var projectUrl = $(this).attr('name');
 			var objectsWithSameName = $('[name="'+projectUrl+'"]');
 			// console.log(objectsWithSameName.length);
-			$.each(objectsWithSameName, function(index, item){	
+			$.each(objectsWithSameName, function(index, item){
 				if($(item).has('img').length > 0){
-					$(item).children().attr('class', 'selected');		
+					$(item).children().attr('class', 'selected');
 				}else{
 					$(item).attr('class', 'selected');
 				}
