@@ -40,8 +40,8 @@ define(function (require) {
 
 				snapshot.forEach(function(childSnapshot) {
 					var childData = childSnapshot.val();
-					console.log(">>>>> DATA");
-					console.log(childData);
+					// console.log(">>>>> DATA");
+					// console.log(childData);
 					projects.push(childData);
 					if(childData.images !== undefined && childData.images.length > 0){
 						childData.images.forEach(function(obj, i){
@@ -148,7 +148,7 @@ define(function (require) {
 
 		addImagesPath: function(content){
 			// console.log('Called addImagesPath.')
-			var path = '/assets/img/';
+			var path = 'assets/img/';
 			var images = $(content).find('img');
 
 			// Current page is...?
