@@ -8,7 +8,7 @@ require(['config'], function () {
 	// All pages load jQuery
 	require(['jquery', 'firebase', 'underscore'], function($, firebase, _){
 
-		console.log('Loaded jquery and firebase.');
+		console.log('Loaded jquery, firebase, underscore, and marked.');
 
 		// Current page is...?
 		var url = window.location.pathname;

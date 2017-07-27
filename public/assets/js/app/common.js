@@ -95,7 +95,7 @@ define(function (require) {
 
 		appendSidebar: function(projects){
 			console.log('Appending projects...');
-			var title = $('<h1><a href="/">Gabriel Gianordoli</a></h1>');
+			var title = $('<h1><a href="index.html">Gabriel Gianordoli</a></h1>');
 
 			var projectsNavBar = $('<nav id="projects-nav-bar"></nav>');
 				var projectsTitle = $('<h2>Projects</h2>');

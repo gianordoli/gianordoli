@@ -1,6 +1,6 @@
 /* Your code starts here */
 
-define(['./common'], function (common) {
+define(['./common', 'marked'], function (common, marked) {
 
 	console.log('Loaded projects.js');
 
@@ -33,33 +33,17 @@ define(['./common'], function (common) {
 
 			snapshot.forEach(function(childSnapshot) {
 				var childData = childSnapshot.val();
-				console.log(">>>>> DATA");
-				console.log(childData);
-				title = childData["title"];
-				content = marked(childData["content"]);
+				// console.log(">>>>> DATA");
+				// console.log(childData);
+				appendProject({
+					title: childData["title"],
+					content: marked(childData["content"]),
+				});
 			});
-			// res.json({
-			// 	project: {
-			// 		title: title,
-			// 		content: content
-			// 	}
-			// });
 
 		}, function(errorObject){
 			console.log("The read failed: " + errorObject.code);
 		});
-
-		// $.post('/public-load-project', {
-		// 	projectUrl: projectUrl
-		// }, function(response) {
-    //         // console.log(response);
-    //         if(response.error){
-    //         	throw response.error
-    //         }else{
-		// 		// console.log(response);
-		// 		appendProject(response.project);
-    //         }
-    //     });
 	}
 
 	var appendProject = function(project){
@@ -119,11 +103,25 @@ define(['./common'], function (common) {
 	    return content;
 	}
 
+	function markedSetup() {
+		marked.setOptions({
+		  renderer: new marked.Renderer(),
+		  gfm: true,
+		  tables: true,
+		  breaks: false,
+		  pedantic: false,
+		  sanitize: false,  // Don't sanitize! Keep html entities as is.
+		  smartLists: true,
+		  smartypants: true // Typographic quotes
+		});
+	}
+
 	common.init(function(data){
 		// console.log(JSON.parse(data.projects));
 		common.appendSidebar(JSON.parse(data.projects));
 		common.appendFooter();
 		hashRouter();
+		markedSetup();
 		loadProject();
 	});
 });
