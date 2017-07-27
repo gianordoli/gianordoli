@@ -75,12 +75,12 @@ define(['./common'], function (common) {
 		});
 	}
 
-	// common.init(function(data){
-		// console.log(JSON.parse(data.projects));
-		// console.log(JSON.parse(data.images));
+	common.init(function(data){
+	// 	// console.log(JSON.parse(data.projects));
+	// 	// console.log(JSON.parse(data.images));
 		appendLoader();
-		// common.appendSidebar(JSON.parse(data.projects));
-		// appendImages(JSON.parse(data.images));
+	// 	// common.appendSidebar(JSON.parse(data.projects));
+	// 	// appendImages(JSON.parse(data.images));
 		common.appendFooter();
-	// });
+	});
 });

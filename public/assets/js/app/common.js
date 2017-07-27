@@ -2,23 +2,94 @@
 
 define(function (require) {
 
-	console.log('Loading common functions...')
+	console.log('Loading common functions...');
+
+	var projectsRef;
+
+	function firebaseSetup() {
+		console.log('firebaseSetup');
+		var config = {
+			apiKey: "AIzaSyCHwHRrXUPj2zWHjzFG8ClrsCTIo8xsens",
+			authDomain: "gianordoli-95c21.firebaseapp.com",
+			databaseURL: "https://gianordoli-95c21.firebaseio.com",
+			projectId: "gianordoli-95c21",
+			storageBucket: "gianordoli-95c21.appspot.com",
+			messagingSenderId: "964608061102"
+		};
+		firebase.initializeApp(config);
+
+		var database = firebase.database();
+		projectsRef = database.ref("/projects");
+	}
+
+	function init(callback) {
+		if (!projectsRef) {
+			firebaseSetup();
+			init(callback);
+		} else {
+			console.log('Initializing...');
+			var queryRef = projectsRef.orderByChild("publish").equalTo(true);
+
+			queryRef.once("value", function(snapshot) {
+
+				console.log("Loaded projects");
+				var projects = [];
+				var images = [];
+
+				snapshot.forEach(function(childSnapshot) {
+					var childData = childSnapshot.val();
+					console.log(">>>>> DATA");
+					console.log(childData);
+					// projects.push(childData);
+					// if(childData.images !== undefined && childData.images.length > 0){
+					// 	childData.images.forEach(function(obj, i){
+					// 		if(obj.homepage){
+					// 			var image = {
+					// 				url: obj.url,
+					// 				projectUrl: childData.url,
+					// 				order: childData.order
+					// 			}
+					// 			images.push(image);
+					// 		}
+					// 	});
+					// }
+				});
+
+				// // Sorting
+				// projects = _.sortBy(projects, function(obj){
+				// 	return obj.order;
+				// });
+				// images = _.shuffle(images);
+				//
+				// // Stringifying
+				// projects = JSON.stringify(projects);
+				// images = JSON.stringify(images);
+				//
+				// res.json({
+				// 	projects: projects,
+				// 	images: images
+				// });
+
+			}, function(errorObject){
+				console.log("The read failed: " + errorObject.code);
+			});
+		}
+
+		// // Load projects
+		// $.post('/public-start', {}, function(response) {
+		//         // console.log(response);
+		//         if(response.error){
+		//         	throw response.error
+		//         }else{
+		// 		// console.log(response);
+		// 		callback(response);
+		//         }
+		//     });
+	}
 
 	return {
-		init: function(callback){
-			console.log('Initializing...');
 
-			// Load projects
-			$.post('/public-start', {}, function(response) {
-	            // console.log(response);
-	            if(response.error){
-	            	throw response.error
-	            }else{
-					// console.log(response);
-					callback(response);
-	            }
-	        });
-		},
+		init: init,
 
 		appendSidebar: function(projects){
 			console.log('Appending projects...');

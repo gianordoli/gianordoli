@@ -8,8 +8,7 @@ require(['config'], function () {
 	// All pages load jQuery
 	require(['jquery', 'firebase'], function($, firebase){
 
-		console.log('Loaded jquery.');
-		console.log(firebase);
+		console.log('Loaded jquery and firebase.');
 
 		// Current page is...?
 		var url = window.location.pathname;
