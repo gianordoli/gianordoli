@@ -23,9 +23,11 @@ define(function (require) {
 	}
 
 	function init(callback) {
+
 		if (!projectsRef) {
 			firebaseSetup();
 			init(callback);
+
 		} else {
 			console.log('Initializing...');
 			var queryRef = projectsRef.orderByChild("publish").equalTo(true);
@@ -40,35 +42,35 @@ define(function (require) {
 					var childData = childSnapshot.val();
 					console.log(">>>>> DATA");
 					console.log(childData);
-					// projects.push(childData);
-					// if(childData.images !== undefined && childData.images.length > 0){
-					// 	childData.images.forEach(function(obj, i){
-					// 		if(obj.homepage){
-					// 			var image = {
-					// 				url: obj.url,
-					// 				projectUrl: childData.url,
-					// 				order: childData.order
-					// 			}
-					// 			images.push(image);
-					// 		}
-					// 	});
-					// }
+					projects.push(childData);
+					if(childData.images !== undefined && childData.images.length > 0){
+						childData.images.forEach(function(obj, i){
+							if(obj.homepage){
+								var image = {
+									url: obj.url,
+									projectUrl: childData.url,
+									order: childData.order
+								}
+								images.push(image);
+							}
+						});
+					}
 				});
 
-				// // Sorting
-				// projects = _.sortBy(projects, function(obj){
-				// 	return obj.order;
-				// });
-				// images = _.shuffle(images);
-				//
-				// // Stringifying
-				// projects = JSON.stringify(projects);
-				// images = JSON.stringify(images);
-				//
-				// res.json({
-				// 	projects: projects,
-				// 	images: images
-				// });
+				// Sorting
+				projects = _.sortBy(projects, function(obj){
+					return obj.order;
+				});
+				images = _.shuffle(images);
+
+				// Stringifying
+				projects = JSON.stringify(projects);
+				images = JSON.stringify(images);
+
+				callback({
+					projects: projects,
+					images: images
+				});
 
 			}, function(errorObject){
 				console.log("The read failed: " + errorObject.code);
