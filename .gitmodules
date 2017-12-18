@@ -1,9 +1,9 @@
-[submodule "websites/dusty-js"]
-	path = websites/dusty-js
-	url = https://github.com/gianordoli/dusty-js.git
 [submodule "websites/fora-temer"]
 	path = websites/fora-temer
 	url = https://github.com/gianordoli/fora-temer.git
 [submodule "websites/lang_catalog_prototype"]
 	path = websites/lang_catalog_prototype
 	url = https://github.com/gianordoli/lang_catalog_prototype.git
+[submodule "websites/dusty-js"]
+	path = websites/dusty-js
+	url = https://github.com/gianordoli/dusty-js.git
