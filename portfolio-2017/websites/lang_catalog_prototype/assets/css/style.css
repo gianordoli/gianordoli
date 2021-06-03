@@ -1,0 +1,285 @@
+/* Webfont: Neue-Bold */
+@font-face {
+    font-family: 'NeueBold';
+    src: url('../fonts/Neue-Bold.eot'); /* IE9 Compat Modes */
+    src: url('../fonts/Neue-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../fonts/Neue-Bold.woff') format('woff'), /* Modern Browsers */
+         url('../fonts/Neue-Bold.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('../fonts/Neue-Bold.svg#Neue-Bold') format('svg'); /* Legacy iOS */
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;  
+}
+
+/* Webfont: NeueDisplay-Random */
+@font-face {
+    font-family: 'NeueDisplayRandom';
+    src: url('../fonts/NeueDisplay-Random.eot'); /* IE9 Compat Modes */
+    src: url('../fonts/NeueDisplay-Random.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('../fonts/NeueDisplay-Random.woff') format('woff'), /* Modern Browsers */
+         url('../fonts/NeueDisplay-Random.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('../fonts/NeueDisplay-Random.svg#NeueDisplay-Random') format('svg'); /* Legacy iOS */
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+* {
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */;
+}
+
+body{
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 12px;
+  line-height: 18px;
+}
+
+div#logo{
+  position: absolute;
+  z-index: 10;  
+  top: 20px;
+  left: 40px;
+}
+  
+  div#logo img{
+    width: 247px;
+    height: 104px;
+  }
+
+div#left-panel{
+  position: absolute;
+  z-index: 20;
+  top: 160px;
+  left: 40px;
+  width: 245px;
+  max-height: calc(100% - 210px);
+  overflow-y: auto;
+  border: 2px solid #E6E6E6;
+  padding: 12px;
+  background-color: white;
+  visibility: hidden;
+}
+
+  div#left-panel p{
+    padding: 0;
+    margin: 0;
+  }
+
+  div#left-panel p#course-title{
+    font-family: 'NeueBold';
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  div#left-panel.visible{
+    visibility: visible;
+  }
+
+select:focus,
+input:focus{
+  outline: none;
+}
+
+select#term-select{
+  position: absolute;
+  z-index: 30;
+  top: 50px;
+  right: 285px;
+  width: 100px;
+  background-color: white;
+  background-position: right;
+  background-image: url('../images/button_drop_down.svg');
+  background-repeat: no-repeat;
+  border: 2px solid #E6E6E6;
+  height: 24px; 
+  -webkit-appearance: none;
+  border-radius: 0;
+  padding-left: 4px;
+  margin-right: 4px;
+  height: 26px;
+}
+
+div#right-panel{
+  position: absolute;
+  z-index: 40;
+  top: 50px;
+  right: 40px;
+  width: 245px;
+  height: calc(100% - 100px);
+  
+  display: flex;
+  flex-direction: column;
+}
+
+    div#right-panel div.up{
+      /*background: green;*/
+    }
+
+      /* Search Box*/
+      div#right-panel div.up div#search-container{
+        width: 100%;
+        visibility: hidden;
+        border: 2px solid #E6E6E6;
+        height: 24px;
+        margin-bottom: 4px;
+      }
+
+      div#right-panel div.up div#search-container.visible{
+        visibility: visible;
+      }
+
+        div#right-panel div.up div#search-container input#search-box{
+          border: 0;  
+          width: calc(100% - 20px);
+          height: 20px;
+        } 
+
+        div#right-panel div.up div#search-container input#search-button{
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          border: 0;
+          background-color: white;
+          background-image: url('../images/button_search.svg');
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: 14px 14px;
+          float: right;
+          cursor: pointer;
+        } 
+
+      /* List of Paths of Study */
+      div#right-panel div.up ul#paths-of-study-list{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }  
+
+        div#right-panel div.up ul#paths-of-study-list li{
+          display: inline-block;
+          background-color: rgb(232, 46, 33);
+          color: white;
+          font-family: 'NeueDisplayRandom';
+          text-transform: uppercase;
+          padding: 4px;
+          margin-bottom: 4px;
+          margin-right: 4px;
+          height: 26px;
+        }        
+
+    /* Courses List */
+    div#right-panel div.down{
+      flex-grow: 1;
+      overflow-y: auto;
+      /*background: red;*/
+    }
+
+    div#right-panel div ul#courses-list{
+      /*display: table-cell;*/
+      /*height: 100%;
+      overflow-y: auto; */
+      /*background-color: red;*/
+      padding-left: 16px;
+      list-style: square;
+      margin: 0;
+    }
+
+      div#right-panel div ul#courses-list li.mouseover{
+        /*color: white;*/
+        /*background-color: black;*/
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+
+/*      div#right-panel div ul#courses-list li.search-result{
+        background-color: rgba(0, 0, 0, 20);
+      }  */    
+
+svg{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+
+}
+
+svg text{
+  font-family: 'NeueBold';
+  letter-spacing: -0.15px;
+}
+
+/* Path of Study */
+g#path-of-study-chart g.path-of-study path {
+  /*stroke: #fff;*/
+  stroke-width: 2px;
+  /*fill: #E6E6E6;*/
+  fill: white;
+  /*stroke: #E6E6E6;*/
+  stroke: #EFEFEF;
+}
+
+	g#path-of-study-chart g.path-of-study path.linked {
+	  /*stroke: white;*/
+	}
+
+	g#path-of-study-chart g.path-of-study path.selected {
+	  fill: rgb(232, 46, 33);
+	  /*stroke: white;*/
+	}
+
+g#path-of-study-chart g.path-of-study text {
+  font-size: 9px;
+  /*font-family: 'neue';*/
+  /*text-anchor: middle;*/
+  pointer-events: none;
+}
+
+	g#path-of-study-chart g.path-of-study text tspan{
+	  alignment-baseline: middle;
+	}
+
+/* Courses */
+g#courses-chart circle.course {
+	/*fill: rgb(232, 46, 33);*/
+	fill: rgba(232, 46, 33, 1);
+}
+
+g#courses-chart circle.anchor {
+	fill: none;
+}	
+g#courses-chart line {
+	stroke: hsla(0, 0%, 0%, 0.07);
+	pointer-events: none;
+}
+g#courses-chart line.from-selected {
+  stroke: rgba(232, 46, 33, 0.1);
+  /*stroke: hsla(0, 0%, 0%, 0);*/
+  /*visibility: hidden;*/
+}
+
+/* Tooltip */
+.d3-tip {
+  font-size: 10px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  display: inline;
+  width: 100%;
+  line-height: 10px;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}	
